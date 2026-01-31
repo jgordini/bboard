@@ -8,7 +8,7 @@
     text-align: center;
     margin: 0 auto;
     padding: spacing(3) 0;
-    color: var(--colors-primary-base);
+    color: var(--uab-green);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,69 +16,62 @@
     gap: spacing(2);
     border-radius: 16px;
     transition: all 0.2s ease;
-    background-color: var(--colors-blue-50);
-    border: 2px solid var(--colors-blue-100);
+    background-color: var(--smoke-gray-7);
+    border: 2px solid var(--colors-gray-200);
 
     @include dark-mode {
-      background-color: var(--colors-blue-900);
-      border-color: var(--colors-blue-800);
-      color: var(--colors-blue-300);
+      background-color: var(--colors-gray-800);
+      border-color: var(--colors-gray-600);
+      color: lighten($uab-green, 20%);
     }
 
-    &:hover {
-      background-color: var(--colors-blue-100);
-      border-color: var(--colors-primary-base);
-      color: var(--colors-primary-base);
+    &:hover:not(&--disabled) {
+      border-color: var(--campus-green);
+      background-color: var(--campus-green-7);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 
       @include dark-mode {
-        background-color: var(--colors-blue-800);
-        border-color: var(--colors-blue-500);
-        color: var(--colors-blue-200);
+        background-color: rgba(144, 212, 8, 0.1);
       }
 
       .c-vote-counter__icon {
-        color: var(--colors-primary-base);
-        transform: translateY(-1px);
-
-        @include dark-mode {
-          color: var(--colors-blue-200);
-        }
+        color: var(--campus-green);
       }
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
     }
 
     &--voted {
       padding: spacing(3) 0;
       gap: spacing(2);
       font-weight: get("font.weight.bold");
-      background-color: var(--colors-blue-100);
-      color: var(--colors-primary-base);
-      border-color: var(--colors-primary-base);
+      background-color: var(--campus-green-15);
+      color: var(--uab-green);
+      border-color: var(--campus-green);
 
       @include dark-mode {
-        background-color: var(--colors-blue-800);
-        color: var(--colors-blue-200);
-        border-color: var(--colors-blue-500);
+        background-color: rgba(144, 212, 8, 0.2);
+        color: lighten($uab-green, 20%);
       }
 
       .c-vote-counter__icon {
-        color: var(--colors-primary-base);
-
-        @include dark-mode {
-          color: var(--colors-blue-200);
-        }
+        color: var(--campus-green);
       }
 
       .c-vote-counter__count {
         font-weight: get("font.weight.bold");
       }
 
-      &:hover {
-        background-color: var(--colors-blue-200);
-        border-color: var(--colors-primary-base);
+      &:hover:not(&--disabled) {
+        background-color: var(--campus-green-33);
+        border-color: var(--campus-green);
 
         @include dark-mode {
-          background-color: var(--colors-blue-700);
-          border-color: var(--colors-blue-400);
+          background-color: rgba(144, 212, 8, 0.3);
         }
       }
     }
@@ -113,12 +106,12 @@
   &__icon {
     width: 18px;
     height: 18px;
-    color: var(--colors-primary-base);
+    color: var(--uab-green);
     transition: all 0.2s ease;
     flex-shrink: 0;
 
     @include dark-mode {
-      color: var(--colors-blue-300);
+      color: lighten($uab-green, 20%);
     }
   }
 
@@ -126,5 +119,10 @@
     font-size: get("font.size.sm");
     font-weight: get("font.weight.semibold");
     line-height: 1;
+    color: var(--uab-green);
+
+    @include dark-mode {
+      color: lighten($uab-green, 20%);
+    }
   }
 }

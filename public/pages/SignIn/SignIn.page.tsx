@@ -1,5 +1,6 @@
 import React from "react"
 import { SignInControl, TenantLogo, LegalNotice } from "@fider/components"
+import "./SignIn.page.scss"
 import { Trans } from "@lingui/react/macro"
 import { useFider } from "@fider/hooks"
 

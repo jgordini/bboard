@@ -1,7 +1,55 @@
+@use "~@fider/assets/styles/variables.scss" as *;
+
 #p-complete-profile {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  min-height: 80vh;
+  background-color: var(--smoke-gray-7);
+
+  @include dark-mode {
+    background-color: var(--colors-gray-900);
+  }
+
+  .box {
+    background-color: var(--colors-white);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    padding: spacing(8);
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+
+    @include dark-mode {
+      background-color: var(--colors-gray-800);
+    }
+  }
+
+  .text-title {
+    font-family: var(--font-accent);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--uab-green);
+    margin-bottom: spacing(2);
+
+    @include dark-mode {
+      color: lighten($uab-green, 20%);
+    }
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--smoke-gray);
+    line-height: 1.6;
+    margin-bottom: spacing(6);
+
+    @include dark-mode {
+      color: var(--colors-gray-300);
+    }
+  }
+
+  a[href="/"] {
+    color: var(--campus-green);
+  }
 }
