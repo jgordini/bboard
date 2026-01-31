@@ -1,0 +1,122 @@
+@use "../variables.scss" as *;
+
+// UAB Color Utilities
+.uab-green {
+  color: var(--uab-green);
+}
+
+.bg-uab-green {
+  background-color: var(--uab-green);
+}
+
+.campus-green {
+  color: var(--campus-green);
+}
+
+.bg-campus-green {
+  background-color: var(--campus-green);
+}
+
+.bg-campus-green-15 {
+  background-color: var(--campus-green-15);
+}
+
+.loyal-yellow {
+  color: var(--loyal-yellow);
+}
+
+.bg-loyal-yellow {
+  background-color: var(--loyal-yellow);
+}
+
+.smoke-gray {
+  color: var(--smoke-gray);
+}
+
+.bg-smoke-gray-7 {
+  background-color: var(--smoke-gray-7);
+}
+
+// UAB Grid Utilities
+.uab-grid-two-across {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @include media("md") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.uab-grid-three-across {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @include media("md") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("lg") {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.uab-grid-four-across {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include media("sm") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media("lg") {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// UAB Section Wrapper
+.uab-section {
+  padding: 3rem 1.5rem;
+
+  @include media("lg") {
+    padding: 3rem 0;
+  }
+}
+
+// UAB Card Pattern
+.uab-card {
+  background: var(--colors-white);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  @include dark-mode {
+    background: var(--colors-gray-800);
+  }
+}
+
+// UAB Card with colored left border
+.uab-card-accent {
+  @extend .uab-card;
+  border-left: 4px solid var(--accent-color, var(--campus-green));
+}
+
+// Border color variations
+.border-campus-green {
+  --accent-color: var(--campus-green);
+}
+
+.border-loyal-yellow {
+  --accent-color: var(--loyal-yellow);
+}
+
+.border-uab-green {
+  --accent-color: var(--uab-green);
+}
