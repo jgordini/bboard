@@ -1,0 +1,21 @@
+# Environment secrets
+.env
+
+# SSL certificates (generated on server)
+ssl/*.key
+ssl/*.crt
+ssl/*.csr
+ssl/*.pem
+
+# Backup files
+*.backup.*
+backups/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*~

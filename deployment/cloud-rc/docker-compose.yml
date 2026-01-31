@@ -1,0 +1,74 @@
+services:
+  # PostgreSQL - Data persisted to OpenStack volume
+  db:
+    restart: always
+    image: postgres:17
+    volumes:
+      - /mnt/postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: fider
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fider"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fider-network
+
+  # Fider Application
+  app:
+    restart: always
+    image: getfider/fider:stable
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./ssl:/app/etc:ro
+    environment:
+      BASE_URL: ${BASE_URL}
+      DATABASE_URL: postgres://fider:${DB_PASSWORD}@db:5432/fider?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET}
+      EMAIL_NOREPLY: ${EMAIL_NOREPLY}
+      EMAIL_SMTP_HOST: ${SMTP_HOST}
+      EMAIL_SMTP_PORT: ${SMTP_PORT}
+      EMAIL_SMTP_USERNAME: ${SMTP_USER}
+      EMAIL_SMTP_PASSWORD: ${SMTP_PASS}
+      # SAML Configuration (uncomment when ready)
+      # SAML_ENTITY_ID: ${BASE_URL}/saml/metadata
+      # SAML_IDP_ENTITY_ID: ${SAML_IDP_ENTITY_ID}
+      # SAML_IDP_SSO_URL: ${SAML_IDP_SSO_URL}
+      # SAML_IDP_CERT: ${SAML_IDP_CERT}
+      # SAML_SP_CERT_PATH: etc/sp.crt
+      # SAML_SP_KEY_PATH: etc/sp.key
+    networks:
+      - fider-network
+
+  # Nginx reverse proxy
+  nginx:
+    restart: always
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    depends_on:
+      - app
+    networks:
+      - fider-network
+
+  # MailHog (optional, for testing email without SMTP)
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "8025:8025"
+    networks:
+      - fider-network
+
+networks:
+  fider-network:
+    driver: bridge
