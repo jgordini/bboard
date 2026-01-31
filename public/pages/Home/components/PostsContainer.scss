@@ -42,6 +42,19 @@
     gap: spacing(4);
   }
 
+  // Rotate through UAB colors for left border (by position in list)
+  &__post-link:nth-child(3n+1) &__post {
+    border-left: 4px solid var(--campus-green);
+  }
+
+  &__post-link:nth-child(3n+2) &__post {
+    border-left: 4px solid var(--loyal-yellow);
+  }
+
+  &__post-link:nth-child(3n+3) &__post {
+    border-left: 4px solid var(--uab-green);
+  }
+
   &__post-link {
     display: block;
     text-decoration: none;
@@ -49,17 +62,27 @@
   }
 
   &__post {
-    background-color: var(--colors-white);
-    @include dark-mode {
-      background-color: var(--colors-gray-200);
-    }
-    border-radius: get("border.radius.xlarge");
-    padding: spacing(6) spacing(7);
+    background: var(--colors-white);
+    border-radius: 12px;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    padding: 1.5rem;
     transition: box-shadow 0.2s ease-in-out;
+    position: relative;
+
+    @include dark-mode {
+      background: var(--colors-gray-800);
+    }
 
     .c-posts-container__post-link:hover & {
+      cursor: pointer;
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      transform: translateY(-2px);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .c-posts-container__post-link:focus-within & {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
     }
   }
 
@@ -71,7 +94,7 @@
     transition: color 0.2s ease-in-out;
 
     .c-posts-container__post-link:hover & {
-      color: var(--colors-primary-base);
+      color: var(--uab-green);
     }
   }
 
@@ -94,8 +117,33 @@
     gap: spacing(2);
   }
 
+  &__vote-counter {
+    background-color: var(--smoke-gray-7);
+    border: 1px solid var(--colors-gray-200);
+    border-radius: 8px;
+    padding: spacing(2) spacing(3);
+    transition: all 0.2s ease;
+
+    &--active,
+    &:hover {
+      background-color: var(--campus-green-15);
+      border-color: var(--campus-green);
+      color: var(--uab-green);
+    }
+
+    @include dark-mode {
+      background-color: var(--colors-gray-700);
+      border-color: var(--colors-gray-600);
+
+      &--active,
+      &:hover {
+        background-color: rgba(144, 212, 8, 0.2);
+        border-color: var(--campus-green);
+      }
+    }
+  }
+
   &__post-minimal {
-    // Minimal styling for compact post lists (e.g., similar posts)
     padding: spacing(2) 0;
     border-bottom: 1px solid var(--colors-gray-200);
 

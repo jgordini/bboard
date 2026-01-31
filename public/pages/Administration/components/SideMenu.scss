@@ -1,27 +1,47 @@
 @use "~@fider/assets/styles/variables.scss" as *;
 
 .c-side-menu {
+  background: var(--colors-white);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 0;
+  transition: box-shadow 0.2s ease-in-out;
+
+  @include dark-mode {
+    background: var(--colors-gray-800);
+  }
+
   &__item {
-    padding: spacing(4);
-    border-bottom: 1px solid var(--colors-gray-200);
-    color: var(--colors-gray-900);
+    display: block;
+    padding: spacing(3) spacing(4);
+    color: var(--smoke-gray);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.15s ease;
 
     &:hover {
-      background-color: var(--colors-gray-100);
-    }
+      background-color: var(--smoke-gray-7);
+      color: var(--uab-green);
 
-    &:last-child {
-      border-bottom: none;
+      @include dark-mode {
+        background-color: var(--colors-gray-700);
+      }
     }
 
     &--active {
-      color: var(--colors-primary-base);
-      border-inline-start: 2px solid var(--colors-primary-base);
+      background-color: var(--campus-green-15);
+      color: var(--uab-green);
+      border-left-color: var(--campus-green);
       font-weight: 600;
-      background-color: var(--colors-white);
-      &:hover {
-        color: var(--colors-primary-base);
+
+      @include dark-mode {
+        background-color: rgba(144, 212, 8, 0.2);
       }
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: -2px;
     }
   }
 }

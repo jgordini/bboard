@@ -8,4 +8,16 @@
   @include media("lg") {
     grid-template-columns: 1fr 4fr 1fr;
   }
+
+  // Content area (main column)
+  > div:last-child {
+    background-color: var(--smoke-gray-7);
+    min-height: calc(100vh - 200px);
+    padding: spacing(6);
+    border-radius: get("border.radius.large");
+
+    @include dark-mode {
+      background-color: var(--colors-gray-900);
+    }
+  }
 }

@@ -2,32 +2,56 @@
 
 .c-tag {
   display: inline-flex;
-  justify-content: center;
   align-items: center;
-  font-size: 13px;
-  color: var(--colors-gray-900);
-  background-color: var(--colors-gray-200);
-  font-weight: 500;
-  border-radius: 5px;
-  // line-height: 18px;
-  padding: 6px 10px;
-  border: 0;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.15s ease;
 
-  &[href] {
-    opacity: 0.9;
-    transition: opacity 0.1s;
+  // Rotate through UAB colors
+  &--green {
+    background-color: var(--campus-green-15);
+    color: var(--uab-green);
+  }
+
+  &--yellow {
+    background-color: var(--loyal-yellow-15);
+    color: darken($loyal-yellow, 30%);
+  }
+
+  &--uab {
+    background-color: rgba(26, 86, 50, 0.15);
+    color: var(--uab-green);
+  }
+
+  // Default (rotate automatically)
+  &:nth-child(3n+1) {
+    @extend .c-tag--green;
+  }
+
+  &:nth-child(3n+2) {
+    @extend .c-tag--yellow;
+  }
+
+  &:nth-child(3n+3) {
+    @extend .c-tag--uab;
+  }
+
+  &__remove {
+    margin-left: 6px;
+    color: var(--smoke-gray);
+    cursor: pointer;
+    transition: color 0.15s ease;
 
     &:hover {
-      opacity: 1;
+      color: #dc2626;
     }
   }
 
-  span {
-    margin-inline-end: 7px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &--circular {
@@ -36,5 +60,22 @@
     overflow: hidden;
     border-radius: 50%;
     padding: 6px;
+  }
+
+  @include dark-mode {
+    &--green {
+      background-color: rgba(144, 212, 8, 0.2);
+      color: lighten($campus-green, 10%);
+    }
+
+    &--yellow {
+      background-color: rgba(253, 185, 19, 0.2);
+      color: var(--loyal-yellow);
+    }
+
+    &--uab {
+      background-color: rgba(26, 86, 50, 0.3);
+      color: lighten($uab-green, 20%);
+    }
   }
 }

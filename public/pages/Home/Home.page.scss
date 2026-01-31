@@ -5,7 +5,7 @@
   grid-template-columns: 1fr;
   column-gap: 0;
   row-gap: spacing(8);
-  background-color: var(--colors-gray-100);
+  background-color: var(--smoke-gray-7);
   padding-top: spacing(12);
   padding-bottom: spacing(12);
 
@@ -16,8 +16,10 @@
   }
 
   @include dark-mode {
+    background-color: var(--colors-gray-900);
+
     input {
-      background-color: var(--colors-gray-100);
+      background-color: var(--colors-gray-800);
     }
   }
 
@@ -29,21 +31,36 @@
     }
 
     &__welcome-title {
-      font-size: 32px;
-      font-weight: get("font.weight.xbold");
+      font-family: var(--font-accent);
+      font-size: 36px;
+      font-weight: 700;
       line-height: 1.2;
-      color: var(--colors-gray-900);
+      color: var(--uab-green);
       letter-spacing: -0.5px;
+      margin-bottom: spacing(5);
 
       @include media("lg") {
-        font-size: 36px;
+        font-size: 42px;
+      }
+
+      .header-emphasis {
+        color: var(--campus-green);
+        font-style: italic;
+      }
+
+      @include dark-mode {
+        color: lighten($uab-green, 20%);
       }
     }
 
     &__welcome-body {
-      // font-size: get("font.size.lg");
       line-height: 1.6;
-      // color: var(--colors-gray-700);
+      font-size: 18px;
+      color: var(--smoke-gray);
+
+      @include dark-mode {
+        color: var(--colors-gray-300);
+      }
     }
 
     &__posts-col {
@@ -54,35 +71,43 @@
       width: 100%;
       margin-bottom: spacing(6);
       padding: spacing(5);
-      background-color: var(--colors-white);
+      background-color: white;
       border: 1px solid var(--colors-gray-200);
-      border-radius: get("border.radius.xlarge");
+      border-radius: 12px;
       box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
       cursor: pointer;
-      transition: box-shadow 0.2s ease-in-out;
-      font-size: get("font.size.lg");
-      font-weight: get("font.weight.medium");
-      color: var(--colors-gray-700);
+      transition: all 0.2s ease-in-out;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--smoke-gray);
       text-align: left;
 
       @include dark-mode {
-        background-color: var(--colors-gray-200);
+        background-color: var(--colors-gray-800);
+        border-color: var(--colors-gray-700);
+        color: var(--colors-gray-300);
       }
 
       &:hover {
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        transform: translateY(-2px);
+        border-color: var(--campus-green);
       }
 
       &:focus {
-        outline: 2px solid var(--colors-primary-base);
+        outline: 2px solid var(--campus-green);
         outline-offset: 2px;
+      }
+
+      &:active {
+        transform: translateY(0);
       }
     }
 
     &__add-idea-icon {
       width: 40px;
       height: 40px;
-      color: var(--colors-primary-base);
+      color: var(--campus-green);
       flex-shrink: 0;
     }
   }

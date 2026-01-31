@@ -1,7 +1,7 @@
 @use "~@fider/assets/styles/variables.scss" as *;
 
 #p-show-post {
-  background-color: var(--colors-gray-100);
+  background-color: white;
   padding-top: spacing(4);
   padding-bottom: spacing(12);
 
@@ -9,14 +9,16 @@
     padding-top: spacing(12);
   }
 
-  .post-header {
-    flex-grow: 1;
+  @include dark-mode {
+    background-color: var(--colors-gray-900);
+
+    input {
+      background-color: var(--colors-gray-800);
+    }
   }
 
-  @include dark-mode {
-    input {
-      background-color: var(--colors-gray-100);
-    }
+  .post-header {
+    flex-grow: 1;
   }
 
   .p-show-post {
@@ -38,17 +40,23 @@
     }
 
     &__title {
-      font-size: 20px;
-      font-weight: get("font.weight.xbold");
+      font-family: var(--font-accent);
+      font-size: 32px;
+      font-weight: 700;
       line-height: 1.2;
-      color: var(--colors-gray-900);
+      color: var(--uab-green);
+      margin-bottom: spacing(4);
 
       @include media("md") {
-        font-size: 32px;
+        font-size: 36px;
       }
 
       @include media("lg") {
-        font-size: 36px;
+        font-size: 42px;
+      }
+
+      @include dark-mode {
+        color: lighten($uab-green, 20%);
       }
     }
 
@@ -60,19 +68,37 @@
     }
 
     &__vote-section {
+      background: var(--colors-white);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      padding: 1.5rem;
+      transition: box-shadow 0.2s ease-in-out;
+      border-left: 4px solid var(--campus-green);
       margin-top: spacing(10);
+      margin-bottom: spacing(6);
+
+      @include dark-mode {
+        background: var(--colors-gray-800);
+      }
     }
 
     &__description-section {
       margin-top: spacing(7);
     }
-     ch &__description {
-      color: var(--colors-gray-800);
+
+    &__description {
+      padding: spacing(8) 0;
+      font-size: 18px;
       line-height: 1.6;
+      color: var(--smoke-gray);
+
+      @include dark-mode {
+        color: var(--colors-gray-300);
+      }
     }
 
     &__actions {
-      border-top: 5px solid var(--colors-blue-500);
+      border-top: 5px solid var(--campus-green);
       padding-top: spacing(4);
       margin-top: spacing(8);
 
@@ -88,6 +114,12 @@
       display: flex;
       flex-direction: column;
       gap: spacing(6);
+      padding: spacing(8) 0;
+      background-color: var(--smoke-gray-7);
+
+      @include dark-mode {
+        background-color: var(--colors-gray-800);
+      }
     }
 
     &__discussion-header {
@@ -100,11 +132,47 @@
       margin-left: spacing(4);
       border-radius: 9999px;
       text-align: center;
-      background-color: var(--colors-blue-100);
-      color: var(--colors-blue-400);
+      background-color: var(--campus-green-15);
+      color: var(--uab-green);
       @include dark-mode {
-        background-color: var(--colors-blue-500);
-        color: var(--colors-blue-800);
+        background-color: rgba(144, 212, 8, 0.2);
+        color: lighten($campus-green, 10%);
+      }
+    }
+
+    &__status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+
+      &--completed {
+        background-color: var(--campus-green-15);
+        color: var(--uab-green);
+      }
+
+      &--started {
+        background-color: var(--loyal-yellow-15);
+        color: darken($loyal-yellow, 30%);
+      }
+
+      &--planned {
+        background-color: rgba(26, 86, 50, 0.15);
+        color: var(--uab-green);
+      }
+
+      @include dark-mode {
+        &--completed {
+          background-color: rgba(144, 212, 8, 0.2);
+          color: lighten($campus-green, 10%);
+        }
+
+        &--started {
+          background-color: rgba(253, 185, 19, 0.2);
+          color: var(--loyal-yellow);
+        }
       }
     }
 
