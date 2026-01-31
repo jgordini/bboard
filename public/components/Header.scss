@@ -1,4 +1,15 @@
+@use "~@fider/assets/styles/variables.scss" as *;
+
 #c-header {
+  background-color: var(--uab-green) !important;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: none !important;
+
+  @include dark-mode {
+    background-color: var(--uab-green) !important;
+  }
+
   .c-header__container {
     @media (min-width: 1024px) {
       position: relative;
@@ -15,5 +26,56 @@
       transform: translate(-50%, -50%);
       width: auto;
     }
+  }
+
+  a[href="/"] {
+    font-family: var(--font-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--campus-green-15);
+    }
+  }
+
+  .text-header {
+    color: white;
+    font-family: var(--font-accent);
+    font-weight: 700;
+  }
+
+  .c-menu a {
+    color: white;
+    text-decoration: none;
+  }
+
+  button.c-themeswitcher,
+  .c-themeswitcher {
+    color: white;
+
+    &:hover {
+      color: var(--campus-green-15);
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
+    }
+  }
+
+  .c-button--primary {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .text-gray-500 {
+    color: rgba(255, 255, 255, 0.9) !important;
   }
 }

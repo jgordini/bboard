@@ -9,9 +9,9 @@
   border-radius: 8px;
   border: none;
   padding: 8px 16px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease-in-out;
 
   &:active {
     transform: scale(0.98);
@@ -32,48 +32,81 @@
   }
 
   &--secondary {
-    color: var(--colors-gray-900);
+    color: var(--uab-green);
     background-color: var(--colors-white);
-    border: 1px solid var(--colors-gray-300);
+    border: 2px solid var(--uab-green);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 
-    &:hover {
-      background-color: var(--colors-gray-50);
-      border-color: var(--colors-gray-400);
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+    &:hover:not(:disabled) {
+      background-color: var(--campus-green-7);
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
+    }
+
+    @include dark-mode {
+      background-color: var(--colors-gray-800);
     }
   }
 
   &--primary {
     color: var(--colors-white);
-    background-color: var(--colors-primary-base);
-    border: 1px solid var(--colors-primary-base);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    background-color: var(--uab-green);
+    border: none;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 
-    &:hover {
-      background-color: var(--colors-primary-dark);
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    &:hover:not(:disabled) {
+      background-color: var(--dragons-lair-green);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 
   &--danger {
-    color: var(--colors-red-600);
+    color: #dc2626;
     border: 1px solid var(--colors-gray-300);
     background-color: var(--colors-white);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 
-    &:hover {
+    &:hover:not(:disabled) {
       color: var(--colors-white);
-      border: 1px solid var(--colors-red-600);
-      background-color: var(--colors-red-600);
+      border: 1px solid #dc2626;
+      background-color: #dc2626;
       box-shadow: 0 2px 4px 0 rgba(220, 38, 38, 0.2);
     }
   }
 
   &--link {
     border: none;
-    color: var(--colors-primary-base);
+    color: var(--campus-green);
     background-color: transparent;
+    font-weight: 600;
+
+    &:hover:not(:disabled) {
+      text-decoration: underline;
+      color: darken(#90d408, 10%);
+    }
+
+    &:focus {
+      outline: 2px solid var(--campus-green);
+      outline-offset: 2px;
+    }
   }
 
   &--no-padding {

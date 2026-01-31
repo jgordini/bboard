@@ -1,34 +1,68 @@
 @use "~@fider/assets/styles/variables.scss" as *;
 
+.c-form-field {
+  &__label {
+    color: var(--uab-green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+}
+
 .c-input {
   line-height: get("font.size.xl");
   background-color: var(--colors-white);
   color: var(--colors-black);
   width: 100%;
-  padding: sizing(2) sizing(3);
-  border: 1px solid var(--colors-gray-300);
-  border-radius: get("border.radius.medium");
+  padding: 12px 16px;
+  border: 1px solid var(--smoke-gray);
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: var(--font-primary, $font-base);
   -webkit-appearance: none;
   appearance: none;
-  transition: all 0.15s ease;
+  transition: all 0.15s ease-out;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
 
+  &::placeholder {
+    color: var(--smoke-gray);
+  }
+
   &:hover {
-    border-color: var(--colors-gray-400);
+    border-color: var(--smoke-gray-33);
   }
 
   &:focus {
     outline: none;
-    border-color: var(--colors-primary-base);
-    box-shadow: 0 0 0 3px rgba(45, 87, 237, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    border: 2px solid var(--campus-green);
+    box-shadow: 0 0 0 3px rgba(144, 212, 8, 0.1);
+    padding: 11px 15px;
   }
 
   &:disabled {
-    @include disabled();
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--smoke-gray-7);
   }
 
-  &::placeholder {
-    color: var(--colors-gray-600);
+  &--error {
+    border-color: #dc2626;
+
+    &:focus {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+
+  @include dark-mode {
+    background-color: var(--colors-gray-800);
+    border-color: var(--colors-gray-600);
+    color: white;
+
+    &:focus {
+      border-color: var(--campus-green);
+      background-color: var(--colors-gray-700);
+    }
   }
 
   & + svg,
@@ -46,16 +80,12 @@
     align-items: center;
     background-color: var(--colors-gray-200);
     padding: spacing(2);
-    border-top-right-radius: get("border.radius.medium");
-    border-bottom-right-radius: get("border.radius.medium");
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 
   &--icon {
     padding-inline-end: spacing(8);
-  }
-
-  &--error {
-    border-color: var(--colors-red-600);
   }
 
   &--suffixed {
