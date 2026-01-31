@@ -67,3 +67,24 @@ $dark-colors: (
   "white": #1a1a1a,
   "black": #d3d3d3,
 );
+
+// Dark mode UAB color overrides (when system prefers dark)
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Lighten UAB Green for better contrast on dark backgrounds
+    --uab-green-dark: #{lighten($uab-green, 20%)};
+    --campus-green-dark: #{$campus-green}; // Keep vibrant
+    --loyal-yellow-dark: #{darken($loyal-yellow, 5%)}; // Slightly muted
+
+    // Dark mode backgrounds
+    --background-dark: #1a1a1a;
+    --surface-dark: #2d2d2d;
+    --surface-elevated-dark: #3d3d3d;
+
+    // Update grays for dark mode
+    --colors-gray-900: #1a1a1a;
+    --colors-gray-800: #2d2d2d;
+    --colors-gray-700: #3d3d3d;
+    --colors-gray-600: #4a4a4a;
+  }
+}
