@@ -68,3 +68,55 @@ $light-colors: (
   "white": #fff,
   "black": #262225,
 );
+
+// UAB Brand Colors
+$uab-green: #1a5632;
+$dragons-lair-green: #033319;
+$campus-green: #90d408;
+$loyal-yellow: #fdb913;
+$smoke-gray: #808285;
+
+// UAB Color Tints (7%, 10%, 15%, 33%, 45%, 50%)
+$campus-green-7: #f3fbdb;
+$campus-green-10: #f0fad2;
+$campus-green-15: #eef9da;
+$campus-green-33: #d3f279;
+$campus-green-45: #bef04e;
+$campus-green-50: #c8ea84;
+
+$smoke-gray-7: #f5f5f5;
+$smoke-gray-10: #f2f2f2;
+$smoke-gray-15: #e8e8e9;
+$smoke-gray-33: #c9cacc;
+$smoke-gray-45: #b8b9bb;
+$smoke-gray-50: #c4c1c3;
+
+$loyal-yellow-7: #fff8e6;
+$loyal-yellow-15: #fff4d6;
+$loyal-yellow-33: #fedfa0;
+$loyal-yellow-50: #fedc89;
+
+:root {
+  // Map UAB Green to primary color
+  --colors-primary-base: #{$uab-green};
+  --colors-primary-dark: #{$dragons-lair-green};
+  --colors-primary-light: #{lighten($uab-green, 10%)};
+
+  // UAB-specific variables
+  --uab-green: #{$uab-green};
+  --dragons-lair-green: #{$dragons-lair-green};
+  --campus-green: #{$campus-green};
+  --loyal-yellow: #{$loyal-yellow};
+  --smoke-gray: #{$smoke-gray};
+
+  // Tint variables
+  --campus-green-7: #{$campus-green-7};
+  --campus-green-15: #{$campus-green-15};
+  --smoke-gray-7: #{$smoke-gray-7};
+  --smoke-gray-15: #{$smoke-gray-15};
+  --loyal-yellow-15: #{$loyal-yellow-15};
+
+  // Update gray scale to use Smoke Gray
+  --colors-gray-700: #{$smoke-gray};
+  --colors-gray-100: #{$smoke-gray-7};
+}
