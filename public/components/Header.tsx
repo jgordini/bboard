@@ -38,8 +38,14 @@ export const Header = (props: HeaderProps) => {
           <div className="flex flex-wrap flex-items-center gap-2">
             <div className="flex flex-x flex-items-center justify-between w-full">
               <a href="/" className="flex flex-x flex-items-center flex--spacing-2 h-8">
-                <TenantLogo size={100} />
-                <h1 className="text-header">{fider.session.tenant.name}</h1>
+                {fider.session.tenant.logoBlobKey ? (
+                  <>
+                    <TenantLogo size={100} />
+                    <h1 className="text-header">{fider.session.tenant.name}</h1>
+                  </>
+                ) : (
+                  <img src="/static/assets/uablogo.svg" alt={fider.session.tenant.name} className="c-header__uab-logo" height={32} />
+                )}
               </a>
               {fider.session.isAuthenticated && (
                 <HStack spacing={2}>

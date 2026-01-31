@@ -51,6 +51,14 @@ type OAuthStateClaims struct {
 	Metadata
 }
 
+// SAMLStateClaims represents what goes into JWT tokens used for SAML RelayState
+type SAMLStateClaims struct {
+	Redirect   string `json:"samlstate/redirect"`
+	Identifier string `json:"samlstate/identifier"`
+	RequestID  string `json:"samlstate/request_id"`
+	Metadata
+}
+
 // Encode creates new JWT token with given claims
 func Encode(claims jwtgo.Claims) (string, error) {
 	jwtToken := jwtgo.NewWithClaims(jwtgo.GetSigningMethod("HS256"), claims)
@@ -87,6 +95,16 @@ func DecodeOAuthStateClaims(token string) (*OAuthStateClaims, error) {
 	err := decode(token, claims)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to decode OAuthState claims")
+	}
+	return claims, nil
+}
+
+// DecodeSAMLStateClaims extract SAMLStateClaims from given JWT token
+func DecodeSAMLStateClaims(token string) (*SAMLStateClaims, error) {
+	claims := &SAMLStateClaims{}
+	err := decode(token, claims)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to decode SAML state claims")
 	}
 	return claims, nil
 }

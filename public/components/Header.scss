@@ -2,7 +2,7 @@
 
 #c-header {
   background-color: var(--uab-green) !important;
-  color: white;
+  color: var(--colors-black);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-bottom: none !important;
 
@@ -32,31 +32,50 @@
     font-family: var(--font-accent);
     font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: var(--colors-black);
     text-decoration: none;
 
     &:hover {
-      color: var(--campus-green-15);
+      color: var(--dragons-lair-green);
     }
   }
 
+  .c-header__uab-logo {
+    height: 32px;
+    width: auto;
+    max-width: 200px;
+    display: block;
+    object-fit: contain;
+  }
+
   .text-header {
-    color: white;
+    color: var(--colors-black);
     font-family: var(--font-accent);
     font-weight: 700;
   }
 
   .c-menu a {
-    color: white;
+    color: var(--colors-black);
     text-decoration: none;
   }
 
   button.c-themeswitcher,
   .c-themeswitcher {
-    color: white;
+    color: #fff;
+
+    .text-gray-500,
+    svg {
+      color: #fff !important;
+      fill: currentColor;
+    }
 
     &:hover {
       color: var(--campus-green-15);
+
+      .text-gray-500,
+      svg {
+        color: var(--campus-green-15) !important;
+      }
     }
 
     &:focus {
@@ -65,17 +84,31 @@
     }
   }
 
+  .c-notification-indicator,
+  .c-notification-indicator .text-gray-500 {
+    color: #fff !important;
+  }
+
+  .c-notification-indicator svg {
+    fill: currentColor;
+  }
+
   .c-button--primary {
-    color: white;
+    color: #fff;
     border-color: rgba(255, 255, 255, 0.3);
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: rgba(255, 255, 255, 0.5);
     }
   }
 
   .text-gray-500 {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--colors-black) !important;
+  }
+
+  /* Theme switcher and notification icon stay white */
+  .c-notification-indicator .text-gray-500 {
+    color: #fff !important;
   }
 }

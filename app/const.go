@@ -27,6 +27,8 @@ const (
 	GoogleProvider = "google"
 	//GitHubProvider is const for 'github'
 	GitHubProvider = "github"
+	//UABProvider is const for UAB Shibboleth/CAS SAML
+	UABProvider = "uab"
 )
 
 var (

@@ -84,6 +84,11 @@ func (r *Request) AddCookie(cookie *http.Cookie) {
 	r.instance.AddCookie(cookie)
 }
 
+// Unwrap returns the underlying *http.Request for use with libraries that require it (e.g. SAML)
+func (r *Request) Unwrap() *http.Request {
+	return r.instance
+}
+
 // IsAPI returns true if its a request for an API resource
 func (r *Request) IsAPI() bool {
 	return strings.HasPrefix(r.URL.Path, "/api/")

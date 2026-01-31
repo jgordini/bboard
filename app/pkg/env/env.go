@@ -100,6 +100,14 @@ type config struct {
 			Secret   string `env:"OAUTH_GITHUB_SECRET"`
 		}
 	}
+	SAML struct {
+		EntityID    string `env:"SAML_ENTITY_ID"`     // SP entity ID (e.g. https://blazeboard.example.com/saml/metadata)
+		IdPEntityID string `env:"SAML_IDP_ENTITY_ID"` // IdP entity ID / Issuer (e.g. https://idp.uab.edu/idp/shibboleth)
+		IdPSSOURL   string `env:"SAML_IDP_SSO_URL"`   // IdP SSO URL (e.g. UAB Shibboleth entry point)
+		IdPCert     string `env:"SAML_IDP_CERT"`      // IdP x509 cert PEM for response verification
+		SPCertPath  string `env:"SAML_SP_CERT_PATH"` // Path to SP public cert
+		SPKeyPath   string `env:"SAML_SP_KEY_PATH"`  // Path to SP private key
+	}
 	Email struct {
 		Type      string `env:"EMAIL"` // possible values: smtp, mailgun, awsses
 		NoReply   string `env:"EMAIL_NOREPLY,required"`

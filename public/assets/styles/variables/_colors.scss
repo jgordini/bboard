@@ -97,10 +97,14 @@ $loyal-yellow-33: #fedfa0;
 $loyal-yellow-50: #fedc89;
 
 :root {
-  // Map UAB Green to primary color
+  // Map UAB Green to primary color (used by both :root and body[data-theme="light"])
+  --primary-color: #{$uab-green};
+  --primary-color-dark: #{$dragons-lair-green};
+  --primary-color-light: #{lighten($uab-green, 10%)};
   --colors-primary-base: #{$uab-green};
   --colors-primary-dark: #{$dragons-lair-green};
   --colors-primary-light: #{lighten($uab-green, 10%)};
+  --focus-ring: #{rgba($uab-green, 0.15)};
 
   // UAB-specific variables
   --uab-green: #{$uab-green};

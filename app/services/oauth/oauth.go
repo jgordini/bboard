@@ -18,6 +18,7 @@ import (
 	"github.com/getfider/fider/app/pkg/errors"
 	"github.com/getfider/fider/app/pkg/jsonq"
 	"github.com/getfider/fider/app/pkg/jwt"
+	"github.com/getfider/fider/app/pkg/saml"
 	"github.com/getfider/fider/app/pkg/validate"
 	"github.com/getfider/fider/app/pkg/web"
 	"golang.org/x/oauth2"
@@ -353,6 +354,23 @@ func listAllOAuthProviders(ctx context.Context, q *query.ListAllOAuthProviders) 
 			IsCustomProvider: isCustomProvider,
 			LogoBlobKey:      p.LogoBlobKey,
 			IsEnabled:        isEnabled,
+		})
+	}
+
+	// UAB SAML provider when SAML is configured
+	if saml.IsConfigured() {
+		uabEnabled := true
+		tenantStatus := &query.GetTenantProviderStatus{Provider: app.UABProvider}
+		if err := bus.Dispatch(ctx, tenantStatus); err == nil && tenantStatus.Result != nil {
+			uabEnabled = tenantStatus.Result.IsEnabled
+		}
+		list = append(list, &dto.OAuthProviderOption{
+			Provider:         app.UABProvider,
+			DisplayName:      "UAB",
+			URL:              "/saml/login",
+			CallbackURL:      fmt.Sprintf("%s/saml/acs", oauthBaseURL),
+			IsCustomProvider: false,
+			IsEnabled:        uabEnabled,
 		})
 	}
 

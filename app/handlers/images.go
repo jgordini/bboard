@@ -23,6 +23,13 @@ import (
 	"github.com/goenning/letteravatar"
 )
 
+// UAB campus green, UAB green, and UAB gold for letter avatar default palette
+var letterAvatarPalette = []color.RGBA{
+	{R: 144, G: 212, B: 8, A: 255},  // campus green #90d408
+	{R: 26, G: 86, B: 50, A: 255},   // UAB green #1a5632
+	{R: 253, G: 185, B: 19, A: 255}, // UAB gold (loyal yellow) #fdb913
+}
+
 // LetterAvatar returns a letter gravatar picture based on given name
 func LetterAvatar() web.HandlerFunc {
 	return func(c *web.Context) error {
@@ -38,7 +45,12 @@ func LetterAvatar() web.HandlerFunc {
 		}
 		size = between(size, 50, 200)
 
+		palette := make([]color.Color, len(letterAvatarPalette))
+		for i := range letterAvatarPalette {
+			palette[i] = letterAvatarPalette[i]
+		}
 		img, err := letteravatar.Draw(size, strings.ToUpper(letteravatar.Extract(name)), &letteravatar.Options{
+			Palette:   palette,
 			PaletteKey: fmt.Sprintf("%s:%s", id, name),
 		})
 		if err != nil {

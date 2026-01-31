@@ -112,6 +112,9 @@ func routes(r *web.Engine) *web.Engine {
 	r.Get("/signout", handlers.SignOut())
 	r.Get("/oauth/:provider/token", handlers.OAuthToken())
 	r.Get("/oauth/:provider/echo", handlers.OAuthEcho())
+	r.Get("/saml/login", handlers.SAMLLogin())
+	r.Post("/saml/acs", handlers.SAMLACS())
+	r.Get("/saml/metadata", handlers.SAMLMetadata())
 
 	// If tenant is pending, block it from using any other route
 	r.Use(middlewares.BlockPendingTenants())

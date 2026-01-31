@@ -24,8 +24,11 @@ build: build-server build-ssr build-ui ## Build server and ui
 build-server: ## Build server
 	go build -ldflags '-s -w $(LDFLAGS)' -o fider .
 
-build-ui: ## Build all UI assets
+build-ui: ## Build all UI assets (production)
 	NODE_ENV=production npx webpack-cli
+
+webpack: ## Build UI assets in development mode (syncs dist/ and assets.json)
+	npx webpack-cli --mode development
 
 build-ssr: ## Build SSR script and locales
 	npx lingui extract public/

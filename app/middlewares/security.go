@@ -36,6 +36,10 @@ func Secure() web.MiddlewareFunc {
 func CSRF() web.MiddlewareFunc {
 	return func(next web.HandlerFunc) web.HandlerFunc {
 		return func(c *web.Context) error {
+			// SAML ACS receives POST from external IdP (no CSRF token)
+			if c.Request.URL.Path == "/saml/acs" {
+				return next(c)
+			}
 			var isWriteRequest = c.Request.Method == "POST" || c.Request.Method == "PUT" || c.Request.Method == "DELETE"
 			if isWriteRequest && !c.IsAjax() {
 				return c.Forbidden()
