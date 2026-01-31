@@ -18,8 +18,8 @@ body {
 
   color: var(--colors-gray-800);
   background-color: var(--colors-gray-100);
-  font-size: get("font.size.base");
-  font-family: $font-base;
+  font-family: var(--font-primary, $font-base);
+  font-size: var(--font-size-base, get("font.size.base"));
   line-height: 1.6;
 }
 
@@ -52,8 +52,8 @@ optgroup,
 select,
 textarea {
   margin: 0;
-  font-family: $font-base;
-  font-size: get("font.size.base");
+  font-family: var(--font-primary, $font-base);
+  font-size: var(--font-size-base, get("font.size.base"));
 }
 
 a {

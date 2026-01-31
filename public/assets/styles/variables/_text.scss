@@ -1,3 +1,10 @@
+// UAB Typography
+$font-aktiv-grotesk: "Aktiv Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$font-kulturista: "Kulturista", Georgia, "Times New Roman", serif;
+
+// Base font size (UAB standard)
+$base-font-size: 18px;
+
 $font-base: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif,
   "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-code: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -26,3 +33,30 @@ $font: (
     xbold: 800,
   ),
 );
+
+:root {
+  --font-primary: #{$font-aktiv-grotesk};
+  --font-accent: #{$font-kulturista};
+  --font-size-base: #{$base-font-size};
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--uab-green);
+  font-weight: 600;
+}
+
+h1,
+h2 {
+  font-family: var(--font-accent);
+  font-weight: 700;
+}
+
+// Safari Kulturista font fix
+.font-kulturista {
+  font-family: "kulturista-web", Georgia, "Times New Roman", serif !important;
+}
