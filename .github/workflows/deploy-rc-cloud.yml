@@ -1,15 +1,18 @@
-# Deploy BlazeBoard to RC Cloud on push to main
+# Deploy BlazeBoard to RC Cloud
 # Builds image, copies to instance via rsync/scp, loads and runs deploy.sh update
 #
-# Required secrets (Settings → Secrets and variables → Actions):
+# NOTE: RC Cloud instance is only reachable over VPN. GitHub's runners cannot
+# access it, so automatic deploy on push is disabled. Deploy from your laptop
+# when on VPN: cd deployment/cloud-rc && RC_HOST=ubuntu@138.26.48.197 \
+#   RC_SSH_KEY=~/.ssh/cloud_key ./scripts/deploy-rc-cloud-scp.sh
+#
+# Required secrets (if you enable this workflow, e.g. with a self-hosted runner):
 #   RC_SSH_KEY  - Private key content (~/.ssh/cloud_key)
 #   RC_HOST     - e.g. ubuntu@138.26.48.197
 name: Deploy to RC Cloud
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Manual only; push disabled because instance is behind VPN
 
 jobs:
   deploy:

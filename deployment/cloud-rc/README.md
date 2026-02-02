@@ -4,11 +4,12 @@ Complete deployment package for running BlazeBoard (Fider) on UAB Research Compu
 
 ## Overview
 
+Application URL for this deployment: **http://138.26.48.197** (HTTP, no domain/SSL).
+
 This deployment uses:
 - **Docker Compose** for container orchestration
 - **PostgreSQL 17** with persistent OpenStack volume storage
-- **Nginx** reverse proxy with SSL/TLS termination
-- **Let's Encrypt** for SSL certificates
+- **Nginx** reverse proxy (HTTP; SSL optional)
 - **UAB SAML** authentication (optional)
 
 ## Prerequisites
@@ -133,22 +134,22 @@ Update to HTTPS configuration:
 ```bash
 cd /var/fider
 
-# Update BASE_URL in .env to https://
+# Set BASE_URL in .env to http://138.26.48.197
 nano .env
 
 # Deploy with HTTPS
 ./scripts/deploy.sh https
 ```
 
-Test HTTPS access:
+Test HTTP access:
 
 ```bash
-curl https://blazeboard.cloud.rc.uab.edu
+curl http://138.26.48.197
 ```
 
 ### 7. Initial Application Setup
 
-Visit `https://blazeboard.cloud.rc.uab.edu` in your browser and complete the setup wizard:
+Visit **http://138.26.48.197** in your browser and complete the setup wizard:
 
 1. Create tenant (organization) name
 2. Set admin email
@@ -178,7 +179,7 @@ nano docker-compose.yml
 # Redeploy
 ./scripts/deploy.sh https
 
-# Download SP metadata
+# Download SP metadata (if using domain/HTTPS)
 curl https://blazeboard.cloud.rc.uab.edu/saml/metadata > sp-metadata.xml
 
 # Send sp-metadata.xml and ssl/sp.crt to UAB IT for IdP registration
@@ -250,13 +251,7 @@ cd deployment/cloud-rc
 RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key ./scripts/update-rc-cloud.sh
 ```
 
-**CI/CD (deploy on push to main):**
-
-1. In GitHub: **Settings → Secrets and variables → Actions**, add:
-   - **RC_SSH_KEY**: contents of your private key (e.g. paste the full content of `~/.ssh/cloud_key`).
-   - **RC_HOST**: `ubuntu@138.26.48.197` (or your instance hostname).
-
-2. Push to `main`; the workflow **Deploy to RC Cloud** (`.github/workflows/deploy-rc-cloud.yml`) will build the image, sync deployment files and the image to the instance, then run `deploy.sh update` there.
+**CI/CD:** The RC Cloud instance is only reachable over VPN. GitHub Actions runners cannot access it, so automatic deploy on push is **disabled**. Deploy from your laptop when on VPN using the SCP script (see **Deploy with SCP** above).
 
 **On the RC cloud instance** (if you're already SSH'd in):
 
@@ -318,7 +313,7 @@ docker stats
 df -h /mnt/postgres-data
 
 # Check application health
-curl -f https://blazeboard.cloud.rc.uab.edu || echo "Down"
+curl -f http://138.26.48.197 || echo "Down"
 ```
 
 ## Troubleshooting
@@ -375,7 +370,7 @@ docker compose exec nginx nginx -t
 ls -la /var/fider/ssl/
 
 # Check SAML metadata endpoint
-curl https://blazeboard.cloud.rc.uab.edu/saml/metadata
+curl http://138.26.48.197/saml/metadata
 
 # Check application logs for SAML errors
 docker compose logs app | grep -i saml
@@ -383,6 +378,35 @@ docker compose logs app | grep -i saml
 # Verify SAML environment variables
 docker compose exec app env | grep SAML
 ```
+
+### 502 Bad Gateway
+
+For **http://138.26.48.197** you must use HTTP-only nginx (no redirect to HTTPS). On the instance:
+
+```bash
+cd /var/fider
+
+# Switch to HTTP-only so port 80 proxies to the app (no HTTPS redirect)
+cp nginx/nginx-http-only.conf nginx/nginx.conf
+docker compose restart nginx
+```
+
+Then check the app is running and reachable:
+
+```bash
+# Is the app container running?
+docker compose ps
+
+# App logs (crashes, DB errors?)
+docker compose logs app --tail=100
+
+# Can nginx reach the app?
+docker compose exec nginx wget -q -O- http://app:3000 | head -5
+```
+
+If the app container is exited or restarting, check logs for database connection errors, missing env vars, or port conflicts.
+
+**"exec format error"** means the image was built for the wrong CPU (e.g. arm64 on a Mac). Rebuild and redeploy from your laptop with the SCP script—it builds for `linux/amd64` so the image runs on the RC cloud instance.
 
 ### Application Not Accessible
 

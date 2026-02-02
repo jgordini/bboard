@@ -135,6 +135,7 @@ func routes(r *web.Engine) *web.Engine {
 	r.Use(middlewares.CheckTenantPrivacy())
 
 	r.Get("/", handlers.Index())
+	r.Get("/leaderboard", handlers.Page("Leaderboard", "Top ideas and users", "Leaderboard/Leaderboard.page"))
 	r.Get("/posts/:number", handlers.PostDetails())
 	r.Get("/posts/:number/:slug", handlers.PostDetails())
 
@@ -170,6 +171,7 @@ func routes(r *web.Engine) *web.Engine {
 		ui.Get("/admin/users", handlers.ManageMembers())
 		ui.Get("/admin/tags", handlers.ManageTags())
 		ui.Get("/admin/moderation", handlers.GetModerationPageHandler())
+		ui.Get("/admin/flagged", handlers.Page("Flagged Comments · Moderation", "Comments flagged for inappropriateness", "Administration/pages/FlaggedComments.page"))
 		ui.Get("/admin/authentication", handlers.ManageAuthentication())
 		ui.Get("/_api/admin/oauth/:provider", handlers.GetOAuthConfig())
 
@@ -219,6 +221,8 @@ func routes(r *web.Engine) *web.Engine {
 		publicApi.Get("/api/v1/posts/:number/comments/:id", apiv1.GetComment())
 		publicApi.Get("/api/v1/taggable-users", apiv1.ListTaggableUsers())
 		publicApi.Get("/api/v1/posts/:number/votes", apiv1.ListVotes())
+		publicApi.Get("/api/v1/leaderboard/ideas", apiv1.TopIdeasLeaderboard())
+		publicApi.Get("/api/v1/leaderboard/users", apiv1.TopUsersLeaderboard())
 	}
 
 	// Operations used to manage the content of a site
@@ -232,6 +236,7 @@ func routes(r *web.Engine) *web.Engine {
 		membersApi.Put("/api/v1/posts/:number", apiv1.UpdatePost())
 		membersApi.Post("/api/v1/posts/:number/comments/:id/reactions/:reaction", apiv1.ToggleReaction())
 		membersApi.Post("/api/v1/posts/:number/comments", apiv1.PostComment())
+		membersApi.Post("/api/v1/posts/:number/comments/:id/flag", apiv1.FlagComment())
 		membersApi.Put("/api/v1/posts/:number/comments/:id", apiv1.UpdateComment())
 		membersApi.Delete("/api/v1/posts/:number/comments/:id", apiv1.DeleteComment())
 		membersApi.Post("/api/v1/posts/:number/votes", apiv1.AddVote())
@@ -257,6 +262,8 @@ func routes(r *web.Engine) *web.Engine {
 		staffApi.Post("/api/v1/invitations/sample", apiv1.SendSampleInvite())
 
 		staffApi.Use(middlewares.BlockLockedTenants())
+		staffApi.Get("/api/v1/admin/comments/flagged", apiv1.ListFlaggedComments())
+		staffApi.Post("/api/v1/posts/:number/comments/:id/pin", apiv1.PinComment())
 		staffApi.Post("/api/v1/posts/:number/tags/:slug", apiv1.AssignTag())
 		staffApi.Delete("/api/v1/posts/:number/tags/:slug", apiv1.UnassignTag())
 	}

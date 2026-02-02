@@ -90,11 +90,15 @@ case "$MODE" in
 esac
 
 # -----------------------------------------------------------------------------
-# Pull Latest Images
+# Pull Latest Images (skip in update mode - app image is loaded via SCP)
 # -----------------------------------------------------------------------------
 echo ""
 echo "[3/5] Pulling Docker images..."
-docker compose pull
+if [ "$MODE" = "update" ]; then
+    echo "Update mode - skipping pull (app image blazeboard:latest is loaded via deploy script)."
+else
+    docker compose pull
+fi
 
 # -----------------------------------------------------------------------------
 # Deploy Application

@@ -57,6 +57,35 @@ type GetAllPosts struct {
 	Result []*entity.Post
 }
 
+// LeaderboardPost is a post with vote count for leaderboard display
+type LeaderboardPost struct {
+	Number     int    `json:"number" db:"number"`
+	Title      string `json:"title" db:"title"`
+	Slug       string `json:"slug" db:"slug"`
+	VotesCount int    `json:"votesCount" db:"votes_count"`
+	UserID     int    `json:"userId" db:"user_id"`
+	UserName   string `json:"userName" db:"user_name"`
+}
+
+// LeaderboardUser is a user with total votes received on their ideas
+type LeaderboardUser struct {
+	UserID     int    `json:"userId" db:"user_id"`
+	UserName   string `json:"userName" db:"user_name"`
+	VotesCount int    `json:"votesCount" db:"votes_count"`
+}
+
+// GetTopPostsByVotes returns posts ordered by votes count (for leaderboard)
+type GetTopPostsByVotes struct {
+	Limit  int
+	Result []*LeaderboardPost
+}
+
+// GetTopUsersByVotes returns users ranked by total votes received on their posts (for leaderboard)
+type GetTopUsersByVotes struct {
+	Limit  int
+	Result []*LeaderboardUser
+}
+
 func (q *SearchPosts) SetStatusesFromStrings(statuses []string) {
 	for _, v := range statuses {
 		var postStatus enum.PostStatus

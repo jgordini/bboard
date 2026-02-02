@@ -164,6 +164,9 @@ export const WebhookForm = (props: WebhookFormProps) => {
             { label: "New Comment", value: WebhookType.NEW_COMMENT },
             { label: "Change Status", value: WebhookType.CHANGE_STATUS },
             { label: "Delete Post", value: WebhookType.DELETE_POST },
+            { label: "Comment Flagged", value: WebhookType.COMMENT_FLAGGED },
+            { label: "Comment Pinned", value: WebhookType.COMMENT_PINNED },
+            { label: "Comment Deleted", value: WebhookType.COMMENT_DELETED },
           ]}
           onChange={setType}
         />

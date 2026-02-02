@@ -16,7 +16,7 @@ services:
     networks:
       - fider-network
 
-  # BlazeBoard Application
+  # BlazeBoard Application (listens on PORT inside container; nginx exposes 80 to the world)
   app:
     restart: always
     image: blazeboard:latest
@@ -26,6 +26,7 @@ services:
     volumes:
       - ./ssl:/app/etc:ro
     environment:
+      PORT: "80"
       BASE_URL: ${BASE_URL}
       DATABASE_URL: postgres://fider:${DB_PASSWORD}@db:5432/fider?sslmode=disable
       JWT_SECRET: ${JWT_SECRET}

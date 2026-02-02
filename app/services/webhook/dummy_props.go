@@ -64,6 +64,20 @@ func dummyTriggerProps(c context.Context, webhookType enum.WebhookType) webhook.
 		props.SetPost(dummyPost, "post", baseURL, true, true)
 		props["post_status"] = enum.PostDeleted.Name()
 		props["post_response_text"] = "The reason _why_ this post was deleted."
+	case enum.WebhookCommentFlagged:
+		props.SetPost(dummyPost, "post", baseURL, true, true)
+		props["comment"] = "An example comment that was flagged."
+		props["comment_id"] = 12
+		props["reason"] = "Inappropriate content"
+	case enum.WebhookCommentPinned:
+		props.SetPost(dummyPost, "post", baseURL, true, true)
+		props["comment"] = "An example comment that was pinned."
+		props["comment_id"] = 12
+		props["pinned"] = true
+	case enum.WebhookCommentDeleted:
+		props.SetPost(dummyPost, "post", baseURL, true, true)
+		props["comment"] = "An example comment that was removed."
+		props["comment_id"] = 12
 	}
 	return props
 }

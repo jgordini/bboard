@@ -19,3 +19,15 @@ type UpdateComment struct {
 type DeleteComment struct {
 	CommentID int
 }
+
+// FlagComment records that a user flagged a comment (idempotent: one flag per user per comment)
+type FlagComment struct {
+	CommentID int
+	Reason    string
+}
+
+// SetCommentPinned sets or clears the pinned state of a comment (moderators only)
+type SetCommentPinned struct {
+	CommentID int
+	Pinned    bool
+}

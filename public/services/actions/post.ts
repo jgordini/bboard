@@ -94,6 +94,15 @@ export const updateComment = async (postNumber: number, commentID: number, conte
 export const deleteComment = async (postNumber: number, commentID: number): Promise<Result> => {
   return http.delete(`/api/v1/posts/${postNumber}/comments/${commentID}`).then(http.event("comment", "delete"))
 }
+
+export const flagComment = async (postNumber: number, commentID: number, reason?: string): Promise<Result> => {
+  return http.post(`/api/v1/posts/${postNumber}/comments/${commentID}/flag`, { reason: reason || "" })
+}
+
+export const pinComment = async (postNumber: number, commentID: number, pinned: boolean): Promise<Result> => {
+  return http.post(`/api/v1/posts/${postNumber}/comments/${commentID}/pin`, { pinned })
+}
+
 interface ToggleReactionResponse {
   added: boolean
 }

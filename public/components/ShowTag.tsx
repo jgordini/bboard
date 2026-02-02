@@ -1,6 +1,6 @@
 import "./ShowTag.scss"
 
-import React, { MouseEvent } from "react"
+import React from "react"
 import { Tag } from "@fider/models"
 import { classSet } from "@fider/services"
 import EyeSlash from "@fider/assets/images/heroicons-eyeslash.svg"
@@ -25,23 +25,27 @@ export const ShowTag = (props: TagProps) => {
     "c-tag--circular": props.circular === true,
   })
 
-  const clickHandler = (event: MouseEvent) => {
-    if (!props.link) {
-      event.preventDefault()
-    }
-  }
-
-  return (
-    <a
-      // always add an href, so the tag can be selected by keyboard in the TagsSelect
-      href={props.link && props.tag.slug ? `/?tags=${props.tag.slug}` : ""}
-      title={`${props.tag.name}${props.tag.isPublic ? "" : " (Private)"}`}
-      className={className}
-      onClick={clickHandler}
-    >
+  const title = `${props.tag.name}${props.tag.isPublic ? "" : " (Private)"}`
+  const content = (
+    <>
       <Icon style={{ color: `#${props.tag.color}` }} className="pr-1" height="18" width="18" sprite={TagSolid}></Icon>
       {!props.tag.isPublic && !props.circular && <Icon height="14" width="14" sprite={EyeSlash} className="mr-1" />}
       {props.circular ? "" : props.tag.name || "Tag"}
+    </>
+  )
+
+  // Use span when not a link to avoid invalid nested <a> (e.g. inside post list link)
+  if (!props.link || !props.tag.slug) {
+    return (
+      <span title={title} className={className}>
+        {content}
+      </span>
+    )
+  }
+
+  return (
+    <a href={`/?tags=${props.tag.slug}`} title={title} className={className}>
+      {content}
     </a>
   )
 }

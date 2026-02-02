@@ -6,7 +6,7 @@ import { formatDate, Failure, actions, notify, copyToClipboard, classSet, clearU
 import { useFider } from "@fider/hooks"
 import IconDotsHorizontal from "@fider/assets/images/heroicons-dots-horizontal.svg"
 import { t } from "@lingui/core/macro"
-import { Trans } from "@lingui/react/macro"
+import { Trans, useLingui } from "@lingui/react/macro"
 import CommentEditor from "@fider/components/common/form/CommentEditor"
 import { useAttachments } from "@fider/hooks/useAttachments"
 
@@ -21,6 +21,7 @@ interface ShowCommentProps {
 
 export const ShowComment = (props: ShowCommentProps) => {
   const fider = useFider()
+  const { i18n } = useLingui()
   const node = useRef<HTMLDivElement | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [newContent, setNewContent] = useState<string>(props.comment.content)
@@ -83,6 +84,25 @@ export const ShowComment = (props: ShowCommentProps) => {
     }
   }
 
+  const handleFlagComment = async () => {
+    const response = await actions.flagComment(props.post.number, props.comment.id)
+    if (response.ok) {
+      notify.success(t({ id: "showpost.comment.flag.success", message: "Comment flagged" }))
+    } else {
+      notify.error(response.error?.errors?.[0]?.message ?? t({ id: "showpost.comment.flag.error", message: "Failed to flag comment" }))
+    }
+  }
+
+  const handlePinComment = async (pinned: boolean) => {
+    const response = await actions.pinComment(props.post.number, props.comment.id, pinned)
+    if (response.ok) {
+      notify.success(pinned ? t({ id: "showpost.comment.pin.success", message: "Comment pinned" }) : t({ id: "showpost.comment.unpin.success", message: "Comment unpinned" }))
+      setTimeout(() => location.reload(), 500)
+    } else {
+      notify.error(response.error?.errors?.[0]?.message ?? t({ id: "showpost.comment.pin.error", message: "Failed to update pin" }))
+    }
+  }
+
   const handleApproveComment = async () => {
     const result = await actions.approveComment(props.comment.id)
     if (result.ok) {
@@ -142,6 +162,12 @@ export const ShowComment = (props: ShowCommentProps) => {
       clearError()
     } else if (action === "delete") {
       setIsDeleteConfirmationModalOpen(true)
+    } else if (action === "flag") {
+      handleFlagComment()
+    } else if (action === "pin") {
+      handlePinComment(true)
+    } else if (action === "unpin") {
+      handlePinComment(false)
     }
   }
 
@@ -190,17 +216,46 @@ export const ShowComment = (props: ShowCommentProps) => {
         <div ref={node} className={`c-comment__card ${classList}`}>
           <div className="mb-1">
             <HStack justify="between">
-              <HStack>
+              <HStack spacing={2} align="center">
                 <UserName user={comment.user} /> <span className="text-sm text-gray-400">•</span>
                 <div className="text-xs">
                   <Moment locale={fider.currentLocale} date={comment.createdAt} /> {editedMetadata}
                 </div>
+                {comment.pinnedAt && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-800">
+                    <Trans id="label.pinned">Pinned</Trans>
+                  </span>
+                )}
+                {fider.session.isAuthenticated && fider.session.user.isCollaborator && (comment.flagsCount ?? 0) > 0 && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-yellow-100 text-yellow-800">
+                    {(i18n as any)._({ id: "label.flagcount", message: "{count} flag(s)" }, { count: comment.flagsCount })}
+                  </span>
+                )}
               </HStack>
               {!isEditing && (
                 <Dropdown position="left" renderHandle={<Icon sprite={IconDotsHorizontal} width="16" height="16" />}>
                   <Dropdown.ListItem onClick={onActionSelected("copylink")}>
                     <Trans id="action.copylink">Copy link</Trans>
                   </Dropdown.ListItem>
+                  {fider.session.isAuthenticated && (
+                    <Dropdown.ListItem onClick={onActionSelected("flag")}>
+                      <Trans id="action.flag">Flag</Trans>
+                    </Dropdown.ListItem>
+                  )}
+                  {fider.session.isAuthenticated && fider.session.user.isCollaborator && (
+                    <>
+                      <Dropdown.Divider />
+                      {comment.pinnedAt ? (
+                        <Dropdown.ListItem onClick={onActionSelected("unpin")}>
+                          <Trans id="action.unpin">Unpin comment</Trans>
+                        </Dropdown.ListItem>
+                      ) : (
+                        <Dropdown.ListItem onClick={onActionSelected("pin")}>
+                          <Trans id="action.pin">Pin comment</Trans>
+                        </Dropdown.ListItem>
+                      )}
+                    </>
+                  )}
                   {canEditComment() && (
                     <>
                       <Dropdown.Divider />

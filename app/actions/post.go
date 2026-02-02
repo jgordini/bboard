@@ -282,7 +282,7 @@ func (action *SetResponse) Validate(ctx context.Context, user *entity.User) *val
 	return result
 }
 
-// DeletePost represents the action of an administrator deleting an existing Post
+// DeletePost represents the action of an administrator deleting an existing Post (sets status to deleted)
 type DeletePost struct {
 	Number int    `route:"number"`
 	Text   string `json:"text"`
@@ -290,7 +290,7 @@ type DeletePost struct {
 	Post *entity.Post
 }
 
-// IsAuthorized returns true if current user is authorized to perform this action
+// IsAuthorized returns true if current user is authorized to perform this action (administrators only)
 func (action *DeletePost) IsAuthorized(ctx context.Context, user *entity.User) bool {
 	return user != nil && user.IsAdministrator()
 }
@@ -364,6 +364,62 @@ func (action *EditComment) Validate(ctx context.Context, user *entity.User) *val
 	}
 
 	return result
+}
+
+// FlagComment represents the action of flagging a comment for inappropriateness (any authenticated user)
+type FlagComment struct {
+	PostNumber int    `route:"number"`
+	CommentID  int    `route:"id"`
+	Reason     string `json:"reason"`
+}
+
+// IsAuthorized returns true if current user is authenticated
+func (action *FlagComment) IsAuthorized(ctx context.Context, user *entity.User) bool {
+	return user != nil
+}
+
+// Validate ensures the comment exists and belongs to the post
+func (action *FlagComment) Validate(ctx context.Context, user *entity.User) *validate.Result {
+	getPost := &query.GetPostByNumber{Number: action.PostNumber}
+	getCommentPostID := &query.GetCommentPostID{CommentID: action.CommentID}
+	if err := bus.Dispatch(ctx, getPost, getCommentPostID); err != nil {
+		return validate.Error(err)
+	}
+	if getPost.Result == nil || getCommentPostID.Result == 0 {
+		return validate.Failed(i18n.T(ctx, "validation.custom.commentnotfound"))
+	}
+	if getCommentPostID.Result != getPost.Result.ID {
+		return validate.Failed(i18n.T(ctx, "validation.custom.commentnotfound"))
+	}
+	return validate.Success()
+}
+
+// SetCommentPinned represents the action of pinning or unpinning a comment (moderators only)
+type SetCommentPinned struct {
+	PostNumber int  `route:"number"`
+	CommentID  int  `route:"id"`
+	Pinned     bool `json:"pinned"`
+}
+
+// IsAuthorized returns true if current user is a collaborator
+func (action *SetCommentPinned) IsAuthorized(ctx context.Context, user *entity.User) bool {
+	return user != nil && user.IsCollaborator()
+}
+
+// Validate ensures the comment exists and belongs to the post
+func (action *SetCommentPinned) Validate(ctx context.Context, user *entity.User) *validate.Result {
+	getPost := &query.GetPostByNumber{Number: action.PostNumber}
+	getCommentPostID := &query.GetCommentPostID{CommentID: action.CommentID}
+	if err := bus.Dispatch(ctx, getPost, getCommentPostID); err != nil {
+		return validate.Error(err)
+	}
+	if getPost.Result == nil || getCommentPostID.Result == 0 {
+		return validate.Failed(i18n.T(ctx, "validation.custom.commentnotfound"))
+	}
+	if getCommentPostID.Result != getPost.Result.ID {
+		return validate.Failed(i18n.T(ctx, "validation.custom.commentnotfound"))
+	}
+	return validate.Success()
 }
 
 // DeleteComment represents the action of deleting an existing comment

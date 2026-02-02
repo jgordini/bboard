@@ -73,6 +73,12 @@ export const WebhookListItem = (props: WebhookListItemProps) => {
         return "Delete Post"
       case WebhookType.NEW_POST:
         return "New Post"
+      case WebhookType.COMMENT_FLAGGED:
+        return "Comment Flagged"
+      case WebhookType.COMMENT_PINNED:
+        return "Comment Pinned"
+      case WebhookType.COMMENT_DELETED:
+        return "Comment Deleted"
     }
   }
 

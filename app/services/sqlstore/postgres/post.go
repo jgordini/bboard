@@ -137,6 +137,61 @@ func postIsReferenced(ctx context.Context, q *query.PostIsReferenced) error {
 	})
 }
 
+func getTopPostsByVotes(ctx context.Context, q *query.GetTopPostsByVotes) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		q.Result = make([]*query.LeaderboardPost, 0)
+		limit := q.Limit
+		if limit <= 0 {
+			limit = 10
+		}
+		err := trx.Select(&q.Result, `
+			SELECT p.number, p.title, p.slug, u.id AS user_id, u.name AS user_name,
+				COALESCE(vc.cnt, 0)::int AS votes_count
+			FROM posts p
+			INNER JOIN users u ON u.id = p.user_id AND u.tenant_id = p.tenant_id
+			LEFT JOIN (SELECT post_id, COUNT(*) AS cnt FROM post_votes GROUP BY post_id) vc ON vc.post_id = p.id
+			WHERE p.tenant_id = $1 AND p.status != $2
+			ORDER BY votes_count DESC, p.number DESC
+			LIMIT $3`, tenant.ID, enum.PostDeleted, limit)
+		if err != nil {
+			return errors.Wrap(err, "failed to get top posts by votes")
+		}
+		return nil
+	})
+}
+
+func getTopUsersByVotes(ctx context.Context, q *query.GetTopUsersByVotes) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		q.Result = make([]*query.LeaderboardUser, 0)
+		limit := q.Limit
+		if limit <= 0 {
+			limit = 10
+		}
+		type row struct {
+			UserID     int    `db:"user_id"`
+			UserName   string `db:"user_name"`
+			VotesCount int    `db:"votes_count"`
+		}
+		var rows []*row
+		err := trx.Select(&rows, `
+			SELECT p.user_id, u.name AS user_name, COALESCE(SUM(vc.cnt), 0)::int AS votes_count
+			FROM posts p
+			INNER JOIN users u ON u.id = p.user_id AND u.tenant_id = p.tenant_id
+			LEFT JOIN (SELECT post_id, COUNT(*) AS cnt FROM post_votes GROUP BY post_id) vc ON vc.post_id = p.id
+			WHERE p.tenant_id = $1 AND p.status != $2
+			GROUP BY p.user_id, u.name
+			ORDER BY votes_count DESC
+			LIMIT $3`, tenant.ID, enum.PostDeleted, limit)
+		if err != nil {
+			return errors.Wrap(err, "failed to get top users by votes")
+		}
+		for _, r := range rows {
+			q.Result = append(q.Result, &query.LeaderboardUser{UserID: r.UserID, UserName: r.UserName, VotesCount: r.VotesCount})
+		}
+		return nil
+	})
+}
+
 func setPostResponse(ctx context.Context, c *cmd.SetPostResponse) error {
 	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
 		if c.Status == enum.PostDuplicate {

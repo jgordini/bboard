@@ -19,6 +19,8 @@ type Comment struct {
 	EditedBy       *User          `db:"edited_by"`
 	ReactionCounts dbx.NullString `db:"reaction_counts"`
 	IsApproved     bool           `db:"is_approved"`
+	PinnedAt       dbx.NullTime   `db:"pinned_at"`
+	PinnedBy       *User          `db:"pinned_by"`
 }
 
 func (c *Comment) ToModel(ctx context.Context) *entity.Comment {
@@ -37,6 +39,12 @@ func (c *Comment) ToModel(ctx context.Context) *entity.Comment {
 
 	if c.ReactionCounts.Valid {
 		_ = json.Unmarshal([]byte(c.ReactionCounts.String), &comment.ReactionCounts)
+	}
+	if c.PinnedAt.Valid {
+		comment.PinnedAt = &c.PinnedAt.Time
+		if c.PinnedBy != nil {
+			comment.PinnedBy = c.PinnedBy.ToModel(ctx)
+		}
 	}
 	return comment
 }

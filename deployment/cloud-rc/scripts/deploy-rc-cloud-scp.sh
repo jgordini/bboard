@@ -54,9 +54,9 @@ echo "Deploying BlazeBoard to RC Cloud (build + SCP): $RC_HOST"
 echo "========================================================================"
 echo ""
 
-echo "[1/5] Building Docker image locally ($IMAGE_NAME)..."
+echo "[1/5] Building Docker image locally ($IMAGE_NAME) for linux/amd64..."
 cd "$REPO_ROOT"
-docker build -t "$IMAGE_NAME" .
+docker build --platform linux/amd64 -t "$IMAGE_NAME" .
 
 echo ""
 echo "[2/5] Saving image to $IMAGE_TAR ..."

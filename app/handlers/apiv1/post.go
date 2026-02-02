@@ -10,6 +10,7 @@ import (
 	"github.com/getfider/fider/app/pkg/bus"
 	"github.com/getfider/fider/app/pkg/env"
 	"github.com/getfider/fider/app/pkg/web"
+	"github.com/getfider/fider/app/pkg/webhook"
 	"github.com/getfider/fider/app/tasks"
 )
 
@@ -239,6 +240,18 @@ func ListComments() web.HandlerFunc {
 			return c.Failure(err)
 		}
 
+		// For collaborators, populate flag counts (visible only to moderators)
+		if c.User() != nil && c.User().IsCollaborator() {
+			flagCounts := &query.GetCommentFlagsCountsForPost{PostID: getPost.Result.ID}
+			if err := bus.Dispatch(c, flagCounts); err == nil {
+				for _, comment := range getComments.Result {
+					if n, ok := flagCounts.Result[comment.ID]; ok {
+						comment.FlagsCount = n
+					}
+				}
+			}
+		}
+
 		for _, comment := range getComments.Result {
 			commentString := entity.CommentString(comment.Content)
 			comment.Content = commentString.SanitizeMentions()
@@ -386,12 +399,134 @@ func UpdateComment() web.HandlerFunc {
 	}
 }
 
+// PinComment pins or unpins a comment (moderator-only)
+func PinComment() web.HandlerFunc {
+	return func(c *web.Context) error {
+		action := new(actions.SetCommentPinned)
+		if result := c.BindTo(action); !result.Ok {
+			return c.HandleValidation(result)
+		}
+
+		if err := bus.Dispatch(c, &cmd.SetCommentPinned{
+			CommentID: action.CommentID,
+			Pinned:    action.Pinned,
+		}); err != nil {
+			return c.Failure(err)
+		}
+
+		getPost := &query.GetPostByNumber{Number: action.PostNumber}
+		getComment := &query.GetCommentByID{CommentID: action.CommentID}
+		if err := bus.Dispatch(c, getPost, getComment); err == nil && getPost.Result != nil && getComment.Result != nil {
+			tenant := c.Tenant()
+			baseURL, logoURL := web.BaseURL(c), web.LogoURL(c)
+			props := webhook.Props{}
+			props.SetPost(getPost.Result, "post", baseURL, true, true)
+			props["comment"] = getComment.Result.Content
+			props["comment_id"] = action.CommentID
+			props["pinned"] = action.Pinned
+			props.SetUser(c.User(), "author")
+			props.SetTenant(tenant, "tenant", baseURL, logoURL)
+			_ = bus.Dispatch(c, &cmd.TriggerWebhooks{Type: enum.WebhookCommentPinned, Props: props})
+		}
+		return c.Ok(web.Map{})
+	}
+}
+
+// TopIdeasLeaderboard returns top posts by vote count (public)
+func TopIdeasLeaderboard() web.HandlerFunc {
+	return func(c *web.Context) error {
+		limit := 10
+		if l, err := c.QueryParamAsInt("limit"); err == nil && l > 0 && l <= 100 {
+			limit = l
+		}
+		q := &query.GetTopPostsByVotes{Limit: limit}
+		if err := bus.Dispatch(c, q); err != nil {
+			return c.Failure(err)
+		}
+		return c.Ok(q.Result)
+	}
+}
+
+// TopUsersLeaderboard returns top users by votes received on their ideas (public)
+func TopUsersLeaderboard() web.HandlerFunc {
+	return func(c *web.Context) error {
+		limit := 10
+		if l, err := c.QueryParamAsInt("limit"); err == nil && l > 0 && l <= 100 {
+			limit = l
+		}
+		q := &query.GetTopUsersByVotes{Limit: limit}
+		if err := bus.Dispatch(c, q); err != nil {
+			return c.Failure(err)
+		}
+		return c.Ok(q.Result)
+	}
+}
+
+// ListFlaggedComments returns comments that have been flagged (moderator-only)
+func ListFlaggedComments() web.HandlerFunc {
+	return func(c *web.Context) error {
+		q := &query.GetFlaggedComments{}
+		if err := bus.Dispatch(c, q); err != nil {
+			return c.Failure(err)
+		}
+		return c.Ok(q.Result)
+	}
+}
+
+// FlagComment flags a comment for inappropriateness (any authenticated user)
+func FlagComment() web.HandlerFunc {
+	return func(c *web.Context) error {
+		action := new(actions.FlagComment)
+		if result := c.BindTo(action); !result.Ok {
+			return c.HandleValidation(result)
+		}
+
+		getPost := &query.GetPostByNumber{Number: action.PostNumber}
+		if err := bus.Dispatch(c, getPost); err != nil {
+			return c.Failure(err)
+		}
+
+		err := bus.Dispatch(c, &cmd.FlagComment{
+			CommentID: action.CommentID,
+			Reason:    action.Reason,
+		})
+		if err != nil {
+			return c.Failure(err)
+		}
+
+		getComment := &query.GetCommentByID{CommentID: action.CommentID}
+		if err := bus.Dispatch(c, getComment); err == nil && getComment.Result != nil {
+			tenant := c.Tenant()
+			baseURL, logoURL := web.BaseURL(c), web.LogoURL(c)
+			props := webhook.Props{}
+			props.SetPost(getPost.Result, "post", baseURL, true, true)
+			props["comment"] = getComment.Result.Content
+			props["comment_id"] = action.CommentID
+			props["reason"] = action.Reason
+			props.SetUser(c.User(), "author")
+			props.SetTenant(tenant, "tenant", baseURL, logoURL)
+			_ = bus.Dispatch(c, &cmd.TriggerWebhooks{Type: enum.WebhookCommentFlagged, Props: props})
+		}
+		return c.Ok(web.Map{})
+	}
+}
+
 // DeleteComment deletes an existing comment by its ID
 func DeleteComment() web.HandlerFunc {
 	return func(c *web.Context) error {
 		action := new(actions.DeleteComment)
 		if result := c.BindTo(action); !result.Ok {
 			return c.HandleValidation(result)
+		}
+
+		getComment := &query.GetCommentByID{CommentID: action.CommentID}
+		getPost := &query.GetPostByNumber{Number: action.PostNumber}
+		if err := bus.Dispatch(c, getComment, getPost); err != nil {
+			return c.Failure(err)
+		}
+		commentContent := ""
+		if getComment.Result != nil {
+			commentContent = getComment.Result.Content
 		}
 
 		err := bus.Dispatch(c, &cmd.DeleteComment{
@@ -401,6 +536,17 @@ func DeleteComment() web.HandlerFunc {
 			return c.Failure(err)
 		}
 
+		if getPost.Result != nil {
+			tenant := c.Tenant()
+			baseURL, logoURL := web.BaseURL(c), web.LogoURL(c)
+			props := webhook.Props{}
+			props.SetPost(getPost.Result, "post", baseURL, true, true)
+			props["comment"] = commentContent
+			props["comment_id"] = action.CommentID
+			props.SetUser(c.User(), "author")
+			props.SetTenant(tenant, "tenant", baseURL, logoURL)
+			_ = bus.Dispatch(c, &cmd.TriggerWebhooks{Type: enum.WebhookCommentDeleted, Props: props})
+		}
 		return c.Ok(web.Map{})
 	}
 }

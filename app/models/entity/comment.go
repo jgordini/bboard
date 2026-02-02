@@ -21,4 +21,9 @@ type Comment struct {
 	EditedBy       *User            `json:"editedBy,omitempty"`
 	ReactionCounts []ReactionCounts `json:"reactionCounts,omitempty"`
 	IsApproved     bool             `json:"isApproved"`
+	// FlagsCount is set only for collaborators (moderators); hidden from others
+	FlagsCount int `json:"flagsCount,omitempty"`
+	// PinnedAt is set when a moderator pinned the comment; pinned comments appear first
+	PinnedAt *time.Time `json:"pinnedAt,omitempty"`
+	PinnedBy *User      `json:"pinnedBy,omitempty"`
 }
