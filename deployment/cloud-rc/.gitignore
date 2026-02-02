@@ -19,3 +19,6 @@ logs/
 *.tmp
 *.swp
 *~
+
+# Saved Docker image (deploy-rc-cloud-scp.sh)
+blazeboard-latest.tar

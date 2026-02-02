@@ -234,6 +234,32 @@ docker compose restart nginx
 
 ### Updating Application
 
+**Deploy with SCP** (build image locally, copy to instance — no registry):
+
+```bash
+cd deployment/cloud-rc
+RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key ./scripts/deploy-rc-cloud-scp.sh
+```
+
+This builds `blazeboard:latest` from the repo, saves it, syncs deployment files and the image to `/var/fider`, loads the image on the instance, and runs `deploy.sh update`.
+
+**Sync config only** (no image; use when instance already has `blazeboard:latest` or you build on instance):
+
+```bash
+cd deployment/cloud-rc
+RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key ./scripts/update-rc-cloud.sh
+```
+
+**CI/CD (deploy on push to main):**
+
+1. In GitHub: **Settings → Secrets and variables → Actions**, add:
+   - **RC_SSH_KEY**: contents of your private key (e.g. paste the full content of `~/.ssh/cloud_key`).
+   - **RC_HOST**: `ubuntu@138.26.48.197` (or your instance hostname).
+
+2. Push to `main`; the workflow **Deploy to RC Cloud** (`.github/workflows/deploy-rc-cloud.yml`) will build the image, sync deployment files and the image to the instance, then run `deploy.sh update` there.
+
+**On the RC cloud instance** (if you're already SSH'd in):
+
 ```bash
 cd /var/fider
 

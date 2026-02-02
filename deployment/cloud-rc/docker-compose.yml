@@ -16,10 +16,10 @@ services:
     networks:
       - fider-network
 
-  # Fider Application
+  # BlazeBoard Application
   app:
     restart: always
-    image: getfider/fider:stable
+    image: blazeboard:latest
     depends_on:
       db:
         condition: service_healthy

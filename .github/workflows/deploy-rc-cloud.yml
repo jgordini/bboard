@@ -1,0 +1,62 @@
+# Deploy BlazeBoard to RC Cloud on push to main
+# Builds image, copies to instance via rsync/scp, loads and runs deploy.sh update
+#
+# Required secrets (Settings → Secrets and variables → Actions):
+#   RC_SSH_KEY  - Private key content (~/.ssh/cloud_key)
+#   RC_HOST     - e.g. ubuntu@138.26.48.197
+name: Deploy to RC Cloud
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and deploy to RC Cloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: blazeboard:latest
+          platforms: linux/amd64
+          build-args: |
+            COMMITHASH=${{ github.sha }}
+            VERSION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Save image to tar
+        run: docker save blazeboard:latest -o deployment/cloud-rc/blazeboard-latest.tar
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.RC_SSH_KEY }}" > ~/.ssh/rc_key
+          chmod 600 ~/.ssh/rc_key
+          ssh-keyscan -H ${{ secrets.RC_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Sync deployment files and image to instance
+        run: |
+          rsync -avz -e "ssh -i ~/.ssh/rc_key -o StrictHostKeyChecking=no" \
+            --exclude='.env' --exclude='.git' \
+            deployment/cloud-rc/ \
+            ${{ secrets.RC_HOST }}:/var/fider/
+
+      - name: Load image and run deploy on instance
+        run: |
+          ssh -i ~/.ssh/rc_key -o StrictHostKeyChecking=no ${{ secrets.RC_HOST }} \
+            "cd /var/fider && docker load -i blazeboard-latest.tar && rm -f blazeboard-latest.tar && ./scripts/deploy.sh update"
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/rc_key
