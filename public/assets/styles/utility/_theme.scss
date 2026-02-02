@@ -39,7 +39,5 @@
 @mixin set-theme($theme) {
   @if $theme == "light" {
     $colors: $light-colors !global;
-  } @else if $theme == "dark" {
-    $colors: $dark-colors !global;
   }
 }

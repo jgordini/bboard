@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { SignInModal, RSSModal, TenantLogo, NotificationIndicator, UserMenu, ThemeSwitcher, Icon, Button, ModerationIndicator } from "@fider/components"
+import { SignInModal, RSSModal, TenantLogo, NotificationIndicator, UserMenu, Icon, Button, ModerationIndicator } from "@fider/components"
 import { useFider } from "@fider/hooks"
 import { HStack } from "./layout"
 import { Trans } from "@lingui/react/macro"
@@ -54,7 +54,6 @@ export const Header = (props: HeaderProps) => {
                       <Icon sprite={IconRss} className="h-6 text-gray-500" />
                     </button>
                   )}
-                  <ThemeSwitcher />
                   <NotificationIndicator />
                   <UserMenu />
                 </HStack>
@@ -66,7 +65,6 @@ export const Header = (props: HeaderProps) => {
                       <Icon sprite={IconRss} className="h-6 text-gray-500" />
                     </button>
                   )}
-                  <ThemeSwitcher />
                   <Button variant="primary" size="default" onClick={handleSignInClick}>
                     <HStack spacing={1} className="flex-items-center">
                       <span>

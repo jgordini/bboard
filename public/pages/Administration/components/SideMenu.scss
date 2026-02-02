@@ -7,10 +7,6 @@
   padding: 0;
   transition: box-shadow 0.2s ease-in-out;
 
-  @include dark-mode {
-    background: var(--colors-gray-800);
-  }
-
   &__item {
     display: block;
     padding: spacing(3) spacing(4);
@@ -23,9 +19,6 @@
       background-color: var(--smoke-gray-7);
       color: var(--uab-green);
 
-      @include dark-mode {
-        background-color: var(--colors-gray-700);
-      }
     }
 
     &--active {
@@ -34,9 +27,6 @@
       border-left-color: var(--campus-green);
       font-weight: 600;
 
-      @include dark-mode {
-        background-color: rgba(144, 212, 8, 0.2);
-      }
     }
 
     &:focus {

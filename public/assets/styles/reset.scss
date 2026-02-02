@@ -23,14 +23,6 @@ body {
   line-height: 1.6;
 }
 
-body[data-theme="light"] {
-  background-color: var(--smoke-gray-7);
-}
-
-body.dark-theme {
-  color: var(--colors-gray-900);
-}
-
 code {
   font-family: $font-code;
 }

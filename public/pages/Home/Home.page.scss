@@ -15,14 +15,6 @@
     row-gap: 0;
   }
 
-  @include dark-mode {
-    background-color: var(--colors-gray-900);
-
-    input {
-      background-color: var(--colors-gray-800);
-    }
-  }
-
   .p-home {
     &__welcome-col {
       @include media("lg") {
@@ -48,9 +40,6 @@
         font-style: italic;
       }
 
-      @include dark-mode {
-        color: lighten($uab-green, 20%);
-      }
     }
 
     &__welcome-body {
@@ -58,9 +47,6 @@
       font-size: 18px;
       color: var(--smoke-gray);
 
-      @include dark-mode {
-        color: var(--colors-gray-300);
-      }
     }
 
     &__posts-col {
@@ -81,12 +67,6 @@
       font-weight: 600;
       color: var(--smoke-gray);
       text-align: left;
-
-      @include dark-mode {
-        background-color: var(--colors-gray-800);
-        border-color: var(--colors-gray-700);
-        color: var(--colors-gray-300);
-      }
 
       &:hover {
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);

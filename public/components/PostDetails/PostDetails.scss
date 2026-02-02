@@ -19,9 +19,6 @@
 
   &__post-card {
     background-color: var(--colors-white);
-    @include dark-mode {
-      background-color: var(--colors-gray-200);
-    }
     border-radius: get("border.radius.xlarge");
     padding: spacing(7);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
@@ -94,10 +91,6 @@
     text-align: center;
     background-color: var(--colors-blue-100);
     color: var(--colors-blue-400);
-    @include dark-mode {
-      background-color: var(--colors-blue-500);
-      color: var(--colors-blue-800);
-    }
   }
 
   &__powered-by-mobile {
@@ -138,9 +131,6 @@
 
     > .card {
       background-color: var(--colors-white);
-      @include dark-mode {
-        background-color: var(--colors-gray-200);
-      }
       border-radius: get("border.radius.xlarge");
       padding: spacing(6);
       box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
@@ -153,10 +143,6 @@
       background-color: var(--colors-white);
       border: 1px solid var(--colors-gray-800);
       width: 100%;
-      @include dark-mode {
-        background-color: var(--colors-gray-100);
-        border: 1px solid var(--colors-gray-400);
-      }
     }
   }
 }
@@ -173,9 +159,6 @@
 .c-comment-input-card {
   flex-grow: 1;
   background-color: var(--colors-white);
-  @include dark-mode {
-    background-color: var(--colors-gray-200);
-  }
   border-radius: get("border.radius.xlarge");
   padding: spacing(6);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
@@ -185,9 +168,6 @@
   &__card {
     flex-grow: 1;
     background-color: var(--colors-blue-50);
-    @include dark-mode {
-      background-color: var(--colors-gray-200);
-    }
     border-radius: get("border.radius.xlarge");
     padding: spacing(6);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);

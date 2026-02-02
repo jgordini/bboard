@@ -33,12 +33,6 @@
       top: 1px;
       left: 0;
     }
-
-    @include dark-mode {
-      background-color: var(--colors-gray-700);
-      border-color: var(--colors-gray-600);
-      color: var(--colors-gray-400);
-    }
   }
 
   &-emojis {
@@ -49,11 +43,6 @@
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 
-    @include dark-mode {
-      background-color: var(--colors-gray-800);
-      border-color: var(--colors-gray-600);
-    }
-
     a {
       display: inline-block;
       padding: spacing(1) spacing(2);
@@ -62,10 +51,6 @@
 
       &:hover {
         background-color: var(--campus-green-7);
-
-        @include dark-mode {
-          background-color: rgba(144, 212, 8, 0.1);
-        }
       }
     }
   }
@@ -79,10 +64,6 @@
       background-color: var(--campus-green-15) !important;
       border: 1px solid var(--campus-green);
       color: var(--uab-green);
-
-      @include dark-mode {
-        background-color: rgba(144, 212, 8, 0.2) !important;
-      }
     }
 
     .text-semibold {

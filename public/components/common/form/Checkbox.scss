@@ -47,20 +47,11 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
-
-    @include dark-mode {
-      border-color: var(--colors-gray-600);
-      background-color: var(--colors-gray-800);
-    }
   }
 
   label {
     color: var(--colors-gray-900);
     font-size: 1rem;
     cursor: pointer;
-
-    @include dark-mode {
-      color: var(--colors-gray-100);
-    }
   }
 }

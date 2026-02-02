@@ -27,10 +27,6 @@
       font-weight: get("font.weight.semibold");
       color: var(--colors-blue-500);
 
-      @include dark-mode {
-        color: var(--colors-blue-800);
-      }
-
       white-space: nowrap;
     }
 
@@ -44,9 +40,6 @@
 
 .c-moderation-item {
   background-color: var(--colors-white);
-  @include dark-mode {
-    background-color: var(--colors-gray-200);
-  }
   border-radius: get("border.radius.xlarge");
   padding: spacing(6) spacing(7);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);

@@ -8,10 +8,6 @@
   min-height: 80vh;
   background-color: var(--smoke-gray-7);
 
-  @include dark-mode {
-    background-color: var(--colors-gray-900);
-  }
-
   .box {
     background-color: var(--colors-white);
     border-radius: 12px;
@@ -21,9 +17,6 @@
     width: 100%;
     margin: 0 auto;
 
-    @include dark-mode {
-      background-color: var(--colors-gray-800);
-    }
   }
 
   .text-title {
@@ -33,9 +26,6 @@
     color: var(--uab-green);
     margin-bottom: spacing(2);
 
-    @include dark-mode {
-      color: lighten($uab-green, 20%);
-    }
   }
 
   p {
@@ -44,9 +34,6 @@
     line-height: 1.6;
     margin-bottom: spacing(6);
 
-    @include dark-mode {
-      color: var(--colors-gray-300);
-    }
   }
 
   a[href="/"] {

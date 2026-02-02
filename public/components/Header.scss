@@ -6,10 +6,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-bottom: none !important;
 
-  @include dark-mode {
-    background-color: var(--uab-green) !important;
-  }
-
   .c-header__container {
     @media (min-width: 1024px) {
       position: relative;
@@ -62,6 +58,10 @@
   button.c-themeswitcher,
   .c-themeswitcher {
     color: #fff;
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
 
     .text-gray-500,
     svg {
@@ -71,6 +71,7 @@
 
     &:hover {
       color: var(--campus-green-15);
+      background-color: transparent;
 
       .text-gray-500,
       svg {

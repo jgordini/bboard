@@ -46,15 +46,4 @@
       box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
     }
   }
-
-  @include dark-mode {
-    background-color: var(--colors-gray-800);
-    border-color: var(--colors-gray-600);
-    color: white;
-
-    &:focus {
-      border-color: var(--campus-green);
-      background-color: var(--colors-gray-700);
-    }
-  }
 }

@@ -19,21 +19,11 @@
     background-color: var(--smoke-gray-7);
     border: 2px solid var(--colors-gray-200);
 
-    @include dark-mode {
-      background-color: var(--colors-gray-800);
-      border-color: var(--colors-gray-600);
-      color: lighten($uab-green, 20%);
-    }
-
     &:hover:not(&--disabled) {
       border-color: var(--campus-green);
       background-color: var(--campus-green-7);
       transform: translateY(-2px);
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-
-      @include dark-mode {
-        background-color: rgba(144, 212, 8, 0.1);
-      }
 
       .c-vote-counter__icon {
         color: var(--campus-green);
@@ -53,11 +43,6 @@
       color: var(--uab-green);
       border-color: var(--campus-green);
 
-      @include dark-mode {
-        background-color: rgba(144, 212, 8, 0.2);
-        color: lighten($uab-green, 20%);
-      }
-
       .c-vote-counter__icon {
         color: var(--campus-green);
       }
@@ -69,10 +54,6 @@
       &:hover:not(&--disabled) {
         background-color: var(--campus-green-33);
         border-color: var(--campus-green);
-
-        @include dark-mode {
-          background-color: rgba(144, 212, 8, 0.3);
-        }
       }
     }
 
@@ -109,10 +90,6 @@
     color: var(--uab-green);
     transition: all 0.2s ease;
     flex-shrink: 0;
-
-    @include dark-mode {
-      color: lighten($uab-green, 20%);
-    }
   }
 
   &__count {
@@ -120,9 +97,5 @@
     font-weight: get("font.weight.semibold");
     line-height: 1;
     color: var(--uab-green);
-
-    @include dark-mode {
-      color: lighten($uab-green, 20%);
-    }
   }
 }

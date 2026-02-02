@@ -61,21 +61,4 @@
     border-radius: 50%;
     padding: 6px;
   }
-
-  @include dark-mode {
-    &--green {
-      background-color: rgba(144, 212, 8, 0.2);
-      color: lighten($campus-green, 10%);
-    }
-
-    &--yellow {
-      background-color: rgba(253, 185, 19, 0.2);
-      color: var(--loyal-yellow);
-    }
-
-    &--uab {
-      background-color: rgba(26, 86, 50, 0.3);
-      color: lighten($uab-green, 20%);
-    }
-  }
 }

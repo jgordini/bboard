@@ -8,10 +8,6 @@
   justify-content: center;
   background-color: var(--smoke-gray-7);
 
-  @include dark-mode {
-    background-color: var(--colors-gray-900);
-  }
-
   .text-title {
     font-family: var(--font-accent);
     font-size: 32px;
@@ -19,9 +15,6 @@
     color: var(--uab-green);
     margin-bottom: spacing(4);
 
-    @include dark-mode {
-      color: lighten($uab-green, 20%);
-    }
   }
 
   .h-20 {

@@ -16,8 +16,5 @@
     padding: spacing(6);
     border-radius: get("border.radius.large");
 
-    @include dark-mode {
-      background-color: var(--colors-gray-900);
-    }
   }
 }
