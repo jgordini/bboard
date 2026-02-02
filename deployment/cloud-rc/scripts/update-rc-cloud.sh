@@ -48,7 +48,7 @@ echo "Updating BlazeBoard on RC Cloud: $RC_HOST"
 echo "========================================================================"
 echo ""
 echo "[1/3] Syncing deployment files to $RC_HOST:$REMOTE_DIR ..."
-RSYNC_RSH="$RSYNC_RSH" rsync -avz -e "$RSYNC_RSH" --exclude='.env' --exclude='.git' \
+RSYNC_RSH="$RSYNC_RSH" rsync -avz -e "$RSYNC_RSH" --exclude='.env' --exclude='.git' --exclude='nginx/nginx.conf' \
     "$DEPLOYMENT_DIR/" "$RC_HOST:$REMOTE_DIR/"
 
 echo ""

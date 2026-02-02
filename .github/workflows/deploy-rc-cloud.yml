@@ -51,7 +51,7 @@ jobs:
       - name: Sync deployment files and image to instance
         run: |
           rsync -avz -e "ssh -i ~/.ssh/rc_key -o StrictHostKeyChecking=no" \
-            --exclude='.env' --exclude='.git' \
+            --exclude='.env' --exclude='.git' --exclude='nginx/nginx.conf' \
             deployment/cloud-rc/ \
             ${{ secrets.RC_HOST }}:/var/fider/
 

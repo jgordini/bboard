@@ -64,7 +64,7 @@ docker save "$IMAGE_NAME" -o "$DEPLOYMENT_DIR/$IMAGE_TAR"
 
 echo ""
 echo "[3/5] Syncing deployment files and image to $RC_HOST:$REMOTE_DIR ..."
-RSYNC_RSH="$RSYNC_RSH" rsync -avz -e "$RSYNC_RSH" --exclude='.env' --exclude='.git' \
+RSYNC_RSH="$RSYNC_RSH" rsync -avz -e "$RSYNC_RSH" --exclude='.env' --exclude='.git' --exclude='nginx/nginx.conf' \
     "$DEPLOYMENT_DIR/" "$RC_HOST:$REMOTE_DIR/"
 
 echo ""
