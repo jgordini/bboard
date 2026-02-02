@@ -31,6 +31,7 @@
   "validation.custom.maximagesize": "The image size must be smaller than {kilobytes}KB.",
   "validation.custom.invalidemoji": "Invalid reaction emoji.",
   "validation.custom.commentnotfound": "Comment not found.",
+  "validation.custom.postnotfound": "Post not found.",
   "enum.poststatus.open": "Ideate",
   "enum.poststatus.started": "Started",
   "enum.poststatus.completed": "Completed",

@@ -32,6 +32,11 @@ const ListPostItem = (props: { post: Post; user?: CurrentUser; tags: Tag[]; onPo
         <HStack justify="between" align="start">
           <HStack spacing={2} align="start" className="w-full">
             <h3 className="c-posts-container__post-title text-break">{props.post.title}</h3>
+            {props.post.pinnedAt && (
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded flex-shrink-0">
+                <Trans id="label.pinned">Pinned</Trans>
+              </span>
+            )}
             {isPending && (
               <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded flex-shrink-0">
                 <Trans id="post.pending">pending</Trans>
@@ -84,7 +89,10 @@ const MinimalListPostItem = (props: { post: Post; tags: Tag[]; onPostClick?: (po
           <a className="text-link" href={`/posts/${props.post.number}/${props.post.slug}`} onClick={handleClick}>
             {props.post.title}
           </a>
-          {isPending && <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">pending</span>}
+          <HStack spacing={2} align="center">
+            {props.post.pinnedAt && <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded"><Trans id="label.pinned">Pinned</Trans></span>}
+            {isPending && <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">pending</span>}
+          </HStack>
         </HStack>
         {props.post.status !== "open" ? (
           <div>

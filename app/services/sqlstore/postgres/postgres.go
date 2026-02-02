@@ -69,6 +69,7 @@ func (s Service) Init() {
 	bus.AddHandler(getTopPostsByVotes)
 	bus.AddHandler(getTopUsersByVotes)
 	bus.AddHandler(countPostPerStatus)
+	bus.AddHandler(setPostPinned)
 	bus.AddHandler(flagPost)
 	bus.AddHandler(getPostFlagsCount)
 	bus.AddHandler(getFlaggedPosts)

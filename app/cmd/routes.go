@@ -266,6 +266,7 @@ func routes(r *web.Engine) *web.Engine {
 		staffApi.Use(middlewares.BlockLockedTenants())
 		staffApi.Get("/api/v1/admin/comments/flagged", apiv1.ListFlaggedComments())
 		staffApi.Get("/api/v1/admin/posts/flagged", apiv1.ListFlaggedPosts())
+		staffApi.Post("/api/v1/posts/:number/pin", apiv1.PinPost())
 		staffApi.Post("/api/v1/posts/:number/comments/:id/pin", apiv1.PinComment())
 		staffApi.Post("/api/v1/posts/:number/tags/:slug", apiv1.AssignTag())
 		staffApi.Delete("/api/v1/posts/:number/tags/:slug", apiv1.UnassignTag())

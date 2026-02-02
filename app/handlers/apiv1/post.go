@@ -399,6 +399,29 @@ func UpdateComment() web.HandlerFunc {
 	}
 }
 
+// PinPost pins or unpins a post (staff-only)
+func PinPost() web.HandlerFunc {
+	return func(c *web.Context) error {
+		action := new(actions.SetPostPinned)
+		if result := c.BindTo(action); !result.Ok {
+			return c.HandleValidation(result)
+		}
+
+		getPost := &query.GetPostByNumber{Number: action.Number}
+		if err := bus.Dispatch(c, getPost); err != nil {
+			return c.Failure(err)
+		}
+
+		if err := bus.Dispatch(c, &cmd.SetPostPinned{
+			PostID: getPost.Result.ID,
+			Pinned: action.Pinned,
+		}); err != nil {
+			return c.Failure(err)
+		}
+		return c.Ok(web.Map{})
+	}
+}
+
 // PinComment pins or unpins a comment (moderator-only)
 func PinComment() web.HandlerFunc {
 	return func(c *web.Context) error {

@@ -23,6 +23,9 @@ type Post struct {
 	Response      *PostResponse   `json:"response,omitempty"`
 	Tags          []string        `json:"tags"`
 	IsApproved    bool            `json:"isApproved"`
+	// PinnedAt is set when staff pinned the post; pinned posts appear first in lists
+	PinnedAt *time.Time `json:"pinnedAt,omitempty"`
+	PinnedBy *User      `json:"pinnedBy,omitempty"`
 }
 
 // CanBeVoted returns true if this post can have its vote changed

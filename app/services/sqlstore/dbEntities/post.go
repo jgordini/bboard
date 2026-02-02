@@ -34,6 +34,8 @@ type Post struct {
 	OriginalStatus dbx.NullInt    `db:"original_status"`
 	Tags           pq.StringArray `db:"tags"`
 	IsApproved     bool           `db:"is_approved"`
+	PinnedAt       dbx.NullTime   `db:"pinned_at"`
+	PinnedBy       *User          `db:"pinned_by"`
 }
 
 func (i *Post) ToModel(ctx context.Context) *entity.Post {
@@ -51,6 +53,13 @@ func (i *Post) ToModel(ctx context.Context) *entity.Post {
 		Status:        enum.PostStatus(i.Status),
 		Tags:          i.Tags,
 		IsApproved:    i.IsApproved,
+	}
+
+	if i.PinnedAt.Valid {
+		post.PinnedAt = &i.PinnedAt.Time
+		if i.PinnedBy != nil {
+			post.PinnedBy = i.PinnedBy.ToModel(ctx)
+		}
 	}
 
 	if i.Response.Valid {

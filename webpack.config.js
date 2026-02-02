@@ -17,6 +17,7 @@ const plugins = [
   new MiniCssExtractPlugin({
     filename: "css/[name].[contenthash].css",
     chunkFilename: "css/[name].[contenthash].css",
+    ignoreOrder: true, // avoid "Conflicting order" warning when shared CSS is used by Home and ShowPost in different load order
   }),
   new ForkTsCheckerWebpackPlugin(),
   new BundleAnalyzerPlugin({

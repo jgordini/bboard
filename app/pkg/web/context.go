@@ -277,11 +277,15 @@ func (c *Context) Failure(err error) error {
 		return c.Forbidden()
 	}
 
-	if renderErr := c.Page(http.StatusInternalServerError, Props{
+	props := Props{
 		Page:        "Error/Error500.page",
 		Title:       "Shoot! Well, this is unexpected…",
 		Description: "An error has occurred and we're working to fix the problem!",
-	}); renderErr != nil {
+	}
+	if !env.IsProduction() {
+		props.Data = Map{"errorMessage": err.Error()}
+	}
+	if renderErr := c.Page(http.StatusInternalServerError, props); renderErr != nil {
 		return renderErr
 	}
 	return err

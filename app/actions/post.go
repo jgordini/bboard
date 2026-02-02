@@ -394,6 +394,29 @@ func (action *FlagComment) Validate(ctx context.Context, user *entity.User) *val
 	return validate.Success()
 }
 
+// SetPostPinned represents the action of pinning or unpinning a post (staff only)
+type SetPostPinned struct {
+	Number int  `route:"number"`
+	Pinned bool `json:"pinned"`
+}
+
+// IsAuthorized returns true if current user is a collaborator
+func (action *SetPostPinned) IsAuthorized(ctx context.Context, user *entity.User) bool {
+	return user != nil && user.IsCollaborator()
+}
+
+// Validate ensures the post exists
+func (action *SetPostPinned) Validate(ctx context.Context, user *entity.User) *validate.Result {
+	getPost := &query.GetPostByNumber{Number: action.Number}
+	if err := bus.Dispatch(ctx, getPost); err != nil {
+		return validate.Error(err)
+	}
+	if getPost.Result == nil {
+		return validate.Failed(i18n.T(ctx, "validation.custom.postnotfound"))
+	}
+	return validate.Success()
+}
+
 // SetCommentPinned represents the action of pinning or unpinning a comment (moderators only)
 type SetCommentPinned struct {
 	PostNumber int  `route:"number"`

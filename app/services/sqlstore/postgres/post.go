@@ -97,7 +97,15 @@ var (
 																d.status AS original_status,
 																COALESCE(agg_t.tags, ARRAY[]::text[]) AS tags,
 																COALESCE(%s, false) AS has_voted,
-																p.is_approved
+																p.is_approved,
+																p.pinned_at,
+																pinner.id AS pinned_by_id,
+																pinner.name AS pinned_by_name,
+																pinner.email AS pinned_by_email,
+																pinner.role AS pinned_by_role,
+																pinner.status AS pinned_by_status,
+																pinner.avatar_type AS pinned_by_avatar_type,
+																pinner.avatar_bkey AS pinned_by_avatar_bkey
 													FROM posts p
 													INNER JOIN users u
 													ON u.id = p.user_id
@@ -105,6 +113,9 @@ var (
 													LEFT JOIN users r
 													ON r.id = p.response_user_id
 													AND r.tenant_id = $1
+													LEFT JOIN users pinner
+													ON pinner.id = p.pinned_by_id
+													AND pinner.tenant_id = $1
 													LEFT JOIN posts d
 													ON d.id = p.original_id
 													AND d.tenant_id = $1
@@ -510,7 +521,7 @@ func searchPosts(ctx context.Context, q *query.SearchPosts) error {
 			sql := fmt.Sprintf(`
 				SELECT * FROM (%s) AS q
 				WHERE %s
-				ORDER BY %s DESC
+				ORDER BY q.pinned_at DESC NULLS LAST, %s DESC
 				LIMIT %s
 			`, innerQuery, whereParts, score, q.Limit)
 			err = trx.Select(&posts, sql, tenant.ID, pq.Array([]enum.PostStatus{
@@ -527,12 +538,22 @@ func searchPosts(ctx context.Context, q *query.SearchPosts) error {
 				condition += " AND user_id = " + strconv.Itoa(user.ID)
 			}
 
+			// Second sort key: simple column (e.g. "id") -> "q.id"; expression (e.g. trending formula) -> qualify columns with "q."
+			sortKey := sort
+			if strings.Contains(sort, "(") {
+				sortKey = strings.ReplaceAll(sort, "recent_votes_count", "q.recent_votes_count")
+				sortKey = strings.ReplaceAll(sortKey, "recent_comments_count", "q.recent_comments_count")
+				sortKey = strings.ReplaceAll(sortKey, "created_at", "q.created_at")
+			} else {
+				sortKey = "q." + sort
+			}
+
 			sql := fmt.Sprintf(`
 				SELECT * FROM (%s) AS q
 				WHERE 1 = 1 %s
-				ORDER BY %s DESC
+				ORDER BY q.pinned_at DESC NULLS LAST, %s DESC
 				LIMIT %s
-			`, innerQuery, condition, sort, q.Limit)
+			`, innerQuery, condition, sortKey, q.Limit)
 			params := []interface{}{tenant.ID, pq.Array(statuses)}
 			if len(q.Tags) > 0 {
 				params = append(params, pq.Array(q.Tags))
@@ -636,6 +657,27 @@ func buildSinglePostQuery(user *entity.User, filter string) string {
 
 	combinedFilter := filter + approvalFilter
 	return fmt.Sprintf(sqlSelectPostsWhere, tagCondition, hasVotedSubQuery, combinedFilter)
+}
+
+func setPostPinned(ctx context.Context, c *cmd.SetPostPinned) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		if c.Pinned {
+			_, err := trx.Execute(`
+				UPDATE posts SET pinned_at = $3, pinned_by_id = $4 WHERE id = $1 AND tenant_id = $2`,
+				c.PostID, tenant.ID, time.Now(), user.ID)
+			if err != nil {
+				return errors.Wrap(err, "failed to pin post")
+			}
+		} else {
+			_, err := trx.Execute(`
+				UPDATE posts SET pinned_at = NULL, pinned_by_id = NULL WHERE id = $1 AND tenant_id = $2`,
+				c.PostID, tenant.ID)
+			if err != nil {
+				return errors.Wrap(err, "failed to unpin post")
+			}
+		}
+		return nil
+	})
 }
 
 func flagPost(ctx context.Context, c *cmd.FlagPost) error {

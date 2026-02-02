@@ -20,6 +20,7 @@ import IconX from "@fider/assets/images/heroicons-x.svg"
 import IconThumbsUp from "@fider/assets/images/heroicons-thumbsup.svg"
 import IconTrash from "@fider/assets/images/heroicons-trash.svg"
 import IconExclamation from "@fider/assets/images/heroicons-exclamation-circle.svg"
+import IconStar from "@fider/assets/images/heroicons-star.svg"
 import { HStack, VStack } from "@fider/components/layout"
 import { Trans } from "@lingui/react/macro"
 import { DeletePostModal } from "@fider/pages/ShowPost/components/DeletePostModal"
@@ -256,7 +257,20 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
     }
   }
 
-  const onActionSelected = (action: "copy" | "delete" | "status" | "feed" | "edit" | "flag") => () => {
+  const handlePinPost = async (pinned: boolean) => {
+    if (!post) return
+    const result = await actions.pinPost(post.number, pinned)
+    if (result.ok) {
+      notify.success(pinned ? t({ id: "showpost.pin.success", message: "Post pinned" }) : t({ id: "showpost.unpin.success", message: "Post unpinned" }))
+      props.onDataChanged?.()
+      setTimeout(() => location.reload(), 500)
+    } else {
+      const errMsg = result.error?.errors?.[0]?.message ?? (pinned ? "Failed to pin post" : "Failed to unpin post")
+      notify.error(errMsg)
+    }
+  }
+
+  const onActionSelected = (action: "copy" | "delete" | "status" | "pin" | "unpin" | "feed" | "edit" | "flag") => () => {
     if (action === "copy") {
       navigator.clipboard.writeText(window.location.href)
       notify.success(<Trans id="showpost.copylink.success">Link copied to clipboard</Trans>)
@@ -264,6 +278,10 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
       setShowDeleteModal(true)
     } else if (action === "status") {
       setShowResponseModal(true)
+    } else if (action === "pin") {
+      handlePinPost(true)
+    } else if (action === "unpin") {
+      handlePinPost(false)
     } else if (action === "edit") {
       startEdit()
     } else if (action == "feed") {
@@ -317,6 +335,12 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
               <h1 className="p-show-post__title">{post.title}</h1>
             )}
 
+            {/* Pinned badge for staff-pinned posts */}
+            {!editMode && post.pinnedAt && (
+              <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-800">
+                <Trans id="label.pinned">Pinned</Trans>
+              </span>
+            )}
             {/* Posted by info with status */}
             {!editMode && (
               <div className="p-show-post__meta">
@@ -444,9 +468,20 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
                 )}
 
                 {Fider.session.isAuthenticated && Fider.session.user.isCollaborator && (
-                  <ActionButton icon={IconChat} onClick={onActionSelected("status")}>
-                    <Trans id="action.respond">Respond</Trans>
-                  </ActionButton>
+                  <>
+                    {post.pinnedAt ? (
+                      <ActionButton icon={IconStar} onClick={onActionSelected("unpin")}>
+                        <Trans id="action.unpinpost">Unpin post</Trans>
+                      </ActionButton>
+                    ) : (
+                      <ActionButton icon={IconStar} onClick={onActionSelected("pin")}>
+                        <Trans id="action.pinpost">Pin post</Trans>
+                      </ActionButton>
+                    )}
+                    <ActionButton icon={IconChat} onClick={onActionSelected("status")}>
+                      <Trans id="action.changestatus">Change status</Trans>
+                    </ActionButton>
+                  </>
                 )}
 
                 {Fider.session.tenant.isFeedEnabled && (
