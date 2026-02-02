@@ -1,7 +1,7 @@
 @use "~@fider/assets/styles/variables.scss" as *;
 
 #p-show-post {
-  background-color: white;
+  background-color: var(--smoke-gray-7);
   padding-top: spacing(4);
   padding-bottom: spacing(12);
 
