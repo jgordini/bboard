@@ -18,16 +18,19 @@ const (
 	WebhookCommentPinned WebhookType = 6
 	// WebhookCommentDeleted is triggered when a comment is removed (by author or moderator)
 	WebhookCommentDeleted WebhookType = 7
+	// WebhookPostFlagged is triggered when a post is flagged for inappropriateness
+	WebhookPostFlagged WebhookType = 8
 )
 
 var webhookTypeIDs = map[WebhookType]string{
-	WebhookNewPost:         "new_post",
-	WebhookNewComment:      "new_comment",
-	WebhookChangeStatus:    "change_status",
-	WebhookDeletePost:      "delete_post",
-	WebhookCommentFlagged:  "comment_flagged",
-	WebhookCommentPinned:   "comment_pinned",
+	WebhookNewPost:        "new_post",
+	WebhookNewComment:     "new_comment",
+	WebhookChangeStatus:   "change_status",
+	WebhookDeletePost:     "delete_post",
+	WebhookCommentFlagged: "comment_flagged",
+	WebhookCommentPinned:  "comment_pinned",
 	WebhookCommentDeleted: "comment_deleted",
+	WebhookPostFlagged:    "post_flagged",
 }
 
 var webhookTypeName = map[string]WebhookType{
@@ -38,6 +41,7 @@ var webhookTypeName = map[string]WebhookType{
 	"comment_flagged":  WebhookCommentFlagged,
 	"comment_pinned":   WebhookCommentPinned,
 	"comment_deleted":  WebhookCommentDeleted,
+	"post_flagged":     WebhookPostFlagged,
 }
 
 // MarshalText returns the Text version of the webhook type

@@ -167,6 +167,7 @@ export const WebhookForm = (props: WebhookFormProps) => {
             { label: "Comment Flagged", value: WebhookType.COMMENT_FLAGGED },
             { label: "Comment Pinned", value: WebhookType.COMMENT_PINNED },
             { label: "Comment Deleted", value: WebhookType.COMMENT_DELETED },
+            { label: "Post Flagged", value: WebhookType.POST_FLAGGED },
           ]}
           onChange={setType}
         />

@@ -25,3 +25,9 @@ type SetPostResponse struct {
 	Text   string
 	Status enum.PostStatus
 }
+
+// FlagPost records that a user flagged a post (idempotent: one flag per user per post)
+type FlagPost struct {
+	PostID int
+	Reason string
+}

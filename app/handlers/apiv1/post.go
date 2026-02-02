@@ -473,6 +473,46 @@ func ListFlaggedComments() web.HandlerFunc {
 	}
 }
 
+// ListFlaggedPosts returns posts that have been flagged (moderator-only)
+func ListFlaggedPosts() web.HandlerFunc {
+	return func(c *web.Context) error {
+		q := &query.GetFlaggedPosts{}
+		if err := bus.Dispatch(c, q); err != nil {
+			return c.Failure(err)
+		}
+		return c.Ok(q.Result)
+	}
+}
+
+// FlagPost flags a post for inappropriateness (any authenticated user)
+func FlagPost() web.HandlerFunc {
+	return func(c *web.Context) error {
+		action := new(actions.FlagPost)
+		if result := c.BindTo(action); !result.Ok {
+			return c.HandleValidation(result)
+		}
+
+		err := bus.Dispatch(c, &cmd.FlagPost{
+			PostID: action.Post.ID,
+			Reason: action.Reason,
+		})
+		if err != nil {
+			return c.Failure(err)
+		}
+
+		tenant := c.Tenant()
+		baseURL, logoURL := web.BaseURL(c), web.LogoURL(c)
+		props := webhook.Props{}
+		props.SetPost(action.Post, "post", baseURL, true, true)
+		props["reason"] = action.Reason
+		props.SetUser(c.User(), "author")
+		props.SetTenant(tenant, "tenant", baseURL, logoURL)
+		_ = bus.Dispatch(c, &cmd.TriggerWebhooks{Type: enum.WebhookPostFlagged, Props: props})
+
+		return c.Ok(web.Map{})
+	}
+}
+
 // FlagComment flags a comment for inappropriateness (any authenticated user)
 func FlagComment() web.HandlerFunc {
 	return func(c *web.Context) error {

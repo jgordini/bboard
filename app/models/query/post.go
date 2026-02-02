@@ -94,3 +94,20 @@ func (q *SearchPosts) SetStatusesFromStrings(statuses []string) {
 		}
 	}
 }
+
+// GetPostFlagsCount returns the number of flags on a specific post
+type GetPostFlagsCount struct {
+	PostID int
+	Result int
+}
+
+// FlaggedPostItem represents a flagged post with details for admin view
+type FlaggedPostItem struct {
+	Post       *entity.Post `json:"post"`
+	FlagsCount int          `json:"flagsCount"`
+}
+
+// GetFlaggedPosts returns all posts that have been flagged (for admin moderation view)
+type GetFlaggedPosts struct {
+	Result []*FlaggedPostItem
+}

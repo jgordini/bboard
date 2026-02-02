@@ -442,3 +442,26 @@ func (action *DeleteComment) IsAuthorized(ctx context.Context, user *entity.User
 func (action *DeleteComment) Validate(ctx context.Context, user *entity.User) *validate.Result {
 	return validate.Success()
 }
+
+// FlagPost represents the action of flagging a post for inappropriateness (any authenticated user)
+type FlagPost struct {
+	Number int    `route:"number"`
+	Reason string `json:"reason"`
+
+	Post *entity.Post
+}
+
+// IsAuthorized returns true if current user is authenticated
+func (action *FlagPost) IsAuthorized(ctx context.Context, user *entity.User) bool {
+	return user != nil
+}
+
+// Validate ensures the post exists
+func (action *FlagPost) Validate(ctx context.Context, user *entity.User) *validate.Result {
+	getPost := &query.GetPostByNumber{Number: action.Number}
+	if err := bus.Dispatch(ctx, getPost); err != nil {
+		return validate.Error(err)
+	}
+	action.Post = getPost.Result
+	return validate.Success()
+}

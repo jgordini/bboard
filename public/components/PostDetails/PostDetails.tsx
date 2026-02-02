@@ -19,6 +19,7 @@ import CommentEditor from "@fider/components/common/form/CommentEditor"
 import IconX from "@fider/assets/images/heroicons-x.svg"
 import IconThumbsUp from "@fider/assets/images/heroicons-thumbsup.svg"
 import IconTrash from "@fider/assets/images/heroicons-trash.svg"
+import IconExclamation from "@fider/assets/images/heroicons-exclamation-circle.svg"
 import { HStack, VStack } from "@fider/components/layout"
 import { Trans } from "@lingui/react/macro"
 import { DeletePostModal } from "@fider/pages/ShowPost/components/DeletePostModal"
@@ -255,7 +256,7 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
     }
   }
 
-  const onActionSelected = (action: "copy" | "delete" | "status" | "feed" | "edit") => () => {
+  const onActionSelected = (action: "copy" | "delete" | "status" | "feed" | "edit" | "flag") => () => {
     if (action === "copy") {
       navigator.clipboard.writeText(window.location.href)
       notify.success(<Trans id="showpost.copylink.success">Link copied to clipboard</Trans>)
@@ -267,6 +268,18 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
       startEdit()
     } else if (action == "feed") {
       setIsRSSModalOpen(true)
+    } else if (action === "flag") {
+      handleFlagPost()
+    }
+  }
+
+  const handleFlagPost = async () => {
+    if (!post) return
+    const result = await actions.flagPost(post.number)
+    if (result.ok) {
+      notify.success(<Trans id="showpost.flag.success">Post flagged for review</Trans>)
+    } else {
+      notify.error(<Trans id="showpost.flag.error">Failed to flag post</Trans>)
     }
   }
 
@@ -417,6 +430,12 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
                 <ActionButton icon={IconDuplicate} onClick={onActionSelected("copy")}>
                   <Trans id="action.copylink">Copy link</Trans>
                 </ActionButton>
+
+                {Fider.session.isAuthenticated && (
+                  <ActionButton icon={IconExclamation} onClick={onActionSelected("flag")}>
+                    <Trans id="action.flag">Flag</Trans>
+                  </ActionButton>
+                )}
 
                 {Fider.session.isAuthenticated && canEditPost(Fider.session.user, post) && (
                   <ActionButton icon={IconPencil} onClick={onActionSelected("edit")}>

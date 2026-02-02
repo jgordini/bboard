@@ -42,7 +42,8 @@ func (action *CreateEditWebhook) Validate(ctx context.Context, _ *entity.User) *
 		action.Type != enum.WebhookDeletePost &&
 		action.Type != enum.WebhookCommentFlagged &&
 		action.Type != enum.WebhookCommentPinned &&
-		action.Type != enum.WebhookCommentDeleted {
+		action.Type != enum.WebhookCommentDeleted &&
+		action.Type != enum.WebhookPostFlagged {
 		result.AddFieldFailure("type", "Type must be valid.")
 	}
 
@@ -135,7 +136,8 @@ func (action *PreviewWebhook) Validate(context.Context, *entity.User) *validate.
 		action.Type != enum.WebhookDeletePost &&
 		action.Type != enum.WebhookCommentFlagged &&
 		action.Type != enum.WebhookCommentPinned &&
-		action.Type != enum.WebhookCommentDeleted {
+		action.Type != enum.WebhookCommentDeleted &&
+		action.Type != enum.WebhookPostFlagged {
 		result.AddFieldFailure("type", "Type must be valid.")
 	}
 

@@ -99,6 +99,10 @@ export const flagComment = async (postNumber: number, commentID: number, reason?
   return http.post(`/api/v1/posts/${postNumber}/comments/${commentID}/flag`, { reason: reason || "" })
 }
 
+export const flagPost = async (postNumber: number, reason?: string): Promise<Result> => {
+  return http.post(`/api/v1/posts/${postNumber}/flag`, { reason: reason || "" })
+}
+
 export const pinComment = async (postNumber: number, commentID: number, pinned: boolean): Promise<Result> => {
   return http.post(`/api/v1/posts/${postNumber}/comments/${commentID}/pin`, { pinned })
 }

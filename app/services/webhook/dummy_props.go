@@ -78,6 +78,9 @@ func dummyTriggerProps(c context.Context, webhookType enum.WebhookType) webhook.
 		props.SetPost(dummyPost, "post", baseURL, true, true)
 		props["comment"] = "An example comment that was removed."
 		props["comment_id"] = 12
+	case enum.WebhookPostFlagged:
+		props.SetPost(dummyPost, "post", baseURL, true, true)
+		props["reason"] = "Inappropriate content"
 	}
 	return props
 }

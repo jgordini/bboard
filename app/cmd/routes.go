@@ -171,7 +171,8 @@ func routes(r *web.Engine) *web.Engine {
 		ui.Get("/admin/users", handlers.ManageMembers())
 		ui.Get("/admin/tags", handlers.ManageTags())
 		ui.Get("/admin/moderation", handlers.GetModerationPageHandler())
-		ui.Get("/admin/flagged", handlers.Page("Flagged Comments · Moderation", "Comments flagged for inappropriateness", "Administration/pages/FlaggedComments.page"))
+		ui.Get("/admin/flagged", handlers.Page("Flagged Ideas · Moderation", "Ideas flagged for inappropriateness", "Administration/pages/FlaggedPosts.page"))
+		ui.Get("/admin/flagged-comments", handlers.Page("Flagged Comments · Moderation", "Comments flagged for inappropriateness", "Administration/pages/FlaggedComments.page"))
 		ui.Get("/admin/authentication", handlers.ManageAuthentication())
 		ui.Get("/_api/admin/oauth/:provider", handlers.GetOAuthConfig())
 
@@ -237,6 +238,7 @@ func routes(r *web.Engine) *web.Engine {
 		membersApi.Post("/api/v1/posts/:number/comments/:id/reactions/:reaction", apiv1.ToggleReaction())
 		membersApi.Post("/api/v1/posts/:number/comments", apiv1.PostComment())
 		membersApi.Post("/api/v1/posts/:number/comments/:id/flag", apiv1.FlagComment())
+		membersApi.Post("/api/v1/posts/:number/flag", apiv1.FlagPost())
 		membersApi.Put("/api/v1/posts/:number/comments/:id", apiv1.UpdateComment())
 		membersApi.Delete("/api/v1/posts/:number/comments/:id", apiv1.DeleteComment())
 		membersApi.Post("/api/v1/posts/:number/votes", apiv1.AddVote())
@@ -263,6 +265,7 @@ func routes(r *web.Engine) *web.Engine {
 
 		staffApi.Use(middlewares.BlockLockedTenants())
 		staffApi.Get("/api/v1/admin/comments/flagged", apiv1.ListFlaggedComments())
+		staffApi.Get("/api/v1/admin/posts/flagged", apiv1.ListFlaggedPosts())
 		staffApi.Post("/api/v1/posts/:number/comments/:id/pin", apiv1.PinComment())
 		staffApi.Post("/api/v1/posts/:number/tags/:slug", apiv1.AssignTag())
 		staffApi.Delete("/api/v1/posts/:number/tags/:slug", apiv1.UnassignTag())

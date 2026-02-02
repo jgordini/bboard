@@ -30,11 +30,11 @@ type GetCommentFlagsCountsForPost struct {
 
 // FlaggedCommentItem is a comment with flag count for the moderator flagged queue
 type FlaggedCommentItem struct {
-	Comment    *entity.Comment
-	PostNumber int
-	PostTitle  string
-	PostSlug   string
-	FlagsCount int
+	Comment    *entity.Comment `json:"comment"`
+	PostNumber int             `json:"postNumber"`
+	PostTitle  string          `json:"postTitle"`
+	PostSlug   string          `json:"postSlug"`
+	FlagsCount int             `json:"flagsCount"`
 }
 
 // GetFlaggedComments returns comments that have at least one flag (for moderator queue)

@@ -22,6 +22,7 @@ export enum WebhookType {
   COMMENT_FLAGGED = "comment_flagged",
   COMMENT_PINNED = "comment_pinned",
   COMMENT_DELETED = "comment_deleted",
+  POST_FLAGGED = "post_flagged",
 }
 
 export enum WebhookStatus {

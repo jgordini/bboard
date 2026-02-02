@@ -79,6 +79,8 @@ export const WebhookListItem = (props: WebhookListItemProps) => {
         return "Comment Pinned"
       case WebhookType.COMMENT_DELETED:
         return "Comment Deleted"
+      case WebhookType.POST_FLAGGED:
+        return "Post Flagged"
     }
   }
 

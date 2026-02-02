@@ -637,3 +637,69 @@ func buildSinglePostQuery(user *entity.User, filter string) string {
 	combinedFilter := filter + approvalFilter
 	return fmt.Sprintf(sqlSelectPostsWhere, tagCondition, hasVotedSubQuery, combinedFilter)
 }
+
+func flagPost(ctx context.Context, c *cmd.FlagPost) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		_, err := trx.Execute(`
+			INSERT INTO post_flags (tenant_id, post_id, user_id, created_at, reason)
+			VALUES ($1, $2, $3, $4, $5)
+			ON CONFLICT (tenant_id, post_id, user_id) DO NOTHING`,
+			tenant.ID, c.PostID, user.ID, time.Now(), c.Reason,
+		)
+		if err != nil {
+			return errors.Wrap(err, "failed to flag post")
+		}
+		return nil
+	})
+}
+
+func getPostFlagsCount(ctx context.Context, q *query.GetPostFlagsCount) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		err := trx.Scalar(&q.Result, "SELECT COUNT(*) FROM post_flags WHERE post_id = $1 AND tenant_id = $2", q.PostID, tenant.ID)
+		if err != nil {
+			return errors.Wrap(err, "failed to get post flags count")
+		}
+		return nil
+	})
+}
+
+func getFlaggedPosts(ctx context.Context, q *query.GetFlaggedPosts) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		q.Result = make([]*query.FlaggedPostItem, 0)
+		if tenant == nil {
+			return errors.New("tenant is required")
+		}
+
+		// First get posts with their flag counts
+		type row struct {
+			PostID     int `db:"post_id"`
+			FlagsCount int `db:"flags_count"`
+		}
+		var rows []*row
+		err := trx.Select(&rows, `
+			SELECT p.id AS post_id, COUNT(pf.id)::int AS flags_count
+			FROM post_flags pf
+			INNER JOIN posts p ON p.id = pf.post_id AND p.tenant_id = pf.tenant_id AND p.status != $2
+			WHERE pf.tenant_id = $1
+			GROUP BY p.id
+			ORDER BY flags_count DESC, p.created_at DESC`,
+			tenant.ID, enum.PostDeleted,
+		)
+		if err != nil {
+			return errors.Wrap(err, "failed to get flagged posts")
+		}
+
+		// Now fetch full post details for each flagged post
+		for _, r := range rows {
+			getPost := &query.GetPostByID{PostID: r.PostID}
+			if err := bus.Dispatch(ctx, getPost); err != nil {
+				continue // Skip posts that can't be loaded
+			}
+			q.Result = append(q.Result, &query.FlaggedPostItem{
+				Post:       getPost.Result,
+				FlagsCount: r.FlagsCount,
+			})
+		}
+		return nil
+	})
+}
