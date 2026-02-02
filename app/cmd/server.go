@@ -49,7 +49,12 @@ func RunServer() int {
 	startJobs(ctx)
 
 	e := routes(web.New())
-	go e.Start(env.Config.Host + ":" + env.Config.Port)
+	// Listen on 0.0.0.0 when HOST is unset so the app is reachable from other containers (e.g. nginx)
+	host := env.Config.Host
+	if host == "" {
+		host = "0.0.0.0"
+	}
+	go e.Start(host + ":" + env.Config.Port)
 	return listenSignals(e)
 }
 

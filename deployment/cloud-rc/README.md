@@ -7,6 +7,7 @@ Complete deployment package for running BlazeBoard (Fider) on UAB Research Compu
 Application URL for this deployment: **http://138.26.48.197** (HTTP, no domain/SSL).
 
 This deployment uses:
+
 - **Docker Compose** for container orchestration
 - **PostgreSQL 17** with persistent OpenStack volume storage
 - **Nginx** reverse proxy (HTTP; SSL optional)
@@ -400,8 +401,8 @@ docker compose ps
 # App logs (crashes, DB errors?)
 docker compose logs app --tail=100
 
-# Can nginx reach the app?
-docker compose exec nginx wget -q -O- http://app:3000 | head -5
+# Can nginx reach the app? (app listens on port 80 when PORT=80 in docker-compose)
+docker compose exec nginx wget -q -O- http://app:80 | head -5
 ```
 
 If the app container is exited or restarting, check logs for database connection errors, missing env vars, or port conflicts.
@@ -418,7 +419,7 @@ docker compose ps
 docker compose logs nginx
 
 # Test internal connectivity
-docker compose exec nginx wget -O- http://app:3000
+docker compose exec nginx wget -O- http://app:80
 
 # Check firewall/security groups
 # Ensure ports 80 and 443 are open in OpenStack security groups
@@ -462,6 +463,7 @@ crontab -e
 ### Volume Snapshots
 
 Create OpenStack volume snapshots weekly via dashboard:
+
 1. Navigate to Volumes → blazeboard-postgres-data
 2. Create Snapshot
 3. Name: `blazeboard-postgres-YYYYMMDD`
@@ -482,6 +484,7 @@ Create OpenStack volume snapshots weekly via dashboard:
 ### Increase Instance Resources
 
 If performance is slow:
+
 1. Create volume snapshot
 2. Resize instance flavor in OpenStack (e.g., m1.large)
 3. Restart instance
