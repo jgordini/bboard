@@ -17,5 +17,35 @@
         }
       }
     }
+
+    &.uab-palette {
+      &.uab-green {
+        background-color: var(--uab-green);
+      }
+      &.dragons-lair-green {
+        background-color: var(--dragons-lair-green);
+      }
+      &.campus-green {
+        background-color: var(--campus-green);
+      }
+      &.loyal-yellow {
+        background-color: var(--loyal-yellow);
+      }
+      &.smoke-gray {
+        background-color: var(--smoke-gray);
+      }
+      &.smoke-gray-15 {
+        background-color: var(--smoke-gray-15);
+      }
+      &.smoke-gray-7 {
+        background-color: var(--smoke-gray-7);
+      }
+      &.campus-green-15 {
+        background-color: var(--campus-green-15);
+      }
+      &.loyal-yellow-15 {
+        background-color: var(--loyal-yellow-15);
+      }
+    }
   }
 }

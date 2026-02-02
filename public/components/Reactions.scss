@@ -60,10 +60,13 @@
     border-radius: 16px;
     transition: all 0.15s ease;
 
-    &[class*="bg-blue-100"] {
-      background-color: var(--campus-green-15) !important;
+    &[class*="bg-campus-green-15"] {
       border: 1px solid var(--campus-green);
       color: var(--uab-green);
+
+      &:hover {
+        background-color: var(--campus-green-33) !important;
+      }
     }
 
     .text-semibold {

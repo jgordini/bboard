@@ -69,13 +69,13 @@ const getLozengeProps = (status: PostStatus): { icon: SpriteSymbol; bg: string; 
     case PostStatus.Completed:
       return { icon: HeroIconCheck, bg: "bg-green-100", color: "text-green-800", border: "border-green-400" }
     case PostStatus.Planned:
-      return { icon: HeroIconThumbsUp, bg: "bg-blue-100", color: "text-blue-700", border: "border-blue-400" }
+      return { icon: HeroIconThumbsUp, bg: "bg-green-100", color: "text-green-800", border: "border-green-400" }
     case PostStatus.Started:
-      return { icon: HeroIconSparkles, bg: "bg-blue-100", color: "text-blue-700", border: "border-blue-400" }
+      return { icon: HeroIconSparkles, bg: "bg-yellow-100", color: "text-yellow-800", border: "border-yellow-400" }
     case PostStatus.Open:
-      return { icon: HeroIconLightBulb, bg: "bg-blue-100", color: "text-blue-700", border: "border-blue-400" }
+      return { icon: HeroIconLightBulb, bg: "bg-gray-100", color: "text-gray-800", border: "border-gray-400" }
     default:
-      return { icon: HeroIconSparkles, bg: "bg-blue-100", color: "text-blue-700", border: "border-blue-400" }
+      return { icon: HeroIconSparkles, bg: "bg-gray-100", color: "text-gray-800", border: "border-gray-400" }
   }
 }
 

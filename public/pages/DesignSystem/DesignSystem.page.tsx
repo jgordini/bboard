@@ -154,16 +154,15 @@ const DesignSystemPage = () => {
           <div className="color red-50" />
         </div>
         <div className="color-scale">
-          <div className="color blue-900" />
-          <div className="color blue-800" />
-          <div className="color blue-700" />
-          <div className="color blue-600" />
-          <div className="color blue-500" />
-          <div className="color blue-400" />
-          <div className="color blue-300" />
-          <div className="color blue-200" />
-          <div className="color blue-100" />
-          <div className="color blue-50" />
+          <div className="color uab-palette uab-green" title="UAB Green" />
+          <div className="color uab-palette dragons-lair-green" title="Dragons Lair Green" />
+          <div className="color uab-palette campus-green" title="Campus Green" />
+          <div className="color uab-palette loyal-yellow" title="Loyal Yellow" />
+          <div className="color uab-palette smoke-gray" title="Smoke Gray" />
+          <div className="color uab-palette smoke-gray-15" title="Smoke Gray 15%" />
+          <div className="color uab-palette smoke-gray-7" title="Smoke Gray 7%" />
+          <div className="color uab-palette campus-green-15" title="Campus Green 15%" />
+          <div className="color uab-palette loyal-yellow-15" title="Loyal Yellow 15%" />
         </div>
         <div className="color-scale">
           <div className="color yellow-900" />

@@ -69,9 +69,9 @@ export const Reactions: React.FC<ReactionsProps> = ({ emojiSelectorRef, toggleRe
                 {...(fider.session.isAuthenticated && { onClick: () => toggleReaction(reaction.emoji) })}
                 className={classSet({
                   "inline-flex items-center px-2 py-1 rounded-full text-xs": true,
-                  "bg-blue-100": reaction.includesMe,
+                  "bg-campus-green-15": reaction.includesMe,
                   "bg-gray-100": !reaction.includesMe,
-                  "clickable hover:bg-blue-200": fider.session.isAuthenticated && reaction.includesMe,
+                  "clickable": fider.session.isAuthenticated && reaction.includesMe,
                   "clickable hover:bg-gray-200": fider.session.isAuthenticated && !reaction.includesMe,
                 })}
               >

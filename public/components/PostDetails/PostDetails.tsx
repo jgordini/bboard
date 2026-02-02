@@ -324,11 +324,11 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
 
               {/* Admin moderation buttons */}
               {fider.session.isAuthenticated && fider.session.showModerationControls && fider.session.user.isCollaborator && (
-                <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-500 mt-4">
-                  <div className="mb-2 text-sm font-medium text-blue-800">
+                <div className="p-3 bg-yellow-50 rounded border-l-4 border-yellow-500 mt-4">
+                  <div className="mb-2 text-sm font-medium text-yellow-800">
                     <Trans id="showpost.moderation.admin.title">Moderation</Trans>
                   </div>
-                  <div className="text-sm text-blue-700 mb-3">
+                  <div className="text-sm text-yellow-700 mb-3">
                     <Trans id="showpost.moderation.admin.description">This idea needs your approval before being published</Trans>
                   </div>
                   <HStack spacing={2}>

@@ -89,8 +89,8 @@
     margin-left: spacing(4);
     border-radius: 9999px;
     text-align: center;
-    background-color: var(--colors-blue-100);
-    color: var(--colors-blue-400);
+    background-color: var(--colors-green-100);
+    color: var(--uab-green);
   }
 
   &__powered-by-mobile {
@@ -167,7 +167,7 @@
 .c-response-details {
   &__card {
     flex-grow: 1;
-    background-color: var(--colors-blue-50);
+    background-color: var(--colors-green-50);
     border-radius: get("border.radius.xlarge");
     padding: spacing(6);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);

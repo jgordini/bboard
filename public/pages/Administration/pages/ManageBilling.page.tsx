@@ -94,7 +94,7 @@ const PlanCard = (props: PlanCardProps) => {
 
 const PaddleMigrationBanner = () => {
   return (
-    <div className="bg-blue-50 p-4 rounded mb-6 border border-blue-200">
+    <div className="bg-smoke-gray-7 p-4 rounded mb-6 border border-gray-300">
       <HStack spacing={2} align="start">
         <Icon sprite={IconInfo} className="text-gray-900 flex-shrink-0 mt-0.5" height="20" />
         <VStack spacing={1}>
@@ -155,7 +155,7 @@ const ManageBillingPage = (props: ManageBillingPageProps) => {
       {isPaddleCustomer && <PaddleMigrationBanner />}
 
       {displayAsCommercial && props.licenseKey && (
-        <div className="bg-blue-50 p-4 rounded mb-4 border border-blue-200">
+        <div className="bg-smoke-gray-7 p-4 rounded mb-4 border border-gray-300">
           <p className="text-sm text-gray-700">
             If you want to run Fider self-hosted with commercial features,{" "}
             <a href="/admin/advanced" className="text-gray-900 hover:text-gray-700 underline">

@@ -25,7 +25,7 @@
     &-title {
       font-size: get("font.size.lg");
       font-weight: get("font.weight.semibold");
-      color: var(--colors-blue-500);
+      color: var(--uab-green);
 
       white-space: nowrap;
     }
@@ -33,7 +33,7 @@
     &-line {
       flex-grow: 1;
       height: 2px;
-      background-color: var(--colors-blue-500);
+      background-color: var(--uab-green);
     }
   }
 }
@@ -127,10 +127,11 @@
     color: var(--colors-gray-600);
 
     a {
-      color: var(--colors-blue-700);
+      color: var(--uab-green);
       text-decoration: none;
 
       &:hover {
+        color: var(--dragons-lair-green);
         text-decoration: underline;
       }
     }

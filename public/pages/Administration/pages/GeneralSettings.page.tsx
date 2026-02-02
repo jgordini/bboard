@@ -59,7 +59,7 @@ const GeneralSettingsPage = () => {
           onChange={setWelcomeHeader}
         >
           <p className="text-muted">
-            Large header text shown on the home page. Leave empty to hide. Wrap text with underscores (e.g., _highlighted_) to show it in blue.
+            Large header text shown on the home page. Leave empty to hide. Wrap text with underscores (e.g., _highlighted_) to show it in green.
           </p>
         </Input>
 

@@ -254,11 +254,11 @@ export const ShowComment = (props: ShowCommentProps) => {
 
                     {/* Admin moderation buttons */}
                     {fider.session.isAuthenticated && fider.session.user.isCollaborator && (
-                      <div className="p-2 bg-blue-50 rounded border-l-4 border-blue-500">
-                        <div className="mb-1 text-xs font-medium text-blue-800">
+                      <div className="p-2 bg-yellow-50 rounded border-l-4 border-yellow-500">
+                        <div className="mb-1 text-xs font-medium text-yellow-800">
                           <Trans id="home.postfilter.label.moderation">Moderation</Trans>
                         </div>
-                        <div className="text-xs text-blue-700 mb-2">
+                        <div className="text-xs text-yellow-700 mb-2">
                           <Trans id="showpost.moderation.comment.admin.description">This comment needs your approval before being published</Trans>
                         </div>
                         <HStack spacing={1}>

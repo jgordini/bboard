@@ -24,7 +24,7 @@ interface UserListItemExtendedProps extends UserListItemProps {
 }
 
 const UserListItem = (props: UserListItemExtendedProps) => {
-  const admin = props.user.role === UserRole.Administrator && <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">administrator</span>
+  const admin = props.user.role === UserRole.Administrator && <span className="text-xs bg-campus-green-15 uab-green px-2 py-1 rounded">administrator</span>
   const collaborator = props.user.role === UserRole.Collaborator && <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">collaborator</span>
   const blocked = props.user.status === UserStatus.Blocked && <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">blocked</span>
   const trusted = props.user.status === UserStatus.Active && props.user.role === UserRole.Visitor && props.user.isTrusted && (
