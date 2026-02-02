@@ -62,7 +62,6 @@
       border-left: 4px solid var(--campus-green);
       margin-top: spacing(10);
       margin-bottom: spacing(6);
-
     }
 
     &__description-section {
@@ -103,16 +102,6 @@
       margin-bottom: spacing(2);
     }
 
-    &__discussion-count {
-      width: 25px;
-      height: 25px;
-      margin-left: spacing(4);
-      border-radius: 9999px;
-      text-align: center;
-      background-color: var(--campus-green-15);
-      color: var(--uab-green);
-    }
-
     &__status-badge {
       display: inline-flex;
       align-items: center;
@@ -136,15 +125,6 @@
         color: var(--uab-green);
       }
 
-    }
-
-    &__powered-by-mobile {
-      display: block;
-      margin-top: spacing(6);
-
-      @include media("lg") {
-        display: none;
-      }
     }
 
     &__action-col {

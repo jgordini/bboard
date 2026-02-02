@@ -11,6 +11,7 @@ import { HStack, VStack } from "@fider/components/layout"
 interface VoteSectionProps {
   post: Post
   votes: number
+  commentsCount?: number
   onDataChanged?: () => void
 }
 
@@ -54,11 +55,21 @@ export const VoteSection = (props: VoteSectionProps) => {
             </HStack>
           </Button>
         </div>
-        <HStack align="center" spacing={2}>
+        <HStack align="center" spacing={2} className="flex flex-x flex--spacing-2 flex-items-center">
           <span className="text-semibold text-2xl" style={{ fontSize: "32px", minHeight: "48px" }}>
             {votes}
           </span>
           <span className="text-semibold text-lg">{votes === 1 ? <Trans id="label.vote">Vote</Trans> : <Trans id="label.votes">Votes</Trans>}</span>
+          {props.commentsCount !== undefined && (
+            <>
+              <span className="text-semibold text-2xl" style={{ fontSize: "32px", minHeight: "48px" }}>
+                {props.commentsCount}
+              </span>
+              <span className="text-semibold text-lg">
+                <Trans id="label.comments">Comments</Trans>
+              </span>
+            </>
+          )}
         </HStack>
       </VStack>
     </>

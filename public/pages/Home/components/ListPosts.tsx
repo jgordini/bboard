@@ -38,12 +38,6 @@ const ListPostItem = (props: { post: Post; user?: CurrentUser; tags: Tag[]; onPo
               </span>
             )}
           </HStack>
-          {props.post.commentsCount > 0 && (
-            <HStack spacing={1} className="c-posts-container__post-comments flex-shrink-0">
-              <span>{props.post.commentsCount}</span>
-              <Icon sprite={IconChatAlt2} className="h-5 w-5" />
-            </HStack>
-          )}
         </HStack>
         <Markdown className="c-posts-container__postdescription" maxLength={300} text={props.post.description} style="plainText" />
         {props.tags.length >= 1 && (
@@ -54,10 +48,16 @@ const ListPostItem = (props: { post: Post; user?: CurrentUser; tags: Tag[]; onPo
           </HStack>
         )}
         <HStack justify="between" align="center">
-          <div className="c-posts-container__post-votes">
-            <span className="text-semibold text-2xl">{props.post.votesCount}</span>{" "}
-            <span className="text-gray-700">{props.post.votesCount === 1 ? <Trans id="label.vote">Vote</Trans> : <Trans id="label.votes">Votes</Trans>}</span>
-          </div>
+          <HStack spacing={4} align="center" className="c-posts-container__post-stats">
+            <div className="c-posts-container__post-votes">
+              <span className="text-semibold text-2xl">{props.post.votesCount}</span>{" "}
+              <span className="text-gray-700">{props.post.votesCount === 1 ? <Trans id="label.vote">Vote</Trans> : <Trans id="label.votes">Votes</Trans>}</span>
+            </div>
+            <HStack spacing={1} className="c-posts-container__post-comments">
+              <span className="text-semibold text-2xl">{props.post.commentsCount}</span>
+              <Icon sprite={IconChatAlt2} className="h-5 w-5 text-gray-700" />
+            </HStack>
+          </HStack>
           {props.post.status !== "open" && <ResponseLozenge status={props.post.status} response={props.post.response} size={"small"} />}
         </HStack>
       </VStack>

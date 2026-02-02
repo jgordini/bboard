@@ -10,7 +10,7 @@ import IconRSS from "@fider/assets/images/heroicons-rss.svg"
 import IconPencil from "@fider/assets/images/heroicons-pencil-alt.svg"
 import IconChat from "@fider/assets/images/heroicons-chat-alt-2.svg"
 
-import { ResponseDetails, Button, UserName, Moment, Markdown, Input, Form, Icon, Avatar, PoweredByFider, RSSModal, ResponseLozenge } from "@fider/components"
+import { ResponseDetails, Button, UserName, Moment, Markdown, Input, Form, Icon, Avatar, RSSModal, ResponseLozenge } from "@fider/components"
 import { CommentInput } from "@fider/pages/ShowPost/components/CommentInput"
 import { ShowComment } from "@fider/pages/ShowPost/components/ShowComment"
 import { VoteSection } from "@fider/pages/ShowPost/components/VoteSection"
@@ -288,7 +288,6 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
       <div className="p-show-post__action-col p-show-post__action-col--desktop">
         <VotesPanel post={post} votes={votes} />
 
-        <PoweredByFider slot="show-post" className="mt-3" />
       </div>
 
       <div className="p-show-post__main-col">
@@ -384,7 +383,12 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
           {/* Vote Section */}
           {!editMode && (
             <div className="p-show-post__vote-section">
-              <VoteSection post={post} votes={post.votesCount} onDataChanged={props.onDataChanged} />
+              <VoteSection
+                post={post}
+                votes={post.votesCount}
+                commentsCount={comments.length}
+                onDataChanged={props.onDataChanged}
+              />
             </div>
           )}
 
@@ -460,7 +464,6 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
                 <Trans id="label.discussion">Discussion</Trans>
               </span>
             </h2>
-            <div className="p-show-post__discussion-count">{comments.length}</div>
           </HStack>
 
           {/* Comment Input at top */}
@@ -479,10 +482,6 @@ export const PostDetails: React.FC<PostDetailsProps> = (props) => {
           )}
         </div>
 
-        {/* Powered by Fider - bottom of page on mobile only */}
-        <div className="p-show-post__powered-by-mobile">
-          <PoweredByFider slot="show-post" />
-        </div>
       </div>
 
       {/* Modals */}

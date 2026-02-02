@@ -5,7 +5,7 @@ import IconArrowLeft from "@fider/assets/images/heroicons-arrowleft.svg"
 
 import React, { useEffect, useState, useRef } from "react"
 import { Post, Tag, PostStatus } from "@fider/models"
-import { Markdown, Hint, PoweredByFider, Icon, Header, Button } from "@fider/components"
+import { Markdown, Hint, Icon, Header, Button } from "@fider/components"
 import { PostsContainer } from "./components/PostsContainer"
 import { useFider } from "@fider/hooks"
 import { HStack, VStack } from "@fider/components/layout"
@@ -198,9 +198,6 @@ What can we do better? This is the place for you to vote, discuss and share idea
                   <Markdown className="p-home__welcome-body" text={fider.session.tenant.welcomeMessage || defaultWelcomeMessage} style="full" />
                 </div>
               </VStack>
-              <div>
-                <PoweredByFider slot="home-input" className="sm:hidden md:hidden lg:block mt-3" />
-              </div>
             </div>
             <div className="p-home__posts-col">
               <button className="p-home__add-idea-btn" onClick={handleNewPost}>
@@ -220,7 +217,6 @@ What can we do better? This is the place for you to vote, discuss and share idea
                   onPostClick={handlePostClick}
                 />
               )}
-              <PoweredByFider slot="home-footer" className="lg:hidden xl:hidden mt-8" />
             </div>
           </div>
         ) : (

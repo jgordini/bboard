@@ -83,25 +83,6 @@
     margin-bottom: spacing(2);
   }
 
-  &__discussion-count {
-    width: 25px;
-    height: 25px;
-    margin-left: spacing(4);
-    border-radius: 9999px;
-    text-align: center;
-    background-color: var(--colors-green-100);
-    color: var(--uab-green);
-  }
-
-  &__powered-by-mobile {
-    display: block;
-    margin-top: spacing(6);
-
-    @include media("lg") {
-      display: none;
-    }
-  }
-
   &__action-col {
     display: flex;
     flex-direction: column;
