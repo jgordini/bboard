@@ -13,6 +13,7 @@ import (
 	"github.com/getfider/fider/app/pkg/bus"
 	"github.com/getfider/fider/app/pkg/env"
 	"github.com/getfider/fider/app/pkg/i18n"
+	"github.com/getfider/fider/app/pkg/profanity"
 	"github.com/gosimple/slug"
 
 	"github.com/getfider/fider/app"
@@ -78,6 +79,16 @@ func (action *CreateNewPost) Validate(ctx context.Context, user *entity.User) *v
 	} else if env.Config.PostCreationWithTagsEnabled && len(action.TagSlugs) != len(action.Tags) {
 		result.AddFieldFailure("tags", propertyIsInvalid(ctx, "tags"))
 	} else {
+		if ok, _ := profanity.ContainsProfanity(normalizedTitle); ok {
+			result.AddFieldFailure("title", i18n.T(ctx, "validation.custom.profanity"))
+		}
+		if action.Description != "" {
+			if ok, _ := profanity.ContainsProfanity(action.Description); ok {
+				result.AddFieldFailure("description", i18n.T(ctx, "validation.custom.profanity"))
+			}
+		}
+	}
+	if result.Ok {
 		err := bus.Dispatch(ctx, &query.GetPostBySlug{Slug: slug.Make(action.Title)})
 		if err != nil && errors.Cause(err) != app.ErrNotFound {
 			return validate.Error(err)
@@ -140,20 +151,28 @@ func (action *UpdatePost) Validate(ctx context.Context, user *entity.User) *vali
 		result.AddFieldFailure("title", i18n.T(ctx, "validation.custom.descriptivetitle"))
 	} else if len(action.Title) > 100 {
 		result.AddFieldFailure("title", propertyMaxStringLen(ctx, "title", 100))
+	} else if ok, _ := profanity.ContainsProfanity(action.Title); ok {
+		result.AddFieldFailure("title", i18n.T(ctx, "validation.custom.profanity"))
+	}
+	if action.Description != "" {
+		if ok, _ := profanity.ContainsProfanity(action.Description); ok {
+			result.AddFieldFailure("description", i18n.T(ctx, "validation.custom.profanity"))
+		}
 	}
 
-	postBySlug := &query.GetPostBySlug{Slug: slug.Make(action.Title)}
-	err := bus.Dispatch(ctx, postBySlug)
-	if err != nil && errors.Cause(err) != app.ErrNotFound {
-		return validate.Error(err)
-	} else if err == nil && postBySlug.Result.ID != action.Post.ID {
-		result.AddFieldFailure("title", i18n.T(ctx, "validation.custom.duplicatetitle"))
+	if result.Ok && action.Title != "" {
+		postBySlug := &query.GetPostBySlug{Slug: slug.Make(action.Title)}
+		err := bus.Dispatch(ctx, postBySlug)
+		if err != nil && errors.Cause(err) != app.ErrNotFound {
+			return validate.Error(err)
+		} else if err == nil && postBySlug.Result.ID != action.Post.ID {
+			result.AddFieldFailure("title", i18n.T(ctx, "validation.custom.duplicatetitle"))
+		}
 	}
 
 	if len(action.Attachments) > 0 {
 		getAttachments := &query.GetAttachments{Post: action.Post}
-		err = bus.Dispatch(ctx, getAttachments)
-		if err != nil {
+		if err := bus.Dispatch(ctx, getAttachments); err != nil {
 			return validate.Error(err)
 		}
 
@@ -221,6 +240,8 @@ func (action *AddNewComment) Validate(ctx context.Context, user *entity.User) *v
 
 	if action.Content == "" {
 		result.AddFieldFailure("content", propertyIsRequired(ctx, "comment"))
+	} else if ok, _ := profanity.ContainsProfanity(action.Content); ok {
+		result.AddFieldFailure("content", i18n.T(ctx, "validation.custom.profanity"))
 	}
 
 	messages, err := validate.MultiImageUpload(ctx, nil, action.Attachments, validate.MultiImageUploadOpts{
@@ -276,6 +297,12 @@ func (action *SetResponse) Validate(ctx context.Context, user *entity.User) *val
 
 		if getOriginaPost.Result != nil {
 			action.Original = getOriginaPost.Result
+		}
+	}
+
+	if action.Text != "" {
+		if ok, _ := profanity.ContainsProfanity(action.Text); ok {
+			result.AddFieldFailure("text", i18n.T(ctx, "validation.custom.profanity"))
 		}
 	}
 
@@ -346,6 +373,8 @@ func (action *EditComment) Validate(ctx context.Context, user *entity.User) *val
 
 	if action.Content == "" {
 		result.AddFieldFailure("content", propertyIsRequired(ctx, "comment"))
+	} else if ok, _ := profanity.ContainsProfanity(action.Content); ok {
+		result.AddFieldFailure("content", i18n.T(ctx, "validation.custom.profanity"))
 	}
 
 	if len(action.Attachments) > 0 {

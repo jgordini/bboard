@@ -30,6 +30,7 @@
   "validation.custom.imagesquareratio": "The image must have an aspect ratio of 1:1.",
   "validation.custom.maximagesize": "The image size must be smaller than {kilobytes}KB.",
   "validation.custom.invalidemoji": "Invalid reaction emoji.",
+  "validation.custom.profanity": "Please remove inappropriate language.",
   "validation.custom.commentnotfound": "Comment not found.",
   "validation.custom.postnotfound": "Post not found.",
   "enum.poststatus.open": "Ideate",
