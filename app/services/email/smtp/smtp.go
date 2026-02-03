@@ -84,6 +84,13 @@ func sendMail(ctx context.Context, c *cmd.SendMail) {
 			"TemplateName": c.TemplateName,
 			"Props":        to.Props,
 		})
+		// Log validation/sign-in emails at INFO so failures are visible when LOG_LEVEL=INFO
+		if c.TemplateName == "signin_email" || c.TemplateName == "signup_email" {
+			log.Infof(ctx, "Sending validation email to @{Address} (template=@{TemplateName}).", dto.Props{
+				"Address":      to.Address,
+				"TemplateName": c.TemplateName,
+			})
+		}
 
 		message := email.RenderMessage(ctx, c.TemplateName, c.From.Address, c.Props.Merge(to.Props))
 		b := builder{}
@@ -107,6 +114,11 @@ func sendMail(ctx context.Context, c *cmd.SendMail) {
 			err = sendWithConfig(localname, smtpConfig.BackupHost, smtpConfig.BackupPort, smtpConfig.BackupUsername, smtpConfig.BackupPassword, smtpConfig.BackupEnableStartTLS, to.Address, b.Bytes())
 		}
 		if err != nil {
+			log.Errorf(ctx, "Failed to send email: template=@{TemplateName} to=@{To} error=@{Error}", dto.Props{
+				"TemplateName": c.TemplateName,
+				"To":           to.Address,
+				"Error":        err.Error(),
+			})
 			panic(errors.Wrap(err, "failed to send email with template %s", c.TemplateName))
 		}
 		log.Debug(ctx, "Email sent.")
