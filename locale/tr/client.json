@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> özel bir alandır ve katılabilmek için davetiye almanız gerekir.",
   "signin.message.socialbutton.intro": "İle giriş yapın",
   "signin.name.placeholder": "Adınız",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "En fazla {number} ek dosyaya izin verilir.",
   "validation.custom.maximagesize": "Resim boyutu {kilobytes}KB'den küçük olmalıdır."
 }

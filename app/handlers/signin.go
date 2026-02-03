@@ -12,6 +12,7 @@ import (
 	"github.com/getfider/fider/app/actions"
 	"github.com/getfider/fider/app/models/query"
 	"github.com/getfider/fider/app/pkg/bus"
+	"github.com/getfider/fider/app/pkg/cas" // Import the cas package
 	"github.com/getfider/fider/app/pkg/errors"
 	"github.com/getfider/fider/app/pkg/web"
 	webutil "github.com/getfider/fider/app/pkg/web/util"
@@ -22,11 +23,19 @@ import (
 func SignInPage() web.HandlerFunc {
 	return func(c *web.Context) error {
 
+		// Always pass casEnabled to the page, even if redirecting for public tenants.
+		// The frontend can decide whether to display the button based on other conditions (e.g. tenant type)
+		// in addition to this flag.
+		props := web.Props{
+			Page:  "SignIn/SignIn.page",
+			Title: "Sign in",
+			Data: web.Map{
+				"casEnabled": cas.IsConfigured(),
+			},
+		}
+
 		if c.Tenant().IsPrivate {
-			return c.Page(http.StatusOK, web.Props{
-				Page:  "SignIn/SignIn.page",
-				Title: "Sign in",
-			})
+			return c.Page(http.StatusOK, props)
 		}
 
 		return c.Redirect(c.BaseURL())

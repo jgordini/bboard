@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> является приватным пространством, вы должны войти в систему, чтобы принять участие и проголосовать.",
   "signin.message.socialbutton.intro": "Войти с помощью",
   "signin.name.placeholder": "Ваше имя",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "Разрешено максимум {number} вложений.",
   "validation.custom.maximagesize": "Размер изображения должен быть меньше {kilobytes}КБ."
 }

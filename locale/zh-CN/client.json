@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> 这是一个私人空间，您必须登录才能参与和投票.",
   "signin.message.socialbutton.intro": "使用以下方式登录",
   "signin.name.placeholder": "你的名字",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "最多允许 {number} 个附件。",
   "validation.custom.maximagesize": "图像大小必须小于{kilobytes}KB。"
 }

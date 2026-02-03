@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> est un espace privé, vous devez vous connecter pour participer et voter.",
   "signin.message.socialbutton.intro": "Se connecter avec",
   "signin.name.placeholder": "Votre nom",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "Un maximum de {number} pièces jointes est autorisé.",
   "validation.custom.maximagesize": "La taille de l'image doit être inférieure à {kilobytes}KB."
 }

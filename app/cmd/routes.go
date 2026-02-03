@@ -115,6 +115,8 @@ func routes(r *web.Engine) *web.Engine {
 	r.Get("/saml/login", handlers.SAMLLogin())
 	r.Post("/saml/acs", handlers.SAMLACS())
 	r.Get("/saml/metadata", handlers.SAMLMetadata())
+	r.Get("/cas/login", handlers.CASLogin())
+	r.Get("/cas/callback", handlers.CASCallback())
 
 	// If tenant is pending, block it from using any other route
 	r.Use(middlewares.BlockPendingTenants())

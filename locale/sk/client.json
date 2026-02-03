@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> je súkromný priestor, ak sa chcete zúčastniť diskusie a hlasovať, musíte sa prihlásiť.",
   "signin.message.socialbutton.intro": "Prihlásiť sa pomocou",
   "signin.name.placeholder": "Vaše meno",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "Maximálny počet príloh je {number}.",
   "validation.custom.maximagesize": "Veľkosť obrázka musí byť menšia ako {kilobytes}KB."
 }

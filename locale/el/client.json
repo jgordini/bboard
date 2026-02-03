@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> είναι ένας ιδιωτικός χώρος, πρέπει να συνδεθείτε για να συμμετάσχετε και να ψηφίσετε.",
   "signin.message.socialbutton.intro": "Συνδεθείτε με",
   "signin.name.placeholder": "Το όνομά σας",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "Επιτρέπονται έως {number} συνημμένα.",
   "validation.custom.maximagesize": "Το μέγεθος της εικόνας πρέπει να είναι μικρότερο από {kilobytes}KB."
 }

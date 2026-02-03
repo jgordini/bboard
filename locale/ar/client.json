@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> مساحة خاصة، يجب عليك تسجيل الدخول للمشاركة والتصويت.",
   "signin.message.socialbutton.intro": "تسجيل الدخول بواسطة",
   "signin.name.placeholder": "اسمك",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "يُسمح بحد أقصى {number} من المرفقات.",
   "validation.custom.maximagesize": "يجب أن يكون حجم الصورة أصغر من {kilobytes}KB."
 }

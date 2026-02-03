@@ -13,6 +13,7 @@ import (
 
 	"github.com/getfider/fider/app/models/query"
 	"github.com/getfider/fider/app/pkg/bus"
+	"github.com/getfider/fider/app/pkg/cas" // Import cas package
 	"github.com/getfider/fider/app/pkg/i18n"
 	"github.com/getfider/fider/app/pkg/log"
 	"github.com/getfider/fider/app/pkg/tpl"
@@ -212,6 +213,7 @@ func (r *Renderer) Render(w io.Writer, statusCode int, props Props, ctx *Context
 		"domain":              env.MultiTenantDomain(),
 		"hasLegal":            env.HasLegal(),
 		"isBillingEnabled":    env.IsBillingEnabled(),
+		"casEnabled":          cas.IsConfigured(), // Add this line
 		"baseURL":             ctx.BaseURL(),
 		"assetsURL":           AssetsURL(ctx, ""),
 		"oauth":               oauthProviders.Result,

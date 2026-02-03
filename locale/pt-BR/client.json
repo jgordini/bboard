@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> é um espaço privado, você deve se inscrever para participar e votar.",
   "signin.message.socialbutton.intro": "Fazer login com",
   "signin.name.placeholder": "Seu nome",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "São permitidos no máximo {number} anexos.",
   "validation.custom.maximagesize": "O tamanho da imagem deve ser menor que {kilobytes}KB."
 }

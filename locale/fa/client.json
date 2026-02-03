@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> یک فضای خصوصی است؛ برای مشارکت باید وارد شوید.",
   "signin.message.socialbutton.intro": "ورود با",
   "signin.name.placeholder": "نام شما",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "حداکثر تعداد {number} پیوست مجاز است.",
   "validation.custom.maximagesize": "حجم تصویر باید کمتر از {kilobytes}KB باشد."
 }

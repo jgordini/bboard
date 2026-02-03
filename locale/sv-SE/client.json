@@ -259,6 +259,7 @@
   "signin.message.private.title": "<0>{0}</0> är ett privat utrymme, du måste logga in för att delta och rösta.",
   "signin.message.socialbutton.intro": "Logga in med",
   "signin.name.placeholder": "Ditt namn",
+  "signin.uab.cas": "",
   "validation.custom.maxattachments": "Maximalt {number} bilagor är tillåtna.",
   "validation.custom.maximagesize": "Bildstorleken måste vara mindre än {kilobytes}KB."
 }
