@@ -76,3 +76,26 @@ The sign-in page will be updated to conditionally display a "Sign in with UAB" b
 ## 5. User Identity
 
 - The provider name for these users will be `uab`, the same as the existing SAML implementation. This ensures that existing UAB users via SAML can sign in with CAS without creating a duplicate account.
+
+## 6. UAB CAS Whitelist and Service URL
+
+**CAS login URL:** `https://padlock.idm.uab.edu/cas/login`
+
+The app sends the **service** parameter during the login process. The service ID is the application URL (callback endpoint) so CAS can redirect the user back after authentication.
+
+### URL to send to UAB for CAS whitelist
+
+When your app instance is up, send UAB IT this **exact** URL to add to the CAS whitelist:
+
+- **Service URL (callback):** `{BASE_URL}/cas/callback`
+
+Examples:
+
+- If using IP for now: `http://138.26.48.197/cas/callback`
+- If using a domain later: `https://yourdomain.edu/cas/callback`
+
+Use the same value as your app’s `BASE_URL` (or `CAS_SERVICE_URL` if set), plus `/cas/callback`. CAS will redirect the browser to this URL with a `ticket` parameter; our app also allows an optional `?redirect=...` on the login link, but the whitelist entry should be the callback path above.
+
+### Optional: additional attributes
+
+The app currently uses only the **username** (BlazerID) from the CAS response and derives email as `<BlazerID>@uab.edu`. If UAB CAS can release **email** and/or **display name** in the serviceValidate response (e.g. via CAS attributes), we can use those instead of deriving them. If you need those wired up, we can add support once the attribute format is known.

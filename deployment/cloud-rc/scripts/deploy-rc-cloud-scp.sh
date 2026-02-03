@@ -9,7 +9,7 @@
 #   ./deploy-rc-cloud-scp.sh ubuntu@138.26.48.197
 #   RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key ./deploy-rc-cloud-scp.sh
 #
-# Optional: RC_SSH_KEY path to SSH private key (e.g. ~/.ssh/cloud_key)
+# Optional: RC_SSH_KEY path to SSH private key (default: ~/.ssh/cloud_key; set to "" to use SSH agent)
 #
 # Prerequisites:
 #   - Docker installed locally (to build image)
@@ -27,7 +27,8 @@ IMAGE_NAME="blazeboard:latest"
 IMAGE_TAR="blazeboard-latest.tar"
 
 RC_HOST="${RC_HOST:-$1}"
-RC_SSH_KEY="${RC_SSH_KEY:-}"
+# Default to cloud_key if not set (use RC_SSH_KEY="" to disable)
+RC_SSH_KEY="${RC_SSH_KEY:-$HOME/.ssh/cloud_key}"
 if [ -z "$RC_HOST" ]; then
     echo "Usage: $0 <user@host>"
     echo "   or: RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key $0"
@@ -38,8 +39,8 @@ if [ -z "$RC_HOST" ]; then
     exit 1
 fi
 
-if [ -n "$RC_SSH_KEY" ]; then
-    RC_SSH_KEY="$(eval echo "$RC_SSH_KEY")"
+RC_SSH_KEY="$(eval echo "$RC_SSH_KEY")"
+if [ -n "$RC_SSH_KEY" ] && [ -f "$RC_SSH_KEY" ]; then
     RSYNC_RSH="ssh -i $RC_SSH_KEY"
     SCP_OPTS=(-i "$RC_SSH_KEY")
     SSH_OPTS=(-i "$RC_SSH_KEY")

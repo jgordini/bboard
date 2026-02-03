@@ -133,6 +133,11 @@ type config struct {
 			Username       string `env:"EMAIL_SMTP_USERNAME"`
 			Password       string `env:"EMAIL_SMTP_PASSWORD"`
 			EnableStartTLS bool   `env:"EMAIL_SMTP_ENABLE_STARTTLS,default=true"`
+		BackupHost           string `env:"EMAIL_SMTP_BACKUP_HOST"`
+		BackupPort           string `env:"EMAIL_SMTP_BACKUP_PORT"`
+		BackupUsername       string `env:"EMAIL_SMTP_BACKUP_USERNAME"`
+		BackupPassword       string `env:"EMAIL_SMTP_BACKUP_PASSWORD"`
+		BackupEnableStartTLS bool   `env:"EMAIL_SMTP_BACKUP_ENABLE_STARTTLS,default=true"`
 		}
 	}
 	BlobStorage struct {

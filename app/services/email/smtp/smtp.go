@@ -98,9 +98,14 @@ func sendMail(ctx context.Context, c *cmd.SendMail) {
 		b.Body(message.Body)
 
 		smtpConfig := env.Config.Email.SMTP
-		servername := fmt.Sprintf("%s:%s", smtpConfig.Host, smtpConfig.Port)
-		auth := authenticate(smtpConfig.Username, smtpConfig.Password, smtpConfig.Host)
-		err = Send(localname, servername, smtpConfig.EnableStartTLS, auth, email.NoReply, []string{to.Address}, b.Bytes())
+		err = sendWithConfig(localname, smtpConfig.Host, smtpConfig.Port, smtpConfig.Username, smtpConfig.Password, smtpConfig.EnableStartTLS, to.Address, b.Bytes())
+		if err != nil && smtpConfig.BackupHost != "" {
+			log.Warnf(ctx, "Primary SMTP failed. Falling back to backup host @{Host}. Error: @{Error}", dto.Props{
+				"Host":  smtpConfig.BackupHost,
+				"Error": err.Error(),
+			})
+			err = sendWithConfig(localname, smtpConfig.BackupHost, smtpConfig.BackupPort, smtpConfig.BackupUsername, smtpConfig.BackupPassword, smtpConfig.BackupEnableStartTLS, to.Address, b.Bytes())
+		}
 		if err != nil {
 			panic(errors.Wrap(err, "failed to send email with template %s", c.TemplateName))
 		}
@@ -155,6 +160,15 @@ var Send = func(localName, serverAddress string, enableStartTLS bool, a gosmtp.A
 		return err
 	}
 	return c.Quit()
+}
+
+func sendWithConfig(localname, host, port, username, password string, enableStartTLS bool, to string, msg []byte) error {
+	if host == "" {
+		return errors.New("smtp: host is empty")
+	}
+	servername := fmt.Sprintf("%s:%s", host, port)
+	auth := authenticate(username, password, host)
+	return Send(localname, servername, enableStartTLS, auth, email.NoReply, []string{to}, msg)
 }
 
 func generateMessageID(localName string) string {
