@@ -1,23 +1,27 @@
 package handlers
 
 import (
-	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/getfider/fider/app"
 	"github.com/getfider/fider/app/models/cmd"
-	"github.com/getfider/fider/app/models/dto"
+	"github.com/getfider/fider/app/models/entity"
+	"github.com/getfider/fider/app/models/enum"
+	"github.com/getfider/fider/app/models/query"
+	"github.com/getfider/fider/app/pkg/bus"
 	"github.com/getfider/fider/app/pkg/cas"
-	"github.com/getfider/fider/app/pkg/env"
 	"github.com/getfider/fider/app/pkg/errors"
+	"github.com/getfider/fider/app/pkg/log"
 	"github.com/getfider/fider/app/pkg/web"
+	webutil "github.com/getfider/fider/app/pkg/web/util"
 )
 
 // CASLogin handles the initiation of the CAS login flow
-func CASLogin() web.Handler {
-	return func(c *app.Context) error {
+func CASLogin() web.HandlerFunc {
+	return func(c *web.Context) error {
 		if !cas.IsConfigured() {
-			return errors.NotFound(c.Request.URL.Path)
+			return c.NotFound()
 		}
 
 		redirectURL := c.QueryParam("redirect")
@@ -25,78 +29,95 @@ func CASLogin() web.Handler {
 			redirectURL = "/"
 		}
 
-		// Store the redirect URL in a session or cookie for later use in the callback
-		c.Session().Set("cas_redirect_url", redirectURL)
+		cacheKey := "cas_redirect:" + c.SessionID()
+		c.Engine().Cache().Set(cacheKey, redirectURL, 10*time.Minute)
 
 		loginURL, err := cas.LoginURL(redirectURL)
 		if err != nil {
-			c.Log().Error("Failed to build CAS login URL: %v", err)
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("CAS login failed"))
+			log.Error(c, err)
+			return c.Redirect("/signin?error=" + url.QueryEscape("CAS login failed"))
 		}
 
-		return c.Redirect(http.StatusTemporaryRedirect, loginURL)
+		return c.Redirect(loginURL)
 	}
 }
 
 // CASCallback handles the callback from the CAS server
-func CASCallback() web.Handler {
-	return func(c *app.Context) error {
+func CASCallback() web.HandlerFunc {
+	return func(c *web.Context) error {
 		if !cas.IsConfigured() {
-			return errors.NotFound(c.Request.URL.Path)
+			return c.NotFound()
 		}
 
 		ticket := c.QueryParam("ticket")
 		if ticket == "" {
-			c.Log().Warn("CAS callback received without a ticket")
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("CAS authentication failed: no ticket received"))
+			log.Warn(c, "CAS callback received without a ticket")
+			return c.Redirect("/signin?error=" + url.QueryEscape("CAS authentication failed: no ticket received"))
 		}
 
 		profile, err := cas.ValidateTicket(ticket)
 		if err != nil {
-			c.Log().Error("Failed to validate CAS ticket: %v", err)
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("CAS authentication failed: invalid ticket"))
+			log.Error(c, err)
+			return c.Redirect("/signin?error=" + url.QueryEscape("CAS authentication failed: invalid ticket"))
 		}
 
 		redirectURL := "/"
-		if val := c.Session().GetString("cas_redirect_url"); val != "" {
-			redirectURL = val
-			c.Session().Remove("cas_redirect_url")
+		cacheKey := "cas_redirect:" + c.SessionID()
+		if val, found := c.Engine().Cache().Get(cacheKey); found {
+			if s, ok := val.(string); ok {
+				redirectURL = s
+			}
+			c.Engine().Cache().Delete(cacheKey)
 		}
 
-		ctx := c.Request.Context()
+		provider := app.UABProvider
 
-		// Use the existing user management logic
-		signinCmd := cmd.GetOrCreateUserFromProvider{
-			Provider:  app.UABProvider, // Using "uab" as provider for both SAML and CAS
-			Reference: profile.ID,
-			Email:     profile.Email,
-			Name:      profile.Name,
+		var user *entity.User
+		userByProvider := &query.GetUserByProvider{Provider: provider, UID: profile.ID}
+		err = bus.Dispatch(c, userByProvider)
+		user = userByProvider.Result
+
+		if errors.Cause(err) == app.ErrNotFound && profile.Email != "" {
+			userByEmail := &query.GetUserByEmail{Email: profile.Email}
+			err = bus.Dispatch(c, userByEmail)
+			user = userByEmail.Result
 		}
 
-		// Ensure we are in a transaction
-		if err := c.Service().Execute(ctx, signinCmd); err != nil {
-			c.Log().Error("Failed to get or create user from CAS provider: %v", err)
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("Failed to sign in"))
-		}
-
-		uabUser, ok := signinCmd.Result.(*dto.User)
-		if !ok {
-			c.Log().Error("Failed to cast result to User DTO after CAS authentication")
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("Failed to sign in"))
-		}
-
-		if uabUser == nil {
-			c.Log().Error("Received nil user after CAS authentication")
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("Failed to sign in"))
-		}
-
-		// Log the user in
-		err = c.SignIn(uabUser)
 		if err != nil {
-			c.Log().Error("Failed to sign in user after CAS authentication: %v", err)
-			return c.Redirect(http.StatusTemporaryRedirect, "/signin?error="+url.QueryEscape("Failed to sign in"))
+			if errors.Cause(err) == app.ErrNotFound {
+				if c.Tenant().IsPrivate {
+					return c.Redirect("/not-invited")
+				}
+				user = &entity.User{
+					Name:   profile.Name,
+					Tenant: c.Tenant(),
+					Email:  profile.Email,
+					Role:   enum.RoleVisitor,
+					Providers: []*entity.UserProvider{
+						{UID: profile.ID, Name: provider},
+					},
+				}
+				if err = bus.Dispatch(c, &cmd.RegisterUser{User: user}); err != nil {
+					log.Error(c, err)
+					return c.Redirect("/signin?error=" + url.QueryEscape("Failed to sign in"))
+				}
+			} else {
+				log.Error(c, err)
+				return c.Redirect("/signin?error=" + url.QueryEscape("Failed to sign in"))
+			}
+		} else if !user.HasProvider(provider) {
+			if err = bus.Dispatch(c, &cmd.RegisterUserProvider{
+				UserID:       user.ID,
+				ProviderName: provider,
+				ProviderUID:  profile.ID,
+			}); err != nil {
+				log.Error(c, err)
+				return c.Redirect("/signin?error=" + url.QueryEscape("Failed to sign in"))
+			}
 		}
 
-		return c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+		webutil.AddAuthUserCookie(c, user)
+
+		return c.Redirect(redirectURL)
 	}
 }

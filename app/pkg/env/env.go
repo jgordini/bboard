@@ -109,8 +109,8 @@ type config struct {
 		SPKeyPath   string `env:"SAML_SP_KEY_PATH"`  // Path to SP private key
 	}
 	CAS struct {
-		ServerURL  string `env:"CAS_SERVER_URL"`  // e.g. https://cas.uab.edu/cas
-		ServiceURL string `env:"CAS_SERVICE_URL"` // e.g. https://blazeboard.rc.uab.edu (optional, defaults to app base URL)
+		ServerURL  string `env:"CAS_SERVER_URL"`  // e.g. https://padlock.idm.uab.edu/cas
+		ServiceURL string `env:"CAS_SERVICE_URL"` // e.g. https://138.26.48.197 (optional, defaults to app base URL)
 	}
 	Email struct {
 		Type      string `env:"EMAIL"` // possible values: smtp, mailgun, awsses

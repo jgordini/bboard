@@ -120,12 +120,12 @@ The following features are delivered through the containerized Next.js applicati
 
 BlazeBoard uses **[shadcn/ui](https://ui.shadcn.com/)** as the primary UI component library. shadcn/ui is a collection of re-usable components built with **Radix UI** primitives and **Tailwind CSS**, copied into the project (copy-paste architecture) rather than installed as a dependency. This approach provides:
 
-| Benefit | Description |
-| -------- | ----------- |
-| **No vendor lock-in** | Components live in the codebase; styling and behavior can be customized freely. |
-| **Accessibility** | Radix UI primitives provide keyboard navigation, focus management, and ARIA patterns out of the box. |
-| **Design consistency** | Components align with the Fider-inspired design system and UAB branding (see §4.2). |
-| **Tailwind integration** | Full compatibility with Tailwind utility classes and the project's semantic color tokens. |
+| Benefit                  | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| **No vendor lock-in**    | Components live in the codebase; styling and behavior can be customized freely.                      |
+| **Accessibility**        | Radix UI primitives provide keyboard navigation, focus management, and ARIA patterns out of the box. |
+| **Design consistency**   | Components align with the Fider-inspired design system and UAB branding (see §4.2).                  |
+| **Tailwind integration** | Full compatibility with Tailwind utility classes and the project's semantic color tokens.            |
 
 Required base components for BlazeBoard include: `button`, `card`, `badge`, `input`, `textarea`, `select`, `dropdown-menu`, `dialog`, `toast`, `avatar`, `separator`, and `progress`. New components are added via the CLI: `npx shadcn-ui@latest add <component>`. Full setup, Tailwind configuration for UAB + Fider design, and component implementation examples are in **§4.2.10 shadcn/ui Implementation Guide**.
 
@@ -149,19 +149,18 @@ BlazeBoard's UI follows a clean, modern design language inspired by Fider, empha
 // Design tokens for typography
 const typography = {
   fonts: {
-    heading:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    heading: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     body: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     mono: '"Fira Code", "Courier New", monospace',
   },
   sizes: {
-    hero: '3rem', // 48px - Hero headlines ("Help us build the best feedback platform")
-    h1: '2rem', // 32px - Page titles ("Restrict how many ideas an user can vote")
-    h2: '1.5rem', // 24px - Section headers
-    h3: '1.25rem', // 20px - Card titles
-    body: '1rem', // 16px - Main content
-    small: '0.875rem', // 14px - Meta information, timestamps
-    tiny: '0.75rem', // 12px - Labels, badges
+    hero: "3rem", // 48px - Hero headlines ("Help us build the best feedback platform")
+    h1: "2rem", // 32px - Page titles ("Restrict how many ideas an user can vote")
+    h2: "1.5rem", // 24px - Section headers
+    h3: "1.25rem", // 20px - Card titles
+    body: "1rem", // 16px - Main content
+    small: "0.875rem", // 14px - Meta information, timestamps
+    tiny: "0.75rem", // 12px - Labels, badges
   },
   weights: {
     regular: 400,
@@ -174,7 +173,7 @@ const typography = {
     normal: 1.5,
     relaxed: 1.75,
   },
-};
+}
 ```
 
 #### 4.2.3 Color Palette (UAB + Fider-Inspired)
@@ -184,58 +183,58 @@ const typography = {
 const colors = {
   // Primary - UAB Green
   primary: {
-    50: '#f0f7f4',
-    100: '#d9ece3',
-    500: '#1A5632', // Main UAB Green
-    600: '#154428',
-    700: '#10331e',
-    900: '#0a1f13',
+    50: "#f0f7f4",
+    100: "#d9ece3",
+    500: "#1A5632", // Main UAB Green
+    600: "#154428",
+    700: "#10331e",
+    900: "#0a1f13",
   },
 
   // Accent - Campus Green
   accent: {
-    50: '#f7fde7',
-    500: '#90D408', // Main Campus Green
-    600: '#7ab307',
-    700: '#659205',
+    50: "#f7fde7",
+    500: "#90D408", // Main Campus Green
+    600: "#7ab307",
+    700: "#659205",
   },
 
   // Interactive - Blue (Fider-inspired)
   interactive: {
-    50: '#eff6ff',
-    500: '#3b82f6', // Primary action color (Vote buttons, Sign in)
-    600: '#2563eb',
-    700: '#1d4ed8',
+    50: "#eff6ff",
+    500: "#3b82f6", // Primary action color (Vote buttons, Sign in)
+    600: "#2563eb",
+    700: "#1d4ed8",
   },
 
   // Neutrals - Gray scale
   neutral: {
-    50: '#fafafa', // Background
-    100: '#f5f5f5', // Card backgrounds
-    200: '#e5e5e5', // Borders
-    300: '#d4d4d4', // Disabled states
-    500: '#737373', // Secondary text
-    700: '#404040', // Primary text
-    900: '#171717', // Headings
+    50: "#fafafa", // Background
+    100: "#f5f5f5", // Card backgrounds
+    200: "#e5e5e5", // Borders
+    300: "#d4d4d4", // Disabled states
+    500: "#737373", // Secondary text
+    700: "#404040", // Primary text
+    900: "#171717", // Headings
   },
 
   // Status colors
   status: {
-    open: '#3b82f6', // Blue
-    discussion: '#f59e0b', // Orange/Amber
-    planned: '#8b5cf6', // Purple
-    completed: '#10b981', // Green
-    declined: '#6b7280', // Gray
+    open: "#3b82f6", // Blue
+    discussion: "#f59e0b", // Orange/Amber
+    planned: "#8b5cf6", // Purple
+    completed: "#10b981", // Green
+    declined: "#6b7280", // Gray
   },
 
   // Semantic colors
   semantic: {
-    success: '#10b981',
-    warning: '#FDB913', // UAB Gold
-    error: '#ef4444',
-    info: '#3b82f6',
+    success: "#10b981",
+    warning: "#FDB913", // UAB Gold
+    error: "#ef4444",
+    info: "#3b82f6",
   },
-};
+}
 ```
 
 #### 4.2.4 Layout Structure (Homepage - Fider Pattern)
@@ -328,41 +327,41 @@ const colors = {
 
 ```typescript
 interface IdeaCard {
-  layout: 'horizontal' | 'compact';
+  layout: "horizontal" | "compact"
   spacing: {
-    padding: '1.5rem'; // 24px
-    gap: '1rem'; // 16px between elements
-  };
+    padding: "1.5rem" // 24px
+    gap: "1rem" // 16px between elements
+  }
   elements: {
     title: {
-      fontSize: '1.125rem'; // 18px
-      fontWeight: 600;
-      color: 'neutral.900';
-      maxLines: 2;
-      lineHeight: 1.4;
-    };
+      fontSize: "1.125rem" // 18px
+      fontWeight: 600
+      color: "neutral.900"
+      maxLines: 2
+      lineHeight: 1.4
+    }
     description: {
-      fontSize: '0.875rem'; // 14px
-      color: 'neutral.600';
-      maxLines: 2;
-      lineHeight: 1.5;
-    };
+      fontSize: "0.875rem" // 14px
+      color: "neutral.600"
+      maxLines: 2
+      lineHeight: 1.5
+    }
     voteCount: {
-      fontSize: '1.5rem'; // 24px
-      fontWeight: 700;
-      position: 'left-aligned';
-      label: 'Votes';
-    };
+      fontSize: "1.5rem" // 24px
+      fontWeight: 700
+      position: "left-aligned"
+      label: "Votes"
+    }
     metadata: {
-      fontSize: '0.75rem'; // 12px
-      color: 'neutral.500';
-      items: ['commentCount', 'timestamp'];
-    };
-  };
+      fontSize: "0.75rem" // 12px
+      color: "neutral.500"
+      items: ["commentCount", "timestamp"]
+    }
+  }
   hover: {
-    background: 'neutral.50';
-    transition: 'all 150ms ease';
-  };
+    background: "neutral.50"
+    transition: "all 150ms ease"
+  }
 }
 ```
 
@@ -371,28 +370,28 @@ interface IdeaCard {
 ```typescript
 interface VoteButton {
   default: {
-    background: 'interactive.500'; // Blue #3b82f6
-    color: 'white';
-    padding: '0.75rem 1.5rem'; // 12px 24px
-    borderRadius: '0.375rem'; // 6px
-    fontSize: '0.875rem'; // 14px
-    fontWeight: 600;
-    icon: '💙' | 'thumbs-up';
-  };
+    background: "interactive.500" // Blue #3b82f6
+    color: "white"
+    padding: "0.75rem 1.5rem" // 12px 24px
+    borderRadius: "0.375rem" // 6px
+    fontSize: "0.875rem" // 14px
+    fontWeight: 600
+    icon: "💙" | "thumbs-up"
+  }
   voted: {
-    background: 'interactive.600';
-    icon: '✓';
-  };
+    background: "interactive.600"
+    icon: "✓"
+  }
   hover: {
-    background: 'interactive.600';
-    transform: 'translateY(-1px)';
-    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.25)';
-  };
+    background: "interactive.600"
+    transform: "translateY(-1px)"
+    boxShadow: "0 4px 12px rgba(59, 130, 246, 0.25)"
+  }
   disabled: {
-    background: 'neutral.300';
-    cursor: 'not-allowed';
-    opacity: 0.6;
-  };
+    background: "neutral.300"
+    cursor: "not-allowed"
+    opacity: 0.6
+  }
 }
 ```
 
@@ -402,39 +401,39 @@ interface VoteButton {
 interface StatusBadge {
   variants: {
     open: {
-      background: 'rgba(59, 130, 246, 0.1)';
-      color: 'interactive.700';
-      text: 'OPEN';
-    };
+      background: "rgba(59, 130, 246, 0.1)"
+      color: "interactive.700"
+      text: "OPEN"
+    }
     discussion: {
-      background: 'rgba(245, 158, 11, 0.1)';
-      color: '#d97706';
-      text: 'Under Discussion';
-    };
+      background: "rgba(245, 158, 11, 0.1)"
+      color: "#d97706"
+      text: "Under Discussion"
+    }
     planned: {
-      background: 'rgba(139, 92, 246, 0.1)';
-      color: '#7c3aed';
-      text: 'Planned';
-    };
+      background: "rgba(139, 92, 246, 0.1)"
+      color: "#7c3aed"
+      text: "Planned"
+    }
     completed: {
-      background: 'rgba(16, 185, 129, 0.1)';
-      color: '#059669';
-      text: 'Completed';
-    };
+      background: "rgba(16, 185, 129, 0.1)"
+      color: "#059669"
+      text: "Completed"
+    }
     declined: {
-      background: 'rgba(107, 114, 128, 0.1)';
-      color: '#4b5563';
-      text: 'Declined';
-    };
-  };
+      background: "rgba(107, 114, 128, 0.1)"
+      color: "#4b5563"
+      text: "Declined"
+    }
+  }
   style: {
-    padding: '0.25rem 0.75rem'; // 4px 12px
-    borderRadius: '0.25rem'; // 4px
-    fontSize: '0.75rem'; // 12px
-    fontWeight: 600;
-    textTransform: 'uppercase';
-    letterSpacing: '0.025em';
-  };
+    padding: "0.25rem 0.75rem" // 4px 12px
+    borderRadius: "0.25rem" // 4px
+    fontSize: "0.75rem" // 12px
+    fontWeight: 600
+    textTransform: "uppercase"
+    letterSpacing: "0.025em"
+  }
 }
 ```
 
@@ -442,30 +441,30 @@ interface StatusBadge {
 
 ```typescript
 interface VoteCountDisplay {
-  layout: 'vertical-sidebar';
+  layout: "vertical-sidebar"
   container: {
-    width: '120px'; // Simplified sidebar width
-    padding: '1.5rem 1rem';
-    textAlign: 'center';
-  };
+    width: "120px" // Simplified sidebar width
+    padding: "1.5rem 1rem"
+    textAlign: "center"
+  }
   voteNumber: {
-    fontSize: '3rem'; // Large vote count display (48px)
-    fontWeight: 700;
-    color: 'neutral.900';
-    marginBottom: '0.5rem';
-  };
+    fontSize: "3rem" // Large vote count display (48px)
+    fontWeight: 700
+    color: "neutral.900"
+    marginBottom: "0.5rem"
+  }
   label: {
-    fontSize: '0.875rem';
-    color: 'neutral.600';
-    fontWeight: 500;
-    text: 'Votes';
-  };
+    fontSize: "0.875rem"
+    color: "neutral.600"
+    fontWeight: 500
+    text: "Votes"
+  }
   style: {
-    display: 'flex';
-    flexDirection: 'column';
-    alignItems: 'center';
-    gap: '0.25rem';
-  };
+    display: "flex"
+    flexDirection: "column"
+    alignItems: "center"
+    gap: "0.25rem"
+  }
 }
 ```
 
@@ -474,48 +473,48 @@ interface VoteCountDisplay {
 ```typescript
 interface CommentThread {
   comment: {
-    padding: '1.5rem';
-    borderBottom: '1px solid neutral.200';
-    spacing: '1rem';
-  };
+    padding: "1.5rem"
+    borderBottom: "1px solid neutral.200"
+    spacing: "1rem"
+  }
   author: {
-    display: 'flex';
-    gap: '0.75rem';
+    display: "flex"
+    gap: "0.75rem"
     elements: {
       avatar: {
-        size: '40px';
-        borderRadius: '50%';
-      };
+        size: "40px"
+        borderRadius: "50%"
+      }
       name: {
-        fontSize: '0.875rem';
-        fontWeight: 600;
-        color: 'neutral.900';
-      };
+        fontSize: "0.875rem"
+        fontWeight: 600
+        color: "neutral.900"
+      }
       badge: {
         // For verified/staff users
-        color: 'interactive.500';
-        icon: '✓';
-      };
+        color: "interactive.500"
+        icon: "✓"
+      }
       timestamp: {
-        fontSize: '0.75rem';
-        color: 'neutral.500';
-      };
-    };
-  };
+        fontSize: "0.75rem"
+        color: "neutral.500"
+      }
+    }
+  }
   content: {
-    fontSize: '0.875rem';
-    lineHeight: 1.6;
-    color: 'neutral.700';
-    marginTop: '0.5rem';
-  };
+    fontSize: "0.875rem"
+    lineHeight: 1.6
+    color: "neutral.700"
+    marginTop: "0.5rem"
+  }
   actions: {
-    display: 'flex';
-    gap: '1rem';
-    fontSize: '0.75rem';
-    color: 'neutral.500';
-    marginTop: '0.75rem';
-    items: ['reply', 'edit', 'delete', 'menu'];
-  };
+    display: "flex"
+    gap: "1rem"
+    fontSize: "0.75rem"
+    color: "neutral.500"
+    marginTop: "0.75rem"
+    items: ["reply", "edit", "delete", "menu"]
+  }
 }
 ```
 
@@ -524,47 +523,35 @@ interface CommentThread {
 ```typescript
 interface RichTextEditor {
   toolbar: {
-    background: 'neutral.100';
-    borderBottom: '1px solid neutral.200';
-    padding: '0.5rem';
-    buttons: [
-      'heading1',
-      'heading2',
-      'bold',
-      'italic',
-      'strikethrough',
-      'bulletList',
-      'numberedList',
-      'code',
-      'mention',
-      'image',
-      'link'
-    ];
-    buttonSize: '32px';
-    spacing: '0.25rem';
-  };
+    background: "neutral.100"
+    borderBottom: "1px solid neutral.200"
+    padding: "0.5rem"
+    buttons: ["heading1", "heading2", "bold", "italic", "strikethrough", "bulletList", "numberedList", "code", "mention", "image", "link"]
+    buttonSize: "32px"
+    spacing: "0.25rem"
+  }
   textarea: {
-    minHeight: '120px';
-    padding: '1rem';
-    fontSize: '0.875rem';
-    lineHeight: 1.6;
-    placeholder: 'Leave a comment';
-    border: '1px solid neutral.200';
-    borderRadius: '0.375rem';
-  };
+    minHeight: "120px"
+    padding: "1rem"
+    fontSize: "0.875rem"
+    lineHeight: 1.6
+    placeholder: "Leave a comment"
+    border: "1px solid neutral.200"
+    borderRadius: "0.375rem"
+  }
   actions: {
-    position: 'bottom-left';
+    position: "bottom-left"
     submitButton: {
-      text: 'Post';
-      variant: 'interactive.500';
-    };
+      text: "Post"
+      variant: "interactive.500"
+    }
     markdownToggle: {
-      text: 'Switch to markdown editor';
-      position: 'bottom-right';
-      fontSize: '0.75rem';
-      color: 'neutral.500';
-    };
-  };
+      text: "Switch to markdown editor"
+      position: "bottom-right"
+      fontSize: "0.75rem"
+      color: "neutral.500"
+    }
+  }
 }
 ```
 
@@ -573,31 +560,31 @@ interface RichTextEditor {
 ```typescript
 // Consistent spacing scale (Tailwind-based)
 const spacing = {
-  0: '0',
-  1: '0.25rem', // 4px
-  2: '0.5rem', // 8px
-  3: '0.75rem', // 12px
-  4: '1rem', // 16px
-  5: '1.25rem', // 20px
-  6: '1.5rem', // 24px
-  8: '2rem', // 32px
-  10: '2.5rem', // 40px
-  12: '3rem', // 48px
-  16: '4rem', // 64px
-  20: '5rem', // 80px
-  24: '6rem', // 96px
-};
+  0: "0",
+  1: "0.25rem", // 4px
+  2: "0.5rem", // 8px
+  3: "0.75rem", // 12px
+  4: "1rem", // 16px
+  5: "1.25rem", // 20px
+  6: "1.5rem", // 24px
+  8: "2rem", // 32px
+  10: "2.5rem", // 40px
+  12: "3rem", // 48px
+  16: "4rem", // 64px
+  20: "5rem", // 80px
+  24: "6rem", // 96px
+}
 
 // Component spacing guidelines
 const componentSpacing = {
   cardPadding: spacing[6], // 24px
   sectionGap: spacing[8], // 32px
   headerPadding: spacing[4], // 16px
-  buttonPadding: '12px 24px',
+  buttonPadding: "12px 24px",
   inputPadding: spacing[3], // 12px
-  containerMaxWidth: '1280px',
-  contentMaxWidth: '900px',
-};
+  containerMaxWidth: "1280px",
+  contentMaxWidth: "900px",
+}
 ```
 
 #### 4.2.8 Interactive States
@@ -607,40 +594,40 @@ const componentSpacing = {
 const interactiveStates = {
   hover: {
     card: {
-      background: 'neutral.50',
-      cursor: 'pointer',
-      transition: 'background 150ms ease',
+      background: "neutral.50",
+      cursor: "pointer",
+      transition: "background 150ms ease",
     },
     button: {
       primary: {
-        background: 'interactive.600',
-        transform: 'translateY(-1px)',
-        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.25)',
+        background: "interactive.600",
+        transform: "translateY(-1px)",
+        boxShadow: "0 4px 12px rgba(59, 130, 246, 0.25)",
       },
       ghost: {
-        background: 'neutral.100',
+        background: "neutral.100",
       },
     },
     link: {
-      color: 'interactive.700',
-      textDecoration: 'underline',
+      color: "interactive.700",
+      textDecoration: "underline",
     },
   },
   focus: {
-    outline: '2px solid interactive.500',
-    outlineOffset: '2px',
-    borderRadius: '0.25rem',
+    outline: "2px solid interactive.500",
+    outlineOffset: "2px",
+    borderRadius: "0.25rem",
   },
   active: {
-    transform: 'scale(0.98)',
-    transition: 'transform 100ms ease',
+    transform: "scale(0.98)",
+    transition: "transform 100ms ease",
   },
   disabled: {
     opacity: 0.6,
-    cursor: 'not-allowed',
-    pointerEvents: 'none',
+    cursor: "not-allowed",
+    pointerEvents: "none",
   },
-};
+}
 ```
 
 #### 4.2.9 Animation Guidelines
@@ -649,32 +636,32 @@ const interactiveStates = {
 // Subtle, purposeful animations
 const animations = {
   transitions: {
-    fast: '100ms ease',
-    normal: '150ms ease',
-    slow: '300ms ease',
+    fast: "100ms ease",
+    normal: "150ms ease",
+    slow: "300ms ease",
   },
   properties: {
     fadeIn: {
       from: { opacity: 0 },
       to: { opacity: 1 },
-      duration: '200ms',
+      duration: "200ms",
     },
     slideIn: {
-      from: { transform: 'translateY(8px)', opacity: 0 },
-      to: { transform: 'translateY(0)', opacity: 1 },
-      duration: '200ms',
+      from: { transform: "translateY(8px)", opacity: 0 },
+      to: { transform: "translateY(0)", opacity: 1 },
+      duration: "200ms",
     },
     scaleIn: {
-      from: { transform: 'scale(0.95)', opacity: 0 },
-      to: { transform: 'scale(1)', opacity: 1 },
-      duration: '150ms',
+      from: { transform: "scale(0.95)", opacity: 0 },
+      to: { transform: "scale(1)", opacity: 1 },
+      duration: "150ms",
     },
   },
   reducedMotion: {
     respectUserPreference: true,
-    fallback: 'opacity-only',
+    fallback: "opacity-only",
   },
-};
+}
 ```
 
 #### 4.2.10 shadcn/ui Implementation Guide
@@ -911,47 +898,41 @@ export default config
 
 ```typescript
 // components/voting/vote-button.tsx
-'use client';
+"use client"
 
-import { Button } from '@/components/ui/button';
-import { ThumbsUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Button } from "@/components/ui/button"
+import { ThumbsUp } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface VoteButtonProps {
-  voted: boolean;
-  loading?: boolean;
-  disabled?: boolean;
-  onClick: () => void;
-  className?: string;
+  voted: boolean
+  loading?: boolean
+  disabled?: boolean
+  onClick: () => void
+  className?: string
 }
 
-export function VoteButton({
-  voted,
-  loading,
-  disabled,
-  onClick,
-  className,
-}: VoteButtonProps) {
+export function VoteButton({ voted, loading, disabled, onClick, className }: VoteButtonProps) {
   return (
     <Button
       onClick={onClick}
       disabled={disabled || loading}
       className={cn(
-        'bg-interactive-500 hover:bg-interactive-600',
-        'text-white font-semibold',
-        'px-6 py-3 rounded-md',
-        'transition-all duration-150',
-        'hover:-translate-y-0.5',
-        'hover:shadow-lg hover:shadow-interactive-500/25',
-        'disabled:opacity-60 disabled:cursor-not-allowed',
-        voted && 'bg-interactive-600',
+        "bg-interactive-500 hover:bg-interactive-600",
+        "text-white font-semibold",
+        "px-6 py-3 rounded-md",
+        "transition-all duration-150",
+        "hover:-translate-y-0.5",
+        "hover:shadow-lg hover:shadow-interactive-500/25",
+        "disabled:opacity-60 disabled:cursor-not-allowed",
+        voted && "bg-interactive-600",
         className
       )}
     >
       <ThumbsUp className="mr-2 h-4 w-4" />
-      {voted ? 'Voted' : 'Vote for this idea'}
+      {voted ? "Voted" : "Vote for this idea"}
     </Button>
-  );
+  )
 }
 ```
 
@@ -959,52 +940,47 @@ export function VoteButton({
 
 ```typescript
 // components/ideas/idea-card.tsx
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { MessageCircle } from 'lucide-react';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { MessageCircle } from "lucide-react"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 interface IdeaCardProps {
-  id: string;
-  title: string;
-  description: string;
-  voteCount: number;
-  commentCount: number;
-  status:
-    | 'open'
-    | 'discussion'
-    | 'planned'
-    | 'completed'
-    | 'declined';
-  createdAt: Date;
+  id: string
+  title: string
+  description: string
+  voteCount: number
+  commentCount: number
+  status: "open" | "discussion" | "planned" | "completed" | "declined"
+  createdAt: Date
 }
 
 const statusConfig = {
   open: {
-    label: 'OPEN',
-    className: 'bg-interactive-500/10 text-interactive-700',
+    label: "OPEN",
+    className: "bg-interactive-500/10 text-interactive-700",
   },
   discussion: {
-    label: 'Under Discussion',
-    className: 'bg-amber-500/10 text-amber-700',
+    label: "Under Discussion",
+    className: "bg-amber-500/10 text-amber-700",
   },
   planned: {
-    label: 'Planned',
-    className: 'bg-purple-500/10 text-purple-700',
+    label: "Planned",
+    className: "bg-purple-500/10 text-purple-700",
   },
   completed: {
-    label: 'Completed',
-    className: 'bg-green-500/10 text-green-700',
+    label: "Completed",
+    className: "bg-green-500/10 text-green-700",
   },
   declined: {
-    label: 'Declined',
-    className: 'bg-gray-500/10 text-gray-700',
+    label: "Declined",
+    className: "bg-gray-500/10 text-gray-700",
   },
-};
+}
 
 export function IdeaCard(props: IdeaCardProps) {
-  const status = statusConfig[props.status];
+  const status = statusConfig[props.status]
 
   return (
     <Link href={`/ideas/${props.id}`}>
@@ -1012,31 +988,20 @@ export function IdeaCard(props: IdeaCardProps) {
         <CardContent className="p-6 flex gap-4">
           {/* Vote Count */}
           <div className="flex flex-col items-center min-w-[60px]">
-            <span className="text-3xl font-bold text-foreground">
-              {props.voteCount}
-            </span>
-            <span className="text-sm text-muted-foreground">
-              Votes
-            </span>
+            <span className="text-3xl font-bold text-foreground">{props.voteCount}</span>
+            <span className="text-sm text-muted-foreground">Votes</span>
           </div>
 
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-4 mb-2">
-              <h3 className="font-semibold text-lg text-foreground line-clamp-2">
-                {props.title}
-              </h3>
-              <Badge
-                variant="secondary"
-                className={cn('shrink-0', status.className)}
-              >
+              <h3 className="font-semibold text-lg text-foreground line-clamp-2">{props.title}</h3>
+              <Badge variant="secondary" className={cn("shrink-0", status.className)}>
                 {status.label}
               </Badge>
             </div>
 
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-              {props.description}
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{props.description}</p>
 
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
@@ -1049,7 +1014,7 @@ export function IdeaCard(props: IdeaCardProps) {
         </CardContent>
       </Card>
     </Link>
-  );
+  )
 }
 ```
 
@@ -1057,15 +1022,15 @@ export function IdeaCard(props: IdeaCardProps) {
 
 ```typescript
 // components/layout/hero-section.tsx
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Plus } from "lucide-react"
 
 interface HeroSectionProps {
-  headline: string;
-  description: string;
-  callToAction?: string;
-  onSuggestionClick: () => void;
+  headline: string
+  description: string
+  callToAction?: string
+  onSuggestionClick: () => void
 }
 
 export function HeroSection(props: HeroSectionProps) {
@@ -1073,21 +1038,13 @@ export function HeroSection(props: HeroSectionProps) {
     <div className="bg-gradient-to-b from-muted/30 to-background py-16">
       <div className="container max-w-4xl">
         {/* Headline */}
-        <h1 className="text-5xl font-bold text-primary mb-4 font-serif">
-          {props.headline}
-        </h1>
+        <h1 className="text-5xl font-bold text-primary mb-4 font-serif">{props.headline}</h1>
 
         {/* Description */}
-        <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-          {props.description}
-        </p>
+        <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{props.description}</p>
 
         {/* Call to Action */}
-        {props.callToAction && (
-          <p className="text-sm text-muted-foreground mb-8">
-            {props.callToAction}
-          </p>
-        )}
+        {props.callToAction && <p className="text-sm text-muted-foreground mb-8">{props.callToAction}</p>}
 
         {/* Suggestion Input */}
         <div
@@ -1095,13 +1052,11 @@ export function HeroSection(props: HeroSectionProps) {
           className="flex items-center gap-3 p-4 bg-card border border-input rounded-lg hover:border-ring cursor-pointer transition-colors"
         >
           <Plus className="h-5 w-5 text-interactive-500" />
-          <span className="text-muted-foreground">
-            Enter your suggestion here...
-          </span>
+          <span className="text-muted-foreground">Enter your suggestion here...</span>
         </div>
       </div>
     </div>
-  );
+  )
 }
 ```
 
@@ -1109,61 +1064,47 @@ export function HeroSection(props: HeroSectionProps) {
 
 ```typescript
 // components/ideas/status-badge.tsx
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
-type IdeaStatus =
-  | 'open'
-  | 'discussion'
-  | 'planned'
-  | 'completed'
-  | 'declined';
+type IdeaStatus = "open" | "discussion" | "planned" | "completed" | "declined"
 
 const statusConfig = {
   open: {
-    label: 'OPEN',
-    className:
-      'bg-interactive-500/10 text-interactive-700 hover:bg-interactive-500/20',
+    label: "OPEN",
+    className: "bg-interactive-500/10 text-interactive-700 hover:bg-interactive-500/20",
   },
   discussion: {
-    label: 'Under Discussion',
-    className: 'bg-amber-500/10 text-amber-700 hover:bg-amber-500/20',
+    label: "Under Discussion",
+    className: "bg-amber-500/10 text-amber-700 hover:bg-amber-500/20",
   },
   planned: {
-    label: 'Planned',
-    className:
-      'bg-purple-500/10 text-purple-700 hover:bg-purple-500/20',
+    label: "Planned",
+    className: "bg-purple-500/10 text-purple-700 hover:bg-purple-500/20",
   },
   completed: {
-    label: 'Completed',
-    className: 'bg-green-500/10 text-green-700 hover:bg-green-500/20',
+    label: "Completed",
+    className: "bg-green-500/10 text-green-700 hover:bg-green-500/20",
   },
   declined: {
-    label: 'Declined',
-    className: 'bg-gray-500/10 text-gray-700 hover:bg-gray-500/20',
+    label: "Declined",
+    className: "bg-gray-500/10 text-gray-700 hover:bg-gray-500/20",
   },
-};
+}
 
 interface StatusBadgeProps {
-  status: IdeaStatus;
-  className?: string;
+  status: IdeaStatus
+  className?: string
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const config = statusConfig[status];
+  const config = statusConfig[status]
 
   return (
-    <Badge
-      variant="secondary"
-      className={cn(
-        'font-semibold uppercase text-xs tracking-wide',
-        config.className,
-        className
-      )}
-    >
+    <Badge variant="secondary" className={cn("font-semibold uppercase text-xs tracking-wide", config.className, className)}>
       {config.label}
     </Badge>
-  );
+  )
 }
 ```
 
@@ -1171,37 +1112,27 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
 
 ```typescript
 // components/voting/vote-progress.tsx
-import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { Progress } from "@/components/ui/progress"
+import { cn } from "@/lib/utils"
 
 interface VoteProgressProps {
-  current: number;
-  max: number;
-  className?: string;
+  current: number
+  max: number
+  className?: string
 }
 
-export function VoteProgress({
-  current,
-  max,
-  className,
-}: VoteProgressProps) {
-  const percentage = Math.min((current / max) * 100, 100);
+export function VoteProgress({ current, max, className }: VoteProgressProps) {
+  const percentage = Math.min((current / max) * 100, 100)
 
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn("space-y-2", className)}>
       <div className="flex items-center justify-between">
-        <span className="text-3xl font-bold text-foreground">
-          {current}
-        </span>
+        <span className="text-3xl font-bold text-foreground">{current}</span>
         <span className="text-sm text-muted-foreground">Votes</span>
       </div>
-      <Progress
-        value={percentage}
-        className="h-2"
-        indicatorClassName="bg-interactive-500"
-      />
+      <Progress value={percentage} className="h-2" indicatorClassName="bg-interactive-500" />
     </div>
-  );
+  )
 }
 ```
 
@@ -1209,15 +1140,15 @@ export function VoteProgress({
 
 ```typescript
 // app/page.tsx
-import { HeroSection } from '@/components/layout/hero-section';
-import { IdeaCard } from '@/components/ideas/idea-card';
-import { Button } from '@/components/ui/button';
-import { Filter } from 'lucide-react';
+import { HeroSection } from "@/components/layout/hero-section"
+import { IdeaCard } from "@/components/ideas/idea-card"
+import { Button } from "@/components/ui/button"
+import { Filter } from "lucide-react"
 
 export default function HomePage() {
   const handleSuggestionClick = () => {
     // Open suggestion modal
-  };
+  }
 
   return (
     <div>
@@ -1242,7 +1173,7 @@ export default function HomePage() {
         <div className="space-y-4">{/* Map over ideas */}</div>
       </div>
     </div>
-  );
+  )
 }
 ```
 
@@ -1405,14 +1336,10 @@ export function injectBrandingCSS(config: BrandingConfig) {
       --font-body: ${config.fonts.body};
       
       /* Spacing (based on density) */
-      --card-padding: ${
-        config.ui.layoutDensity === 'compact' ? '1rem' : '1.5rem'
-      };
-      --section-gap: ${
-        config.ui.layoutDensity === 'compact' ? '1.5rem' : '2rem'
-      };
+      --card-padding: ${config.ui.layoutDensity === "compact" ? "1rem" : "1.5rem"};
+      --section-gap: ${config.ui.layoutDensity === "compact" ? "1.5rem" : "2rem"};
     }
-  `;
+  `
 }
 ```
 
@@ -1558,26 +1485,24 @@ For UAB deployments, branding is locked to institutional standards with Fider-st
 // hooks/useRealTimeVotes.ts
 // Leverages Postgres LISTEN/NOTIFY without external services
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react"
 
 export function useRealTimeVotes(ideaId: string) {
-  const [voteCount, setVoteCount] = useState<number>(0);
+  const [voteCount, setVoteCount] = useState<number>(0)
 
   useEffect(() => {
     // Server-Sent Events connection to Next.js API route
-    const eventSource = new EventSource(
-      `/api/ideas/${ideaId}/votes/stream`
-    );
+    const eventSource = new EventSource(`/api/ideas/${ideaId}/votes/stream`)
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setVoteCount(data.voteCount);
-    };
+      const data = JSON.parse(event.data)
+      setVoteCount(data.voteCount)
+    }
 
-    return () => eventSource.close();
-  }, [ideaId]);
+    return () => eventSource.close()
+  }, [ideaId])
 
-  return voteCount;
+  return voteCount
 }
 ```
 
@@ -1585,35 +1510,30 @@ export function useRealTimeVotes(ideaId: string) {
 // app/api/ideas/[id]/votes/stream/route.ts
 // SSE endpoint backed by Postgres LISTEN/NOTIFY
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const encoder = new TextEncoder();
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const encoder = new TextEncoder()
 
   const stream = new ReadableStream({
     async start(controller) {
-      const client = await pool.connect();
-      await client.query(`LISTEN vote_update`);
+      const client = await pool.connect()
+      await client.query(`LISTEN vote_update`)
 
-      client.on('notification', (msg) => {
-        const payload = JSON.parse(msg.payload);
+      client.on("notification", (msg) => {
+        const payload = JSON.parse(msg.payload)
         if (payload.idea_id === params.id) {
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify(payload)}\n\n`)
-          );
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`))
         }
-      });
+      })
     },
-  });
+  })
 
   return new Response(stream, {
     headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
     },
-  });
+  })
 }
 ```
 
@@ -1652,7 +1572,7 @@ volumes:
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: "standalone",
 
   // Enable static optimization where possible
   experimental: {
@@ -1661,25 +1581,23 @@ const nextConfig = {
 
   // Image optimization (disable if using external CDN)
   images: {
-    unoptimized: process.env.DISABLE_IMAGE_OPTIMIZATION === 'true',
-    remotePatterns: [{ protocol: 'https', hostname: '*.uab.edu' }],
+    unoptimized: process.env.DISABLE_IMAGE_OPTIMIZATION === "true",
+    remotePatterns: [{ protocol: "https", hostname: "*.uab.edu" }],
   },
 
   // Bundle analyzer (dev only)
-  ...(process.env.ANALYZE === 'true' && {
+  ...(process.env.ANALYZE === "true" && {
     webpack: (config, { isServer }) => {
       if (!isServer) {
-        const {
-          BundleAnalyzerPlugin,
-        } = require('webpack-bundle-analyzer');
-        config.plugins.push(new BundleAnalyzerPlugin());
+        const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
+        config.plugins.push(new BundleAnalyzerPlugin())
       }
-      return config;
+      return config
     },
   }),
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
 ```
 
 **Build Performance Targets:**
@@ -1759,18 +1677,18 @@ CMD ["node", "server.js"]
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: "standalone",
   experimental: {
     // Optimize for container deployments
-    outputFileTracingRoot: require('path').join(__dirname, '../'),
+    outputFileTracingRoot: require("path").join(__dirname, "../"),
   },
   // Disable image optimization if using external CDN
   images: {
-    unoptimized: process.env.DISABLE_IMAGE_OPTIMIZATION === 'true',
+    unoptimized: process.env.DISABLE_IMAGE_OPTIMIZATION === "true",
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
 ```
 
 ### 5.3 Nginx Reverse Proxy Image
@@ -1857,7 +1775,7 @@ server {
 
 ```yaml
 # docker-compose.dev.yml
-version: '3.9'
+version: "3.9"
 
 services:
   app:
@@ -1867,7 +1785,7 @@ services:
       target: deps # Use deps stage for hot reload
     container_name: blazeboard-dev
     ports:
-      - '3000:3000'
+      - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
@@ -1894,9 +1812,9 @@ services:
       - postgres-dev-data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d:ro
     ports:
-      - '5432:5432'
+      - "5432:5432"
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U blazeboard -d blazeboard']
+      test: ["CMD-SHELL", "pg_isready -U blazeboard -d blazeboard"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -1915,7 +1833,7 @@ networks:
 
 ```yaml
 # docker-compose.prod.yml
-version: '3.9'
+version: "3.9"
 
 services:
   app:
@@ -1923,7 +1841,7 @@ services:
     container_name: blazeboard-app
     restart: unless-stopped
     expose:
-      - '3000'
+      - "3000"
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
@@ -1934,15 +1852,7 @@ services:
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
     healthcheck:
-      test:
-        [
-          'CMD',
-          'wget',
-          '--no-verbose',
-          '--tries=1',
-          '--spider',
-          'http://localhost:3000/api/health',
-        ]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       start_period: 40s
@@ -1950,26 +1860,26 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: "1.0"
           memory: 512M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 256M
     networks:
       - blazeboard-network
     logging:
       driver: json-file
       options:
-        max-size: '10m'
-        max-file: '3'
+        max-size: "10m"
+        max-file: "3"
 
   nginx:
     image: nginx:1.25-alpine
     container_name: blazeboard-nginx
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
@@ -1977,15 +1887,7 @@ services:
       app:
         condition: service_healthy
     healthcheck:
-      test:
-        [
-          'CMD',
-          'wget',
-          '--no-verbose',
-          '--tries=1',
-          '--spider',
-          'http://localhost/health',
-        ]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -1994,8 +1896,8 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: '10m'
-        max-file: '3'
+        max-size: "10m"
+        max-file: "3"
 
   # Optional: Include if using containerized PostgreSQL
   db:
@@ -2010,17 +1912,17 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./db/backups:/backups
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: "1.0"
           memory: 1G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
     networks:
       - blazeboard-network
@@ -2039,7 +1941,7 @@ networks:
 
 ```yaml
 # docker-compose.uab.yml
-version: '3.9'
+version: "3.9"
 
 services:
   app:
@@ -2047,7 +1949,7 @@ services:
     container_name: blazeboard-uab
     restart: unless-stopped
     expose:
-      - '3000'
+      - "3000"
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}?sslmode=require
@@ -2067,15 +1969,7 @@ services:
       - BRANDING_PRODUCT_NAME=BlazeBoard
       - BRANDING_PRIMARY_COLOR=#1A5632
     healthcheck:
-      test:
-        [
-          'CMD',
-          'wget',
-          '--no-verbose',
-          '--tries=1',
-          '--spider',
-          'http://localhost:3000/api/health',
-        ]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       start_period: 40s
@@ -2083,26 +1977,26 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2.0'
+          cpus: "2.0"
           memory: 1G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
     networks:
       - blazeboard-uab-network
     logging:
       driver: json-file
       options:
-        max-size: '50m'
-        max-file: '5'
+        max-size: "50m"
+        max-file: "5"
 
   nginx:
     image: nginx:1.25-alpine
     container_name: blazeboard-nginx-uab
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.uab.conf:/etc/nginx/nginx.conf:ro
       - /etc/ssl/uab:/etc/nginx/ssl:ro # UAB SSL certificates
@@ -2183,36 +2077,36 @@ LOG_LEVEL=info
 
 ```typescript
 // app/api/health/route.ts
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { NextResponse } from "next/server"
+import { db } from "@/lib/db"
 
 export async function GET() {
   const health = {
-    status: 'healthy',
+    status: "healthy",
     timestamp: new Date().toISOString(),
-    version: process.env.npm_package_version || 'unknown',
+    version: process.env.npm_package_version || "unknown",
     checks: {
-      database: 'unknown',
-      memory: 'unknown',
+      database: "unknown",
+      memory: "unknown",
     },
-  };
+  }
 
   try {
     // Database connectivity check
-    await db.$queryRaw`SELECT 1`;
-    health.checks.database = 'healthy';
+    await db.$queryRaw`SELECT 1`
+    health.checks.database = "healthy"
   } catch (error) {
-    health.checks.database = 'unhealthy';
-    health.status = 'unhealthy';
+    health.checks.database = "unhealthy"
+    health.status = "unhealthy"
   }
 
   // Memory check
-  const used = process.memoryUsage();
-  const heapUsedMB = Math.round(used.heapUsed / 1024 / 1024);
-  health.checks.memory = heapUsedMB < 400 ? 'healthy' : 'warning';
+  const used = process.memoryUsage()
+  const heapUsedMB = Math.round(used.heapUsed / 1024 / 1024)
+  health.checks.memory = heapUsedMB < 400 ? "healthy" : "warning"
 
-  const statusCode = health.status === 'healthy' ? 200 : 503;
-  return NextResponse.json(health, { status: statusCode });
+  const statusCode = health.status === "healthy" ? 200 : 503
+  return NextResponse.json(health, { status: statusCode })
 }
 ```
 
@@ -2221,15 +2115,7 @@ export async function GET() {
 ```yaml
 # Health check parameters
 healthcheck:
-  test:
-    [
-      'CMD',
-      'wget',
-      '--no-verbose',
-      '--tries=1',
-      '--spider',
-      'http://localhost:3000/api/health',
-    ]
+  test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
   interval: 30s # Check every 30 seconds
   timeout: 10s # Fail if no response in 10 seconds
   start_period: 40s # Grace period for container startup
@@ -2241,9 +2127,9 @@ healthcheck:
 ```yaml
 # Prometheus metrics endpoint (add to app service)
 labels:
-  prometheus.io/scrape: 'true'
-  prometheus.io/port: '3000'
-  prometheus.io/path: '/api/metrics'
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3000"
+  prometheus.io/path: "/api/metrics"
 ```
 
 ---
@@ -2308,7 +2194,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches: [main]
-    tags: ['v*']
+    tags: ["v*"]
   pull_request:
     branches: [main]
 
@@ -2362,8 +2248,8 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
+          exit-code: "1"
+          severity: "CRITICAL,HIGH"
 ```
 
 ### 10.2 UAB GitLab Container Registry (Alternative)
@@ -2585,7 +2471,7 @@ docker pull code.rc.uab.edu:4567/<gitlab-group>/blazeboard/blazeboard-app:latest
 **2. Create docker-compose.yml:**
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -2593,7 +2479,7 @@ services:
     container_name: blazeboard-app
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - "3000:3000"
     env_file: .env
     depends_on:
       - db
@@ -2614,8 +2500,8 @@ services:
     container_name: blazeboard-nginx
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
@@ -2640,8 +2526,8 @@ docker-compose up -d
 # Install Certbot
 sudo apt install -y certbot python3-certbot-nginx
 
-# Obtain certificate (replace with your domain)
-sudo certbot --nginx -d blazeboard.rc.uab.edu
+# Obtain certificate (use when you have a domain; Let's Encrypt does not issue for IPs)
+# sudo certbot --nginx -d your-domain.example.com
 
 # Certificates auto-renew via cron
 sudo certbot renew --dry-run

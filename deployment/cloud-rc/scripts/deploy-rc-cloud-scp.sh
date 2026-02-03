@@ -34,7 +34,7 @@ if [ -z "$RC_HOST" ]; then
     echo ""
     echo "Examples:"
     echo "  $0 ubuntu@138.26.48.197"
-    echo "  RC_HOST=ubuntu@blazeboard.cloud.rc.uab.edu RC_SSH_KEY=~/.ssh/cloud_key $0"
+    echo "  RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key $0"
     exit 1
 fi
 

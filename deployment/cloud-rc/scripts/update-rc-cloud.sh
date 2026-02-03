@@ -6,7 +6,7 @@
 # Syncs deployment files to the instance and runs deploy.sh update.
 #
 # Usage:
-#   ./update-rc-cloud.sh ubuntu@blazeboard.cloud.rc.uab.edu
+#   ./update-rc-cloud.sh ubuntu@138.26.48.197
 #   RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key ./update-rc-cloud.sh
 #
 # Optional: RC_SSH_KEY path to SSH private key (e.g. ~/.ssh/cloud_key)
@@ -26,10 +26,10 @@ RC_HOST="${RC_HOST:-$1}"
 RC_SSH_KEY="${RC_SSH_KEY:-}"
 if [ -z "$RC_HOST" ]; then
     echo "Usage: $0 <user@host>"
-    echo "   or: RC_HOST=ubuntu@blazeboard.cloud.rc.uab.edu $0"
+    echo "   or: RC_HOST=ubuntu@138.26.48.197 $0"
     echo ""
     echo "Examples:"
-    echo "  $0 ubuntu@blazeboard.cloud.rc.uab.edu"
+    echo "  $0 ubuntu@138.26.48.197"
     echo "  RC_HOST=ubuntu@138.26.48.197 RC_SSH_KEY=~/.ssh/cloud_key $0"
     exit 1
 fi

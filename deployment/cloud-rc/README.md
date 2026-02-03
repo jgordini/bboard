@@ -26,7 +26,7 @@ This deployment uses:
 
 ### From UAB IT
 
-- [ ] Domain name configured (e.g., `blazeboard.cloud.rc.uab.edu`)
+- [ ] Host/IP for access (e.g., `138.26.48.197`; domain can be added later)
 - [ ] DNS A record pointing to floating IP
 - [ ] SMTP credentials (optional - can use MailHog for testing)
 - [ ] SAML IdP certificate (optional - for UAB authentication)
@@ -123,7 +123,7 @@ Once HTTP is working and DNS is configured:
 # Get Let's Encrypt certificate
 sudo certbot certonly --webroot \
   -w /var/www/certbot \
-  -d blazeboard.cloud.rc.uab.edu \
+  -d 138.26.48.197 \
   --email your-email@uab.edu \
   --agree-tos
 ```
@@ -164,7 +164,7 @@ To enable UAB SAML authentication:
 cd /var/fider
 
 # Generate SAML certificates
-./scripts/generate-saml-certs.sh blazeboard.cloud.rc.uab.edu
+./scripts/generate-saml-certs.sh 138.26.48.197
 
 # Get SAML IdP certificate from UAB IT
 # Add to .env file as SAML_IDP_CERT
@@ -181,7 +181,7 @@ nano docker-compose.yml
 ./scripts/deploy.sh https
 
 # Download SP metadata (if using domain/HTTPS)
-curl https://blazeboard.cloud.rc.uab.edu/saml/metadata > sp-metadata.xml
+curl https://138.26.48.197/saml/metadata > sp-metadata.xml
 
 # Send sp-metadata.xml and ssl/sp.crt to UAB IT for IdP registration
 ```
@@ -352,7 +352,7 @@ docker compose restart db
 
 ```bash
 # Check certificate exists
-sudo ls -la /etc/letsencrypt/live/blazeboard.cloud.rc.uab.edu/
+sudo ls -la /etc/letsencrypt/live/138.26.48.197/
 
 # Check certificate expiry
 sudo certbot certificates

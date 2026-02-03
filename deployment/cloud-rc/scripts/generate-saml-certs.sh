@@ -8,7 +8,7 @@
 #   ./generate-saml-certs.sh <domain>
 #
 # Example:
-#   ./generate-saml-certs.sh blazeboard.cloud.rc.uab.edu
+#   ./generate-saml-certs.sh 138.26.48.197
 #
 # =============================================================================
 
@@ -19,7 +19,7 @@ DOMAIN="${1}"
 if [ -z "$DOMAIN" ]; then
     echo "ERROR: Domain name required"
     echo "Usage: $0 <domain>"
-    echo "Example: $0 blazeboard.cloud.rc.uab.edu"
+    echo "Example: $0 138.26.48.197"
     exit 1
 fi
 

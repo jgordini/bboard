@@ -181,8 +181,20 @@ export const SignInControl: React.FunctionComponent<SignInControlProps> = (props
               </React.Fragment>
             ))}
           </div>
-          {props.useEmail && <Divider />}
+          {(props.useEmail || fider.settings.casEnabled) && <Divider />}
         </>
+      )}
+
+      {fider.settings.casEnabled && (
+        <div className="pb-3">
+          <a
+            href={`/cas/login?redirect=${encodeURIComponent(props.redirectTo || fider.settings.baseURL)}`}
+            className="c-signin-control__uab btn btn-block text-center"
+            style={{ backgroundColor: "#1E6B52", borderColor: "#1E6B52", color: "white" }}
+          >
+            <Trans id="signin.uab.cas">Sign in with UAB</Trans>
+          </a>
+        </div>
       )}
 
       {props.useEmail &&

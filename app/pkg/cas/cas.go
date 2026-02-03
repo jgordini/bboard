@@ -2,7 +2,6 @@ package cas
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -75,7 +74,7 @@ func ValidateTicket(ticket string) (*Profile, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Errorf("CAS ticket validation failed with status: %d", resp.StatusCode)
+		return nil, errors.New("CAS ticket validation failed with status: %d", resp.StatusCode)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -90,7 +89,7 @@ func ValidateTicket(ticket string) (*Profile, error) {
 	}
 
 	if casResponse.ServiceResponse.AuthenticationSuccess.User == "" {
-		return nil, errors.Errorf("CAS authentication failed: %s", string(body))
+		return nil, errors.New("CAS authentication failed: %s", string(body))
 	}
 
 	username := strings.ToLower(casResponse.ServiceResponse.AuthenticationSuccess.User)

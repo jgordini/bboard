@@ -6,17 +6,19 @@ Get BlazeBoard running on UAB Cloud.rc in 6 steps.
 
 - [ ] Cloud.rc account access
 - [ ] SSH key added to OpenStack
-- [ ] Domain name (e.g., `blazeboard.cloud.rc.uab.edu`)
+- [ ] Host or IP (e.g., `138.26.48.197`)
 
 ## Step 1: Create OpenStack Resources (5 minutes)
 
 In the cloud.rc dashboard (https://dashboard.cloud.rc.uab.edu):
 
 1. **Create Volume**: Project → Volumes → Create Volume
+
    - Name: `blazeboard-postgres-data`
    - Size: 50 GB
 
 2. **Launch Instance**: Project → Compute → Launch Instance
+
    - Name: `blazeboard-prod`
    - Source: Ubuntu 24.04 LTS
    - Flavor: m1.medium (2 vCPU, 4GB RAM)
@@ -24,9 +26,11 @@ In the cloud.rc dashboard (https://dashboard.cloud.rc.uab.edu):
    - Key Pair: Your SSH key
 
 3. **Attach Volume**: Volumes → blazeboard-postgres-data → Manage Attachments
+
    - Attach to: `blazeboard-prod`
 
 4. **Security Groups**: Project → Network → Security Groups → default → Manage Rules
+
    - Add: TCP 22 (SSH)
    - Add: TCP 80 (HTTP)
    - Add: TCP 443 (HTTPS)
@@ -124,6 +128,7 @@ curl http://localhost
 Open your browser and go to: `http://<floating-ip>`
 
 You should see the BlazeBoard setup wizard. Complete it:
+
 1. Enter organization name
 2. Enter admin email
 3. Check email for confirmation link (if using MailHog, go to `http://<floating-ip>:8025`)
@@ -137,16 +142,16 @@ You should see the BlazeBoard setup wizard. Complete it:
    ```bash
    sudo certbot certonly --webroot \
      -w /var/www/certbot \
-     -d blazeboard.cloud.rc.uab.edu \
+     -d 138.26.48.197 \
      --email your-email@uab.edu \
      --agree-tos
    ```
-3. **Update .env**: Change `BASE_URL` to `https://blazeboard.cloud.rc.uab.edu`
+3. **Update .env**: Change `BASE_URL` to `https://138.26.48.197`
 4. **Redeploy**: `./scripts/deploy.sh https`
 
 ### Enable UAB SAML
 
-1. **Generate certificates**: `./scripts/generate-saml-certs.sh blazeboard.cloud.rc.uab.edu`
+1. **Generate certificates**: `./scripts/generate-saml-certs.sh 138.26.48.197`
 2. **Get IdP cert from UAB IT**
 3. **Update .env**: Add SAML configuration
 4. **Update docker-compose.yml**: Uncomment SAML environment variables
@@ -156,20 +161,24 @@ You should see the BlazeBoard setup wizard. Complete it:
 ## Troubleshooting
 
 **Can't SSH into instance?**
+
 - Check security group has port 22 open
 - Verify you're using correct SSH key
 - Try from UAB VPN if required
 
 **Docker permission denied?**
+
 - Did you log out and back in after setup?
 - Check: `groups` should show `docker`
 
 **Application not starting?**
+
 - Check logs: `docker compose logs app`
 - Verify .env has all required values
 - Check database: `docker compose logs db`
 
 **Can't access via browser?**
+
 - Check security group has port 80 open
 - Verify containers are running: `docker compose ps`
 - Check nginx logs: `docker compose logs nginx`
@@ -199,6 +208,7 @@ docker compose exec db pg_dump -U fider fider > backup.sql
 ## Support
 
 Need help?
+
 - Full documentation: See `README.md` in this directory
 - Deployment design: See `docs/plans/2026-01-31-cloud-rc-deployment-design.md`
 - UAB RC Support: https://docs.rc.uab.edu/help/support

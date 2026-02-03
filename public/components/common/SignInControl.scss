@@ -18,6 +18,20 @@
       margin-bottom: spacing(3);
     }
   }
+
+  &__uab {
+    display: block;
+    padding: spacing(3);
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+
+    &:hover {
+      filter: brightness(0.9);
+      color: white;
+    }
+  }
 }
 
 .c-signin-social-button {

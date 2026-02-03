@@ -54,13 +54,13 @@ Production deployment of the bboard (Fider) application on UAB's cloud.rc OpenSt
 
 ### OpenStack Resources
 
-| Resource | Specification | Purpose |
-|----------|--------------|---------|
-| Instance | Ubuntu 24.04 LTS, m1.medium (2 vCPU, 4GB RAM) | Application host |
-| Volume | 50GB, ext4 filesystem | PostgreSQL persistent storage |
-| Floating IP | Public IPv4 | External access |
-| Security Groups | TCP 22, 80, 443 | SSH, HTTP, HTTPS access |
-| Network | Project network + router | Campus network connectivity |
+| Resource        | Specification                                 | Purpose                       |
+| --------------- | --------------------------------------------- | ----------------------------- |
+| Instance        | Ubuntu 24.04 LTS, m1.medium (2 vCPU, 4GB RAM) | Application host              |
+| Volume          | 50GB, ext4 filesystem                         | PostgreSQL persistent storage |
+| Floating IP     | Public IPv4                                   | External access               |
+| Security Groups | TCP 22, 80, 443                               | SSH, HTTP, HTTPS access       |
+| Network         | Project network + router                      | Campus network connectivity   |
 
 ### Docker Services
 
@@ -100,7 +100,7 @@ services:
     volumes:
       - ./ssl:/app/etc:ro
     environment:
-      BASE_URL: https://blazeboard.cloud.rc.uab.edu
+      BASE_URL: https://138.26.48.197
       DATABASE_URL: postgres://fider:${DB_PASSWORD}@db:5432/fider?sslmode=disable
       JWT_SECRET: ${JWT_SECRET}
       EMAIL_NOREPLY: noreply@uab.edu
@@ -108,7 +108,7 @@ services:
       EMAIL_SMTP_PORT: ${SMTP_PORT}
       EMAIL_SMTP_USERNAME: ${SMTP_USER}
       EMAIL_SMTP_PASSWORD: ${SMTP_PASS}
-      SAML_ENTITY_ID: https://blazeboard.cloud.rc.uab.edu/saml/metadata
+      SAML_ENTITY_ID: https://138.26.48.197/saml/metadata
       SAML_IDP_ENTITY_ID: https://idp.uab.edu/idp/shibboleth
       SAML_IDP_SSO_URL: https://idp.uab.edu/idp/profile/SAML2/Redirect/SSO
       SAML_IDP_CERT: ${SAML_IDP_CERT}
@@ -179,7 +179,7 @@ http {
     # HTTP - Redirect to HTTPS
     server {
         listen 80;
-        server_name blazeboard.cloud.rc.uab.edu;
+        server_name 138.26.48.197;
 
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
@@ -193,10 +193,10 @@ http {
     # HTTPS
     server {
         listen 443 ssl http2;
-        server_name blazeboard.cloud.rc.uab.edu;
+        server_name 138.26.48.197;
 
-        ssl_certificate /etc/letsencrypt/live/blazeboard.cloud.rc.uab.edu/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/blazeboard.cloud.rc.uab.edu/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/138.26.48.197/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/138.26.48.197/privkey.pem;
 
         add_header Strict-Transport-Security "max-age=31536000" always;
         add_header X-Frame-Options "SAMEORIGIN" always;
@@ -221,7 +221,7 @@ http {
 
 - [ ] Cloud.rc account access (dashboard.cloud.rc.uab.edu)
 - [ ] SSH key pair created and added to OpenStack
-- [ ] Domain name decided: `blazeboard.cloud.rc.uab.edu`
+- [ ] Domain name decided: `138.26.48.197`
 - [ ] Contact UAB IT for:
   - [ ] SMTP credentials
   - [ ] SAML IdP certificate
@@ -231,12 +231,14 @@ http {
 ### Phase 2: OpenStack Setup (Dashboard)
 
 1. **Create Volume**
+
    - Navigate: Project → Volumes → Volumes → Create Volume
    - Name: `blazeboard-postgres-data`
    - Size: `50 GB`
    - Type: `__DEFAULT__`
 
 2. **Launch Instance**
+
    - Navigate: Project → Compute → Instances → Launch Instance
    - Name: `blazeboard-prod`
    - Source: Ubuntu 24.04 LTS
@@ -245,10 +247,12 @@ http {
    - Key Pair: Your SSH key
 
 3. **Attach Volume**
+
    - Navigate: Volumes → blazeboard-postgres-data → Manage Attachments
    - Attach to: `blazeboard-prod`
 
 4. **Configure Security Groups**
+
    - Navigate: Project → Network → Security Groups → default → Manage Rules
    - Add rules:
      - `TCP 22` (SSH) from `0.0.0.0/0`
@@ -320,7 +324,7 @@ sudo apt update && sudo apt install -y certbot
 # Get SSL certificate (DNS must point to floating IP first)
 sudo certbot certonly --webroot \
   -w /var/www/certbot \
-  -d blazeboard.cloud.rc.uab.edu \
+  -d 138.26.48.197 \
   --email your-email@uab.edu \
   --agree-tos
 
@@ -342,7 +346,7 @@ cd /var/fider/ssl
 # Generate SAML SP certificates
 openssl genrsa -out sp.key 2048
 openssl req -new -key sp.key -out sp.csr \
-  -subj "/C=US/ST=Alabama/L=Birmingham/O=UAB/CN=blazeboard.cloud.rc.uab.edu"
+  -subj "/C=US/ST=Alabama/L=Birmingham/O=UAB/CN=138.26.48.197"
 openssl x509 -req -days 3650 -in sp.csr -signkey sp.key -out sp.crt
 chmod 600 sp.key
 chmod 644 sp.crt
@@ -359,7 +363,7 @@ docker compose down
 docker compose up -d
 
 # Download SP metadata
-curl https://blazeboard.cloud.rc.uab.edu/saml/metadata > sp-metadata.xml
+curl https://138.26.48.197/saml/metadata > sp-metadata.xml
 
 # Send sp-metadata.xml and sp.crt to UAB IT for IdP registration
 ```
@@ -406,12 +410,13 @@ docker compose ps
 docker stats
 
 # Application health
-curl -f https://blazeboard.cloud.rc.uab.edu || echo "Down"
+curl -f https://138.26.48.197 || echo "Down"
 ```
 
 ### Troubleshooting
 
 **Database connection errors:**
+
 ```bash
 # Check database health
 docker compose exec db pg_isready -U fider
@@ -424,6 +429,7 @@ docker compose restart db
 ```
 
 **SSL certificate issues:**
+
 ```bash
 # Test certificate renewal
 sudo certbot renew --dry-run
@@ -433,9 +439,10 @@ sudo certbot certificates
 ```
 
 **SAML authentication failures:**
+
 ```bash
 # Check SAML metadata endpoint
-curl https://blazeboard.cloud.rc.uab.edu/saml/metadata
+curl https://138.26.48.197/saml/metadata
 
 # Verify certificates exist
 ls -la /var/fider/ssl/
@@ -447,16 +454,19 @@ docker compose logs app | grep -i saml
 ## Security Considerations
 
 1. **Secrets Management**
+
    - Never commit `.env` file to git
    - Use strong passwords (32+ characters)
    - Rotate JWT_SECRET periodically
 
 2. **Network Security**
+
    - Only expose ports 22, 80, 443
    - Consider restricting SSH to UAB IP ranges
    - Enable HTTPS-only (redirect HTTP)
 
 3. **Data Protection**
+
    - Regular database backups (automated)
    - Volume snapshots weekly
    - Test restore procedures

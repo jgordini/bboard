@@ -26,7 +26,7 @@ A new configuration struct will be added to `app/pkg/env/env.go`.
 ```go
 // app/pkg/env/env.go
 type CAS struct {
-    ServerURL  string `env:"CAS_SERVER_URL"`  // e.g., https://cas.uab.edu/cas
+    ServerURL  string `env:"CAS_SERVER_URL"`  // e.g., https://padlock.idm.uab.edu/cas
     ServiceURL string `env:"CAS_SERVICE_URL"` // Optional, defaults to app base URL
 }
 ```
@@ -35,17 +35,17 @@ type CAS struct {
 
 A new package to encapsulate CAS protocol logic.
 
--   `IsConfigured() bool`: Checks if `CAS_SERVER_URL` is set.
--   `LoginURL(redirectURL string) (string, error)`: Constructs the redirect URL for the CAS server.
--   `ValidateTicket(ticket string) (*Profile, error)`: Validates the ticket with the CAS server and parses the XML response.
--   `Profile`: A struct to hold the authenticated user's information (`ID`, `Email`, `Name`).
+- `IsConfigured() bool`: Checks if `CAS_SERVER_URL` is set.
+- `LoginURL(redirectURL string) (string, error)`: Constructs the redirect URL for the CAS server.
+- `ValidateTicket(ticket string) (*Profile, error)`: Validates the ticket with the CAS server and parses the XML response.
+- `Profile`: A struct to hold the authenticated user's information (`ID`, `Email`, `Name`).
 
 ### Handlers (`app/handlers/cas.go`)
 
 New HTTP handlers to manage the flow.
 
--   `CASLogin(c *fider.Context)`: Handles the initial login request and redirects to the CAS server.
--   `CASCallback(c *fider.Context)`: Handles the callback from the CAS server, validates the ticket, gets or creates the user account, and establishes a session. It will reuse the existing `actions.GetOrCreateUserFromProvider` action.
+- `CASLogin(c *fider.Context)`: Handles the initial login request and redirects to the CAS server.
+- `CASCallback(c *fider.Context)`: Handles the callback from the CAS server, validates the ticket, gets or creates the user account, and establishes a session. It will reuse the existing `actions.GetOrCreateUserFromProvider` action.
 
 ### Routes (`app/cmd/routes.go`)
 
@@ -63,16 +63,16 @@ r.Get("/cas/callback", handlers.CASCallback())
 
 The sign-in page will be updated to conditionally display a "Sign in with UAB" button.
 
--   The backend will pass a `casEnabled: true` prop to the page if `CAS_SERVER_URL` is configured.
--   The button will link to `/cas/login?redirect=/`.
--   It will be styled with UAB's brand color for easy recognition.
+- The backend will pass a `casEnabled: true` prop to the page if `CAS_SERVER_URL` is configured.
+- The button will link to `/cas/login?redirect=/`.
+- It will be styled with UAB's brand color for easy recognition.
 
 ## 4. Error Handling
 
--   **Invalid Ticket:** Redirect to the sign-in page with an error message.
--   **CAS Server Unreachable:** Log the error and show a generic failure message.
--   **User Not Invited (Private Tenant):** Redirect to a "not-invited" page, consistent with other providers.
+- **Invalid Ticket:** Redirect to the sign-in page with an error message.
+- **CAS Server Unreachable:** Log the error and show a generic failure message.
+- **User Not Invited (Private Tenant):** Redirect to a "not-invited" page, consistent with other providers.
 
 ## 5. User Identity
 
--   The provider name for these users will be `uab`, the same as the existing SAML implementation. This ensures that existing UAB users via SAML can sign in with CAS without creating a duplicate account.
+- The provider name for these users will be `uab`, the same as the existing SAML implementation. This ensures that existing UAB users via SAML can sign in with CAS without creating a duplicate account.
