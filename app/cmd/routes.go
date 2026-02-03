@@ -296,6 +296,8 @@ func routes(r *web.Engine) *web.Engine {
 
 		adminApi.Use(middlewares.BlockLockedTenants())
 		adminApi.Delete("/api/v1/posts/:number", apiv1.DeletePost())
+		adminApi.Delete("/api/v1/admin/posts/:number/flags", apiv1.ClearPostFlags())
+		adminApi.Delete("/api/v1/admin/comments/:id/flags", apiv1.ClearCommentFlags())
 	}
 
 	return r

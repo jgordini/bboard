@@ -281,6 +281,18 @@ func getFlaggedComments(ctx context.Context, q *query.GetFlaggedComments) error 
 	})
 }
 
+func clearCommentFlags(ctx context.Context, c *cmd.ClearCommentFlags) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		_, err := trx.Execute(`DELETE FROM comment_flags WHERE comment_id = $1 AND tenant_id = $2`,
+			c.CommentID, tenant.ID,
+		)
+		if err != nil {
+			return errors.Wrap(err, "failed to clear comment flags")
+		}
+		return nil
+	})
+}
+
 func getCommentsByPost(ctx context.Context, q *query.GetCommentsByPost) error {
 	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
 		q.Result = make([]*entity.Comment, 0)

@@ -745,3 +745,15 @@ func getFlaggedPosts(ctx context.Context, q *query.GetFlaggedPosts) error {
 		return nil
 	})
 }
+
+func clearPostFlags(ctx context.Context, c *cmd.ClearPostFlags) error {
+	return using(ctx, func(trx *dbx.Trx, tenant *entity.Tenant, user *entity.User) error {
+		_, err := trx.Execute(`DELETE FROM post_flags WHERE post_id = $1 AND tenant_id = $2`,
+			c.PostID, tenant.ID,
+		)
+		if err != nil {
+			return errors.Wrap(err, "failed to clear post flags")
+		}
+		return nil
+	})
+}

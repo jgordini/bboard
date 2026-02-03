@@ -507,6 +507,43 @@ func ListFlaggedPosts() web.HandlerFunc {
 	}
 }
 
+// ClearPostFlags removes all flags from a post (admin-only)
+func ClearPostFlags() web.HandlerFunc {
+	return func(c *web.Context) error {
+		number, err := c.ParamAsInt("number")
+		if err != nil {
+			return c.NotFound()
+		}
+
+		getPost := &query.GetPostByNumber{Number: number}
+		if err := bus.Dispatch(c, getPost); err != nil {
+			return c.Failure(err)
+		}
+
+		if err := bus.Dispatch(c, &cmd.ClearPostFlags{PostID: getPost.Result.ID}); err != nil {
+			return c.Failure(err)
+		}
+
+		return c.Ok(web.Map{})
+	}
+}
+
+// ClearCommentFlags removes all flags from a comment (admin-only)
+func ClearCommentFlags() web.HandlerFunc {
+	return func(c *web.Context) error {
+		commentID, err := c.ParamAsInt("id")
+		if err != nil {
+			return c.NotFound()
+		}
+
+		if err := bus.Dispatch(c, &cmd.ClearCommentFlags{CommentID: commentID}); err != nil {
+			return c.Failure(err)
+		}
+
+		return c.Ok(web.Map{})
+	}
+}
+
 // FlagPost flags a post for inappropriateness (any authenticated user)
 func FlagPost() web.HandlerFunc {
 	return func(c *web.Context) error {

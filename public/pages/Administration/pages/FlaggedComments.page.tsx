@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { AdminPageContainer } from "@fider/pages/Administration/components/AdminBasePage"
 import { Button, Avatar, UserName } from "@fider/components"
-import { http } from "@fider/services"
+import { http, actions } from "@fider/services"
 import { Comment } from "@fider/models"
 import { HStack, VStack } from "@fider/components/layout"
 import { Trans, useLingui } from "@lingui/react/macro"
@@ -30,6 +30,13 @@ const FlaggedCommentsPage = () => {
     }
     fetchFlagged()
   }, [])
+
+  const handleClearFlags = async (commentID: number) => {
+    const result = await actions.clearCommentFlags(commentID)
+    if (result.ok) {
+      setItems(items.filter((item) => item.comment.id !== commentID))
+    }
+  }
 
   return (
     <AdminPageContainer
@@ -67,9 +74,14 @@ const FlaggedCommentsPage = () => {
                         <span className="text-xs text-gray-400">{formatDate("en", item.comment.createdAt)}</span>
                       </HStack>
                     </VStack>
-                    <Button variant="secondary" size="small" href={`/posts/${item.postNumber}/${item.postSlug}#comment-${item.comment.id}`}>
-                      <Trans id="action.view">View</Trans>
-                    </Button>
+                    <HStack spacing={2}>
+                      <Button variant="secondary" size="small" href={`/posts/${item.postNumber}/${item.postSlug}#comment-${item.comment.id}`}>
+                        <Trans id="action.view">View</Trans>
+                      </Button>
+                      <Button variant="danger" size="small" onClick={() => handleClearFlags(item.comment.id)}>
+                        <Trans id="action.clearflags">Clear Flags</Trans>
+                      </Button>
+                    </HStack>
                   </HStack>
                 </div>
               ))}

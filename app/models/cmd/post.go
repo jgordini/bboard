@@ -37,3 +37,8 @@ type FlagPost struct {
 	PostID int
 	Reason string
 }
+
+// ClearPostFlags removes all flags from a post (admin only)
+type ClearPostFlags struct {
+	PostID int
+}

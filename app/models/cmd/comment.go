@@ -26,6 +26,11 @@ type FlagComment struct {
 	Reason    string
 }
 
+// ClearCommentFlags removes all flags from a comment (admin only)
+type ClearCommentFlags struct {
+	CommentID int
+}
+
 // SetCommentPinned sets or clears the pinned state of a comment (moderators only)
 type SetCommentPinned struct {
 	CommentID int

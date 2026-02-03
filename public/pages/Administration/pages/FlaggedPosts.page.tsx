@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { AdminPageContainer } from "@fider/pages/Administration/components/AdminBasePage"
 import { Button, Avatar, UserName } from "@fider/components"
-import { http } from "@fider/services"
+import { http, actions } from "@fider/services"
 import { Post } from "@fider/models"
 import { HStack, VStack } from "@fider/components/layout"
 import { Trans, useLingui } from "@lingui/react/macro"
@@ -27,6 +27,13 @@ const FlaggedPostsPage = () => {
     }
     fetchFlagged()
   }, [])
+
+  const handleClearFlags = async (postNumber: number) => {
+    const result = await actions.clearPostFlags(postNumber)
+    if (result.ok) {
+      setItems(items.filter((item) => item.post.number !== postNumber))
+    }
+  }
 
   return (
     <AdminPageContainer
@@ -73,9 +80,14 @@ const FlaggedPostsPage = () => {
                           <span className="text-xs text-gray-400">{formatDate("en", post.createdAt)}</span>
                         </HStack>
                       </VStack>
-                      <Button variant="secondary" size="small" href={`/posts/${post.number}/${post.slug}`}>
-                        <Trans id="action.view">View</Trans>
-                      </Button>
+                      <HStack spacing={2}>
+                        <Button variant="secondary" size="small" href={`/posts/${post.number}/${post.slug}`}>
+                          <Trans id="action.view">View</Trans>
+                        </Button>
+                        <Button variant="danger" size="small" onClick={() => handleClearFlags(post.number)}>
+                          <Trans id="action.clearflags">Clear Flags</Trans>
+                        </Button>
+                      </HStack>
                     </HStack>
                   </div>
                 )

@@ -182,3 +182,11 @@ export const approveCommentAndVerify = async (commentID: number): Promise<Result
 export const declineCommentAndBlock = async (commentID: number): Promise<Result> => {
   return http.post(`/api/v1/admin/moderation/comments/${commentID}/decline-and-block`).then(http.event("comment", "decline-and-block"))
 }
+
+export const clearPostFlags = async (postNumber: number): Promise<Result> => {
+  return http.delete(`/api/v1/admin/posts/${postNumber}/flags`)
+}
+
+export const clearCommentFlags = async (commentID: number): Promise<Result> => {
+  return http.delete(`/api/v1/admin/comments/${commentID}/flags`)
+}
