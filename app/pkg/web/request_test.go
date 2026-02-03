@@ -135,6 +135,7 @@ func TestRequest_IsCrawler(t *testing.T) {
 		{"Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)", true},
 		{"SemrushBot", true},
 		{"Mozilla/5.0 (compatible; Konqueror/3.5; Linux) KHTML/3.5.5 (like Gecko) (Exabot-Thumbnails); Mozilla/5.0 (compatible; Exabot/3.0; +http://www.exabot.com/go/robot)", true},
+		{"Let's Encrypt validation server", true},
 		{"Google Chrome", false},
 		{"Google", false},
 		{"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299", false},
