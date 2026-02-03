@@ -859,6 +859,11 @@ func TestListCommentHandler(t *testing.T) {
 		return nil
 	})
 
+	bus.AddHandler(func(ctx context.Context, q *query.GetCommentFlagsCountsForPost) error {
+		q.Result = map[int]int{}
+		return nil
+	})
+
 	code, query := mock.NewServer().
 		OnTenant(mock.DemoTenant).
 		AsUser(mock.JonSnow).
