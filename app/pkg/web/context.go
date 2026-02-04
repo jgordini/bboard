@@ -609,7 +609,7 @@ func LogoURL(ctx context.Context) string {
 	if hasTenant && tenant.LogoBlobKey != "" {
 		return AssetsURL(ctx, "/static/images/%s?size=200", tenant.LogoBlobKey)
 	}
-	return "https://login.fider.io/static/assets/logo.png"
+	return "/static/assets/UAB_Monogram_Green.svg"
 }
 
 // BaseURL return the base URL from given context
