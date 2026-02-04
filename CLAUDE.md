@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code when working with the Fider codebase.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Repository Structure
 
@@ -39,12 +39,22 @@ All commands are defined in the Makefile.
 
 - `make test` - Run all tests (both Go and Jest)
 - `make lint` - Lint both server and UI code
+- Run a single Go test: `godotenv -f .test.env go test ./app/handlers -v -run TestName`
+- Run a single Jest test: `npx jest ./public/path/to/file.spec.tsx`
+- Full tests (including network-dependent): `make test-server SHORT=false`
 
-Essential: Run "make lint" and "make test" when you've completed any changes, to check the formatting and tests.
+Essential: Run `make lint` and `make test` when you've completed any changes, to check the formatting and tests.
 
 **Building:**
 
 - `make build` - Build production-ready binaries and assets
+
+**E2E Testing:**
+
+- `make test-e2e-server` - Run server E2E tests (Cucumber)
+- `make test-e2e-ui` - Run UI E2E tests (headless)
+- `make test-e2e-ui-headed` - Run UI E2E tests with visible browser
+- `make test-e2e-ui-scenario NAME="scenario name"` - Run specific scenario
 
 ## Code Patterns & Examples
 
@@ -358,12 +368,12 @@ if err := bus.Dispatch(ctx, c); err != nil {
 
 - Ensure test database is migrated (happens automatically with `make test`)
 - Check `.test.env` configuration
-- Run specific test: `go test ./app/handlers -v -run TestName`
+- Run specific test: `godotenv -f .test.env go test ./app/handlers -v -run TestName`
 
 **Port conflicts:**
 
-- Default ports: 3000 (app), 5432 (postgres), 8025 (mailhog)
-- Change in `.env` if needed
+- Default ports: 3000 (app), 5555 (postgres dev), 5566 (postgres test), 8025 (mailhog UI), 1025 (mailhog SMTP)
+- Change in `.env` or `docker-compose.yml` if needed
 
 ## Development Tips
 

@@ -1,60 +1,98 @@
+# bboard
 
-<p align="center">
-  <a href="https://fider.io/" target="_blank">
-    <img src="etc/fiderlogo.png" width="300" alt="Fider">
-  </a>
-</p>
+A self-hosted feedback portal for collecting feature requests and suggestions.
 
-<p align="center">
-    <a href="https://fider.io/">Fider.io</a> •
-    <a href="https://feedback.fider.io">Fider Feedback</a> •
-    <a href="https://demo.fider.io">Fider Demo</a> •
-    <a href="https://docs.fider.io">Docs</a> •
-    <a href="https://github.com/TryGhost/Ghost/blob/main/.github/CONTRIBUTING.md">Contributing</a>
-</p>
+## Tech Stack
 
-<br/>
-<br/>
+- **Backend:** Go 1.22+
+- **Frontend:** React 18, TypeScript
+- **Database:** PostgreSQL 17
+- **Styling:** SCSS with BEM conventions and utility classes
 
-<img src="etc/fidergithub.png">
+## Prerequisites
 
-<br/>
-<br/>
+- Go 1.22+
+- Node.js 21/22
+- Docker
+- `air` - Go live reload (`go install github.com/air-verse/air@latest`)
+- `godotenv` - Environment loader (`go install github.com/joho/godotenv/cmd/godotenv@latest`)
+- `golangci-lint` - Go linter
 
-[![build](https://github.com/getfider/fider/actions/workflows/build.yml/badge.svg)](https://github.com/getfider/fider/actions/workflows/build.yml)
+## Setup
 
-# Fider is a feedback portal for feature requests and suggestions.
+1. Start services:
+   ```bash
+   docker compose up -d
+   ```
 
-__Give your customers a voice and let them tell you what they need. Spend less time guessing and more time building the right product.__
+2. Copy environment config:
+   ```bash
+   cp .example.env .env
+   ```
 
-# Getting Started
+3. Run migrations:
+   ```bash
+   make migrate
+   ```
 
-## ☁️ **Fider Cloud**
+4. Start development server:
+   ```bash
+   make watch
+   ```
 
-The easiest and quickest way to get started. A fully managed services by the creators of Fider to help you get started in minutes. Forget about managing software updates and patches, we do it all for you! [Sign up now](https://fider.io/#get-started)
+5. Open http://localhost:3000
 
-## 🏢 **Self-Hosted**
+## Development Commands
 
-Install Fider on your own servers, in your own infrastructure. It's totally free, but of course you're responsible for everything. [Learn how](https://docs.fider.io/self-hosted/)
+| Command | Description |
+|---------|-------------|
+| `make watch` | Hot reload for server and UI |
+| `make build` | Build production binaries and assets |
+| `make test` | Run all tests (Go + Jest) |
+| `make lint` | Lint server and UI code |
+| `make migrate` | Run database migrations |
 
-If you do self-host and enjoy Fider, please [let us know where you're using it](https://github.com/getfider/fider/issues/899) - we really appreciate it 🙏
+## Local Services
 
-# 💰 Donations and Sponsors
+| Service | URL/Port |
+|---------|----------|
+| App | http://localhost:3000 |
+| PostgreSQL (dev) | localhost:5555 |
+| PostgreSQL (test) | localhost:5566 |
+| MailHog UI | http://localhost:8025 |
+| MailHog SMTP | localhost:1025 |
 
-Supoprt the development of Fider to help us make it the best feedback tool! You can set up donations as small or large as you want to help us keep Fider going. [Donate](https://opencollective.com/fider)
+## Project Structure
 
-If your organization uses Fider, consider becoming a sponsor - set up a monthly donation and get your logo and link on the README. [Become a sponsor](https://opencollective.com/fider)
+```
+app/
+├── handlers/     # HTTP request handlers
+├── models/       # Data models (entity, cmd, query, dto)
+├── services/     # Business logic
+├── pkg/bus/      # Service registry and dispatch
+└── cmd/routes.go # All HTTP routes
 
-<br/>
-<br/>
+public/
+├── pages/        # Page components (lazy-loaded)
+├── components/   # Reusable UI components
+├── services/     # API clients
+└── assets/styles # SCSS styles
 
-# Contributors
+migrations/       # Database migrations (SQL)
+```
 
-This project exists thanks to all the amazing people who contribute!
+## Running Tests
 
-<a href="https://github.com/getfider/fider/graphs/contributors"><img src="https://opencollective.com/fider/contributors.svg?width=890&button=false" /></a>
+```bash
+# All tests
+make test
 
-Read our [CONTRIBUTING](CONTRIBUTING.md) guide to learn how you can contribute to Fider.
+# Single Go test
+godotenv -f .test.env go test ./app/handlers -v -run TestName
 
-<br/>
-<br/>
+# Single Jest test
+npx jest ./public/path/to/file.spec.tsx
+
+# E2E tests
+make test-e2e-ui
+```
